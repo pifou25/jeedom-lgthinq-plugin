@@ -51,3 +51,16 @@ function addCmdToTable(_cmd) {
     }
     jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
 }
+
+$( function(){
+
+	$('#LgThinqInclude').off('click').on('click', function () {
+
+		$('#md_modal').dialog({title: "Sélectionner l'objet à inclure"});
+		$('#md_modal').load('index.php?v=d&plugin=lgthinq&modal=include').dialog('open');
+
+		console.log('clic bouton include');
+
+	});
+	console.log('ajout clic bouton include');
+});

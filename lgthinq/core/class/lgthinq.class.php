@@ -19,13 +19,40 @@
 /* * ***************************Includes********************************* */
 require_once __DIR__  . '/../../../../core/php/core.inc.php';
 
+// include /plugins/lgthinq/core/LgLog.class.php
+include_file('core', 'LgLog', 'class', 'lgthinq');
+
+// include /plugins/lgthinq/core/WideqManager.class.php
+include_file('core', 'WideqManager', 'class', 'lgthinq');
+
+// include /plugins/lgthinq/core/WideqAPI.class.php
+include_file('core', 'WideqAPI', 'class', 'lgthinq');
+
 class lgthinq extends eqLogic {
     /*     * *************************Attributs****************************** */
 
-
-
+	/**
+	 * les attributs précédés de $_ ne sont pas sauvegardé en base
+	 */
+	private static $_keysConfig = [];
+	
     /*     * ***********************Methode static*************************** */
 
+	/**
+	 * generate WideqAPI with jeedom configuration
+	 */
+	public static function getApi(){
+		$token = config::byKey('LgJeedomToken', 'lgthinq');
+		if(!empty($token)){
+			$headers = [WideqAPI::TOKEN_KEY . ': ' . $token];
+		}else{
+			$headers = [];
+		}
+		$port = config::byKey('PortServerLg', 'lgthinq', 5025);
+		$debug = ( log::convertLogLevel(log::getLogLevel('lgthinq')) == 'debug' );
+		return new WideqAPI( ['port' => $port, 'debug' => $debug, 'headers' => $headers]);
+	}
+	
     /*
      * Fonction exécutée automatiquement toutes les minutes par Jeedom
       public static function cron() {
@@ -48,6 +75,31 @@ class lgthinq extends eqLogic {
       }
      */
 
+	
+	public static function deamon_info() {
+		return WideqManager::daemon_info();
+	}
+	
+	public static function deamon_start($_debug = false) {
+		$_debug = $_debug || ( log::convertLogLevel(log::getLogLevel('lgthinq')) == 'debug' );
+		$result = WideqManager::daemon_start($_debug);
+		// after restart, reinit the token
+		$lgApi = self::getApi();
+		$auth = config::byKey('LgAuthUrl', 'lgthinq');
+		$json = $lgApi->token($auth);
+		LgLog::debug('Restart daemon and reinit token: ' . json_encode($json));
+		if(isset($json[WideqAPI::TOKEN_KEY])){
+			config::save('LgJeedomToken', $json[WideqAPI::TOKEN_KEY], 'lgthinq');
+		}else{
+			LgLog::error('aucun jeedom token : ' . json_encode($json));
+		}
+
+		return $result;
+	}
+	
+	public static function deamon_stop() {
+		return WideqManager::daemon_stop();
+	}
 
 
     /*     * *********************Méthodes d'instance************************* */
@@ -92,16 +144,36 @@ class lgthinq extends eqLogic {
      */
 
     /*
-     * Non obligatoire mais ca permet de déclencher une action après modification de variable de configuration
-    public static function postConfig_<Variable>() {
-    }
+     * déclencher une action après modification de variable de configuration
      */
+    public static function postConfig_LgAuthUrl( $_value) {
+
+		if($_value != self::$_keysConfig['LgAuthUrl']){
+			// maj jeedom token
+			$lgApi = self::getApi();
+			$json = $lgApi->token($_value);
+			if(isset($json['jeedom_token'])){
+				config::save('LgJeedomToken', $json['jeedom_token'], 'lgthinq');
+			}else{
+				LgLog::warning('aucun jeedom token : ' . json_encode($json));
+			}
+		}else{
+			LgLog::debug('LgAuthUrl non modifié=' . $_value);
+		}
+
+
+    }
 
     /*
      * Non obligatoire mais ca permet de déclencher une action avant modification de variable de configuration
-    public static function preConfig_<Variable>() {
-    }
      */
+    public static function preConfig_LgAuthUrl( $_value) {
+		
+		self::$_keysConfig['LgAuthUrl'] = config::byKey('LgAuthUrl', 'lgthinq');
+		LgLog::debug('LgAuthUrl avant modif=' . self::$_keysConfig['LgAuthUrl']);
+		return $_value;
+		
+    }
 
     /*     * **********************Getteur Setteur*************************** */
 }
@@ -128,5 +200,3 @@ class lgthinqCmd extends cmd {
 
     /*     * **********************Getteur Setteur*************************** */
 }
-
-

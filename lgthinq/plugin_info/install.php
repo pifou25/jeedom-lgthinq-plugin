@@ -16,21 +16,16 @@
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
 
-try {
-    require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
-    include_file('core', 'authentification', 'php');
+require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
-    if (!isConnect('admin')) {
-        throw new Exception(__('401 - Accès non autorisé', __FILE__));
-    }
-    
-    ajax::init();
-
-
-
-    throw new Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
-    /*     * *********Catch exeption*************** */
-} catch (Exception $e) {
-    ajax::error(displayException($e), $e->getCode());
+function lgthinq_install() {
+	// TODO ?
 }
 
+function lgthinq_update() {
+	// TODO ?
+}
+
+function lgthinq_remove() {
+	// TODO ?
+}

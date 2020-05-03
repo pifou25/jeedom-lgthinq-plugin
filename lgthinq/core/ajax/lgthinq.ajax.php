@@ -58,13 +58,42 @@ try {
 
 	if(init('action') == 'refreshToken'){
 		LgLog::debug("call auth with param (" . json_encode($_POST) . ')');
-		$lgApi = lgthinq::getApi();
-		$json = $lgApi->token(init('auth'));
-		if(isset($json[WideqAPI::TOKEN_KEY])){
-			config::save('LgJeedomToken', $json[WideqAPI::TOKEN_KEY], 'lgthinq');
-			ajax::success($json);
+		// first init gateway, then token
+		$auth = init('auth');
+		if(empty($auth)){
+			$auth = config::byKey('LgAuthUrl', 'lgthinq');
+		}
+		$result = lgthinq::initToken($auth);
+		
+		if($result !== true){
+			LgLog::error($result);
+			ajax::error($result, 401);
 		}else{
-			ajax::error('aucun jeedom token : ' . json_encode($json), 401);
+			ajax::success('Token success');
+		}
+		
+	}
+	
+	if(init('action') == 'download'){
+		$lgApi = lgthinq::getApi();
+		ajax::success($lgApi->save());
+	}
+	
+	if(init('action') == 'addEqLogic'){
+		$id = init('id');
+		$api = lgthinq::getApi();
+		$objects = $api->ls();
+		if(empty($objects) || empty($id)){
+			ajax::error("No object or id ($object) ($id)", 401);
+		}else{
+			foreach($objects as $obj){
+				if($obj['id'] == $id){
+					LgLog::debug("add object (" . json_encode($config) . ')');
+					$eq = lgthinq::CreateEqLogic($config);
+					ajax::success('object added');
+				}
+			}
+			ajax::error("object with id not found ($id)", 401);
 		}
 	}
 

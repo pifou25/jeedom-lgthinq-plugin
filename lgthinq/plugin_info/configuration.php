@@ -76,6 +76,11 @@ if (!isConnect()) {
             <div class="col-lg-2">
                 <a class="btn btn-success btn-xs" id="bt_pingLgthinq"><i class="far fa-check-circle icon-white"></i> {{Ping ?}}</a>
             </div>
+        <div class="form-group">
+            <label class="col-lg-3 control-label">{{Download Configuration du Démon:}}</label>
+            <div class="col-lg-2">
+                <a class="btn btn-success btn-xs" id="lg_DownloadLgthinq"><i class="far fa-check-circle icon-white"></i> {{Download}}</a>
+            </div>
         </div>
 		
   </fieldset>
@@ -143,7 +148,7 @@ $( function(){
 		}
 	});
 
- 	$('#bt_AuthLgThinq').on('click',function(){
+ 	$('#bt_refreshToken').on('click',function(){
 		$('#divAjaxAlert').hide();
 		$.post({
 			url: 'plugins/lgthinq/core/ajax/lgthinq.ajax.php',
@@ -188,6 +193,30 @@ $( function(){
 			
 		});
 	});
+
+
+ 	$('#lg_DownloadLgthinq').on('click',function(){
+		$('#divAjaxAlert').hide();
+		$.post({
+			url: 'plugins/lgthinq/core/ajax/lgthinq.ajax.php',
+			data: {'action': 'download'},
+			dataType: 'json',
+			global: false,
+			error: function (request, status, error) {
+				handleAjaxError(request, status, error, $('#divAjaxAlert'));
+			},
+			success: function (data, textStatus) {
+				if(data['state']=='ok'){
+					console.log(data['result']);
+					bootbox.alert('message is: ' + data['result']);
+				}else{
+					$('#divAjaxAlert').showAlert({message: data['state'] + ' : ' + data['result'], level: 'danger'});;
+				}
+			}
+			
+		});
+	});
+
 
 });
 

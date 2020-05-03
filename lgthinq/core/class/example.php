@@ -2,14 +2,21 @@
 /*
  * this example use wideq python lib on command line
  */
-
-include 'WideqAPI.class.php';
-
-class config{
-	public static function byKey(){return 5025;}
+ 
+class log{
+	public static function add(){print_r( func_get_args());}
+	public static function getPathToLog(){ return '/var/www/html/logs/';}
 }
 
+include 'LgLog.class.php';
+include 'WideqAPI.class.php';
+
+
+// $token = '64e0a91f-29d9-4ca7-aa44-62e9467cd4f0';
+// $lgApi = new WideqAPI(['headers' => [ "jeedom_token: $token" ]]);
+
 $lgApi = new WideqAPI();
+
 // set log level
 if(!$lgApi->changeLog('debug')){
 	echo 'erreur changement de log';

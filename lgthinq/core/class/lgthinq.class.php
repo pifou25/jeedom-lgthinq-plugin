@@ -28,13 +28,17 @@ include_file('core', 'WideqManager', 'class', 'lgthinq');
 // include /plugins/lgthinq/core/WideqAPI.class.php
 include_file('core', 'WideqAPI', 'class', 'lgthinq');
 
+
 class lgthinq extends eqLogic {
     /*     * *************************Attributs****************************** */
 
 	/**
 	 * les attributs précédés de $_ ne sont pas sauvegardé en base
 	 */
-	private static $_keysConfig = [];
+	// private static $_keysConfig = [];
+	
+	private static $_lgApi = null;
+	
 	
     /*     * ***********************Methode static*************************** */
 
@@ -42,38 +46,153 @@ class lgthinq extends eqLogic {
 	 * generate WideqAPI with jeedom configuration
 	 */
 	public static function getApi(){
-		$token = config::byKey('LgJeedomToken', 'lgthinq');
-		if(!empty($token)){
-			$headers = [WideqAPI::TOKEN_KEY . ': ' . $token];
-		}else{
-			$headers = [];
+		if(self::$_lgApi == null){
+			$token = config::byKey('LgJeedomToken', 'lgthinq');
+			if(!empty($token)){
+				$headers = [WideqAPI::TOKEN_KEY . ': ' . $token];
+			}else{
+				$headers = [];
+			}
+			$port = config::byKey('PortServerLg', 'lgthinq', 5025);
+			$debug = ( log::convertLogLevel(log::getLogLevel('lgthinq')) == 'debug' );
+			$arr = ['port' => $port, 'debug' => $debug, 'headers' => $headers];
+			LgLog::debug(json_encode($arr, JSON_PRETTY_PRINT));
+			self::$_lgApi = new WideqAPI( $arr );
 		}
-		$port = config::byKey('PortServerLg', 'lgthinq', 5025);
-		$debug = ( log::convertLogLevel(log::getLogLevel('lgthinq')) == 'debug' );
-		return new WideqAPI( ['port' => $port, 'debug' => $debug, 'headers' => $headers]);
+		return self::$_lgApi;
+	}
+	
+	/**
+	 * renew the token with wideq lib server
+	 */
+	public static function initToken( $_auth = false){
+
+		$lgApi = self::getApi();
+		// first init gateway, then token
+		$lang = config::byKey('LgLanguage', 'lgthinq');
+		$country = config::byKey('LgCountry', 'lgthinq');
+		$url = $lgApi->gateway( $country, $lang);
+		if(!isset($url['url'])){
+			$msg = "call LgThinq gateway $lang $country fails! " + $url['message'];
+			LgLog::error($msg);
+			return $msg;
+		}else{
+			if( $_auth === false){
+				$_auth = config::byKey('LgAuthUrl', 'lgthinq');
+			}
+			$json = $lgApi->token($_auth);
+			if(isset($json[WideqAPI::TOKEN_KEY])){
+				config::save('LgJeedomToken', $json[WideqAPI::TOKEN_KEY], 'lgthinq');
+				return true;
+			}else{
+				$msg = 'aucun jeedom token : ' . json_encode($json);
+				LgLog::error($msg);
+				return $msg;
+			}
+		}
+	}
+	
+	/**
+	 * create the new object
+	 */
+	private static function CreateEqLogic($_config){
+		
+		$eqLogic = new lgthinq();
+		$eqLogic->setEqType_name('lgthinq');
+		$eqLogic->setIsEnable(1);
+		$eqLogic->setLogicalId($_config['id']);
+		if (isset($_config['model']) && trim($_config['model']) != '') {
+			$eqLogic->setName($eqLogic->getLogicalId() . ' ' . $_config['model']);
+		} else {
+			$eqLogic->setName('Device ' . $eqLogic->getLogicalId());
+		}
+		$eqLogic->setConfiguration('product_name', $_config['name']);
+		$eqLogic->setConfiguration('product_type', $_config['type']);
+		$eqLogic->setIsVisible(1);
+		$eqLogic->save();
+		//$eqLogic = openzwave::byId($eqLogic->getId());
+		// TODO
+		//$eqLogic->createCommand(false, $_config);
+		return $eqLogic;
+	}
+	
+	/**
+	 * refresh any object sensors values
+	 */
+	 private static function refreshData(){
+		 LgLog::debug('refresh LG data');
+	 }
+	
+	/**
+	 * refresh any object sensors values
+	 */
+	private static function refreshListObjects(){
+		 $lgApi = self::getApi();
+		 $lgObjects = $lgApi->ls();
+		 if(!is_array($lgObjects) || !isset($lgObjects[0]['id'])) 
+			 return false;
+		 
+		 $jeedomObjects = self::byType('lgthinq');
+		 LgLog::debug(sprintf('refresh LG objects (%s LG) (%s jeedom)', count($lgObjects), count($jeedomObjects)));
+		 foreach($lgObjects as $lgObj){
+			 
+			 $found = false;
+			 foreach($jeedomObjects as $eqLogic){
+				 if($eqLogic->getLogicalId() == $lhObj['id']){
+					 $found = true;
+					 continue;
+				 }
+			 }
+				 
+			 if(!$found){
+				 // create any missing object
+				 LgLog::debug('create object with ' . json_encode($lgObj));
+				 $eqLogic = self::CreateEqLogic($lgObj);
+			 }
+			 
+			 LgLog::debug(serialize($eqLogic));
+		 }
+		 
 	}
 	
     /*
      * Fonction exécutée automatiquement toutes les minutes par Jeedom
-      public static function cron() {
-
-      }
      */
+      public static function cron() {
+		self::refreshData();
+      }
 
+      public static function cron5() {
+		self::refreshData();
+      }
+
+      public static function cron10() {
+		self::refreshData();
+      }
+
+      public static function cron15() {
+		self::refreshData();
+      }
+
+      public static function cron30() {
+		self::refreshData();
+      }
 
     /*
      * Fonction exécutée automatiquement toutes les heures par Jeedom
+     */
       public static function cronHourly() {
+		self::refreshData();
 
       }
-     */
 
     /*
      * Fonction exécutée automatiquement tous les jours par Jeedom
+     */
       public static function cronDaily() {
+		self::refreshData();
 
       }
-     */
 
 	
 	public static function deamon_info() {
@@ -84,15 +203,8 @@ class lgthinq extends eqLogic {
 		$_debug = $_debug || ( log::convertLogLevel(log::getLogLevel('lgthinq')) == 'debug' );
 		$result = WideqManager::daemon_start($_debug);
 		// after restart, reinit the token
-		$lgApi = self::getApi();
-		$auth = config::byKey('LgAuthUrl', 'lgthinq');
-		$json = $lgApi->token($auth);
-		LgLog::debug('Restart daemon and reinit token: ' . json_encode($json));
-		if(isset($json[WideqAPI::TOKEN_KEY])){
-			config::save('LgJeedomToken', $json[WideqAPI::TOKEN_KEY], 'lgthinq');
-		}else{
-			LgLog::error('aucun jeedom token : ' . json_encode($json));
-		}
+		self::initToken();
+		LgLog::debug('Restart daemon and reinit token');
 
 		return $result;
 	}
@@ -113,10 +225,11 @@ class lgthinq extends eqLogic {
     }
 
     public function preSave() {
-        
+        LgLog::debug("preSave $this");
     }
 
     public function postSave() {
+		LgLog::debug("postSave $this");
         
     }
 
@@ -146,33 +259,29 @@ class lgthinq extends eqLogic {
     /*
      * déclencher une action après modification de variable de configuration
      */
-    public static function postConfig_LgAuthUrl( $_value) {
-
-		if($_value != self::$_keysConfig['LgAuthUrl']){
-			// maj jeedom token
-			$lgApi = self::getApi();
-			$json = $lgApi->token($_value);
-			if(isset($json['jeedom_token'])){
-				config::save('LgJeedomToken', $json['jeedom_token'], 'lgthinq');
-			}else{
-				LgLog::warning('aucun jeedom token : ' . json_encode($json));
-			}
-		}else{
-			LgLog::debug('LgAuthUrl non modifié=' . $_value);
-		}
-
-
-    }
+    // public static function postConfig_LgAuthUrl( $_value) {}
 
     /*
-     * Non obligatoire mais ca permet de déclencher une action avant modification de variable de configuration
+     * action avant modification de variable de configuration LgAuthUrl:
+	 * envoyer le nouveau token LgAuthUrl au serveur
      */
-    public static function preConfig_LgAuthUrl( $_value) {
+    public static function preConfig_LgAuthUrl( $_newValue) {
 		
-		self::$_keysConfig['LgAuthUrl'] = config::byKey('LgAuthUrl', 'lgthinq');
-		LgLog::debug('LgAuthUrl avant modif=' . self::$_keysConfig['LgAuthUrl']);
-		return $_value;
+		$_oldValue = config::byKey('LgAuthUrl', 'lgthinq');
+		if($_newValue != $_oldValue){
+			// maj jeedom token
+			$json = self::initToken( $_newValue);
+		}else{
+			LgLog::debug('LgAuthUrl non modifié=' . $_newValue);
+		}
+
+		try{
+			self::refreshListObjects();
+		}catch(\Throwable | \Exception $e){
+			LgLog::error(displayException($e));
+		}
 		
+		return $_newValue;
     }
 
     /*     * **********************Getteur Setteur*************************** */

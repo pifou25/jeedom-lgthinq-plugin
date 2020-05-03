@@ -22,6 +22,30 @@ require_once __DIR__  . '/../../../../core/php/core.inc.php';
 include_file('core', 'LgLog', 'class', 'lgthinq');
 
 
+
+/* ****************** TEST TO DELETE *************** */
+function generateCallTrace()
+{
+    $e = new Exception();
+    $trace = explode("\n", $e->getTraceAsString());
+    // reverse array to make steps line up chronologically
+    $trace = array_reverse($trace);
+    array_shift($trace); // remove {main}
+    array_pop($trace); // remove call to this method
+    $length = count($trace);
+    $result = array();
+   
+    for ($i = 0; $i < $length; $i++)
+    {
+        $result[] = ($i + 1)  . ')' . substr($trace[$i], strpos($trace[$i], ' ')); // replace '#someNum' with '$i)', set the right ordering
+    }
+   
+    return "\t" . implode("\n\t", $result);
+}
+/* ****************** TEST TO DELETE *************** */
+
+
+
 /*
  * Lg Smart Thinq manager for the python server
  * REST API on local http://127.0.0.1:port
@@ -67,7 +91,7 @@ class WideqManager {
 
 		self::daemon_stop();
 		$daemon_info = self::daemon_info();
-		LgLog::debug("start server wideq: $_debug ___ " . json_encode( $daemon_info));
+		LgLog::debug("start server wideq: $_debug ___ " . json_encode( $daemon_info) . "\n" . generateCallTrace());
 		if ($daemon_info['launchable'] != 'ok') {
 			throw new Exception(__('Veuillez vérifier la configuration', __FILE__));
 		}

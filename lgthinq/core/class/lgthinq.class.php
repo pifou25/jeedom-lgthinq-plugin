@@ -56,7 +56,7 @@ class lgthinq extends eqLogic {
 			$port = config::byKey('PortServerLg', 'lgthinq', 5025);
 			$debug = ( log::convertLogLevel(log::getLogLevel('lgthinq')) == 'debug' );
 			$arr = ['port' => $port, 'debug' => $debug, 'headers' => $headers];
-			LgLog::debug(json_encode($arr, JSON_PRETTY_PRINT));
+			//LgLog::debug(json_encode($arr, JSON_PRETTY_PRINT));
 			self::$_lgApi = new WideqAPI( $arr );
 		}
 		return self::$_lgApi;
@@ -95,8 +95,9 @@ class lgthinq extends eqLogic {
 	/**
 	 * create the new object
 	 */
-	private static function CreateEqLogic($_config){
-		
+	public static function CreateEqLogic($_config){
+	
+LgLog::debug('new lgthinq');	
 		$eqLogic = new lgthinq();
 		$eqLogic->setEqType_name('lgthinq');
 		$eqLogic->setIsEnable(1);
@@ -109,10 +110,12 @@ class lgthinq extends eqLogic {
 		$eqLogic->setConfiguration('product_name', $_config['name']);
 		$eqLogic->setConfiguration('product_type', $_config['type']);
 		$eqLogic->setIsVisible(1);
+LgLog::debug('before saving lgthinq: ' . serialize($eqLogic));
 		$eqLogic->save();
 		//$eqLogic = openzwave::byId($eqLogic->getId());
 		// TODO
 		//$eqLogic->createCommand(false, $_config);
+LgLog::debug('return lgthinq');
 		return $eqLogic;
 	}
 	
@@ -127,32 +130,6 @@ class lgthinq extends eqLogic {
 	 * refresh any object sensors values
 	 */
 	private static function refreshListObjects(){
-		 $lgApi = self::getApi();
-		 $lgObjects = $lgApi->ls();
-		 if(!is_array($lgObjects) || !isset($lgObjects[0]['id'])) 
-			 return false;
-		 
-		 $jeedomObjects = self::byType('lgthinq');
-		 LgLog::debug(sprintf('refresh LG objects (%s LG) (%s jeedom)', count($lgObjects), count($jeedomObjects)));
-		 foreach($lgObjects as $lgObj){
-			 
-			 $found = false;
-			 foreach($jeedomObjects as $eqLogic){
-				 if($eqLogic->getLogicalId() == $lhObj['id']){
-					 $found = true;
-					 continue;
-				 }
-			 }
-				 
-			 if(!$found){
-				 // create any missing object
-				 LgLog::debug('create object with ' . json_encode($lgObj));
-				 $eqLogic = self::CreateEqLogic($lgObj);
-			 }
-			 
-			 LgLog::debug(serialize($eqLogic));
-		 }
-		 
 	}
 	
     /*
@@ -275,11 +252,11 @@ class lgthinq extends eqLogic {
 			LgLog::debug('LgAuthUrl non modifié=' . $_newValue);
 		}
 
-		try{
-			self::refreshListObjects();
-		}catch(\Throwable | \Exception $e){
-			LgLog::error(displayException($e));
-		}
+		// try{
+			// self::refreshListObjects();
+		// }catch(\Throwable | \Exception $e){
+			// LgLog::error(displayException($e));
+		// }
 		
 		return $_newValue;
     }

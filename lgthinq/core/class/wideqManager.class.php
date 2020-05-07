@@ -63,6 +63,7 @@ class WideqManager {
 	/**
 	 * infos about the python daemon
 	 * check state (nok/ok) running () python version (3.6 mini) ...
+	 * add 'launchable_message' and 'log'
 	 */
 	public static function daemon_info() {
 		$return = [];
@@ -70,6 +71,7 @@ class WideqManager {
 		LgLog::debug('etat server wideq:' . json_encode( $state));
 		$return['state'] = empty($state) ? 'nok' : 'ok';
 		if(!empty($state)){
+			$return['log'] = 'nb of processes='.count($state);
 			if(self::$wideqApi == null){
 				self::$wideqApi = lgthinq::getApi();
 			}
@@ -105,6 +107,7 @@ class WideqManager {
 
 		LgLog::info( 'Lancement démon LgThinq : ' . $cmd );
 		exec($cmd);
+		sleep(2);
 		$i = 0;
 		while ($i < 30) {
 			$daemon_info = self::daemon_info();
@@ -119,7 +122,7 @@ class WideqManager {
 			return false;
 		}
 		message::removeAll('lgthinq', 'unableStartdaemon');
-		LgLog::info('Démon LgThinq lancé');
+		LgLog::info('Démon LgThinq démarré');
 	}
 	
 	/**
@@ -131,7 +134,7 @@ class WideqManager {
 			system::kill(self::WIDEQ_SCRIPT);
 			
 			sleep(1);
-			LgLog::debug('server wideq successfully stoped!');
+			LgLog::debug('server wideq successfully stoped!' . "\n" . generateCallTrace());
 		} catch (\Exception $e) {
 			LgLog::error( 'Stop Daemon LgThinq : ' . $e.getMessage());
 			

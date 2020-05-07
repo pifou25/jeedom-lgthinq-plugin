@@ -120,7 +120,7 @@ class WideqAPI {
 		if(isset($args['headers'])) $this->headers = $args['headers'];
 		if(isset($args['port'])) $this->port = $args['port'];
 		if(isset($args['debug'])) $this->debug = $args['debug'];
-		LgLog::debug('construct WideqAPI '.json_encode($args));
+		//LgLog::debug('construct WideqAPI '.json_encode($args));
 	}
 	
 	/**

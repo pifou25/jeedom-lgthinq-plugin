@@ -20,24 +20,63 @@ if (!isConnect('admin')) {
     throw new Exception('{{401 - Accès non autorisé}}');
 }
 
+
+$msg = 'Hello... ';
+
+try{
+
 // include /plugins/lgthinq/core/WideqAPI.class.php
 include_file('core', 'lgthinq', 'class', 'lgthinq');
 
-$api = lgthinq::getApi();
-$objects = $api->ls();
-$msg = json_encode($objects, JSON_PRETTY_PRINT);
-$msg .= "\n".json_encode(WideqAPI::$requests, JSON_PRETTY_PRINT);
-$msg .= "\n". serialize($api);
+	
+	$lgApi = lgthinq::getApi();
+	$lgObjects = $lgApi->ls();
+	if(!is_array($lgObjects) || !isset($lgObjects[0]['id'])) 
+		$msg = 'No object found... ';
+
+	$jeedomObjects = lgthinq::byType('lgthinq');
+	LgLog::debug(sprintf('refresh LG objects (%s LG) (%s jeedom)', count($lgObjects), count($jeedomObjects)));
+	foreach($lgObjects as $lgObj){
+	 
+		 $found = false;
+		 $eqLogic = null;
+		 foreach($jeedomObjects as $eqLogic){
+			 if($eqLogic->getLogicalId() == $lhObj['id']){
+				 $found = true;
+				 continue;
+			 }
+		 }
+			 
+		 if(!$found){
+			 // create any missing object
+			 LgLog::debug('create object with ' . json_encode($lgObj));
+			 $json =  ["id" => "33d29e50-7196-11e7-a90d-b4e62a6453b5",
+					 "model" => "1REB1GLPX1___",
+					 "name" => "R\u00e9frig\u00e9rateur",
+					 "type" => "REFRIGERATOR"
+			 ];
+
+			 LgLog::debug('create object FOR TEST with ' . json_encode($json));
+			 $eqLogic = lgthinq::CreateEqLogic($lgObj);
+		 }
+		 
+		 LgLog::debug(serialize($eqLogic));
+	}
+
+
+	$msg .= json_encode($lgObjects, JSON_PRETTY_PRINT);
+	$msg .= "\n".json_encode(WideqAPI::$requests, JSON_PRETTY_PRINT);
+	$msg .= "\n". serialize($lgApi);
 
 ?>
 
-<h4>{{Inclure un nouvel objet}}</h4>
+<h4>{{Synchroniser}}</h4>
 
 <form class="form-horizontal">
     <fieldset>
 		<legend>{{Liste des objets détectés}}</legend>
         <div class="form-group">
-<?php foreach($objects as $obj){ ?>
+<?php foreach($lgObjects as $obj){ ?>
             <div class="col-lg-4">
 <?php echo <<<EOT
 			<input type="checkbox" name="selected[]" id="{$obj['id']}" value="{$obj['id']}" />
@@ -86,3 +125,10 @@ $( function(){
 });
 
 </script>
+
+<?php
+
+}catch(\Throwable | \Exception $e){
+	LgLog::error(displayException($e));
+	$msg .= displayException($e);
+}

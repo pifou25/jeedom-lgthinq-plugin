@@ -54,13 +54,13 @@ function addCmdToTable(_cmd) {
 
 $( function(){
 
-	$('#LgThinqInclude').off('click').on('click', function () {
+	$('#LgBtSynchronize').off('click').on('click', function () {
 
-		$('#md_modal').dialog({title: "Sélectionner l'objet à inclure"});
+		$('#md_modal').dialog({title: "Synchroniser les objets LG"});
 		$('#md_modal').load('index.php?v=d&plugin=lgthinq&modal=include').dialog('open');
 
-		console.log('clic bouton include');
+		console.log('clic bouton sync');
 
 	});
-	console.log('ajout clic bouton include');
+	console.log('ajout clic bouton sync');
 });

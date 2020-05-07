@@ -29,10 +29,10 @@ $eqLogics = eqLogic::byType($plugin->getId());
    <div class="col-xs-12 eqLogicThumbnailDisplay">
 	  <legend><i class="fas fa-cog"></i>  {{Gestion}}</legend>
 	  <div class="eqLogicThumbnailContainer">
-		<div class="cursor card success" id="LgThinqInclude">
-			<i class="fas fa-sign-in-alt fa-rotate-90"></i>
+		<div class="cursor logoSecondary" id="LgBtSynchronize">
+			<i class="fas fa-sync-alt"></i>
 			<br/>
-			<span>{{Inclure}}</span>
+			<span>{{Synchroniser}}</span>
 		</div>
 
 		<div class="cursor eqLogicAction logoSecondary" data-action="gotoPluginConf">

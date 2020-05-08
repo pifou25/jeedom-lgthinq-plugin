@@ -1,0 +1,1 @@
+{"url":"https://fr.m.lgaccount.com/login/sign_in?country=FR&language=fr-FR&svcCode=SVC202&authSvr=oauth2&client_id=LGAO221A02&division=ha&grant_type=password"}

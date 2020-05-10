@@ -35,10 +35,12 @@ class lgthinq extends eqLogic {
 	/**
 	 * les attributs précédés de $_ ne sont pas sauvegardé en base
 	 */
+	 
 	// private static $_keysConfig = [];
 	
 	private static $_lgApi = null;
 	
+	private const RESOURCES_PATH = '/../../resources/devices/';
 	
     /*     * ***********************Methode static*************************** */
 
@@ -93,41 +95,52 @@ class lgthinq extends eqLogic {
 	}
 	
 	/**
-	 * create the new object
+	 * create the new object:
+	 * $_config has 4 mandatory keys: 'id' 'type' 'model' 'name'
 	 */
 	public static function CreateEqLogic($_config){
+
+		 $valid = true;
+		 foreach( ['id', 'type', 'model', 'name'] as $key){
+			 if(!isset($_config[$key])){
+				 LgLog::error("Missing $key in LG response:" . json_encode($_config));
+				 $valid = false;
+			 }
+		 }
+		 if($valid){
 	
-LgLog::debug('new lgthinq');	
-		$eqLogic = new lgthinq();
-		$eqLogic->setEqType_name('lgthinq');
-		$eqLogic->setIsEnable(1);
-		$eqLogic->setLogicalId($_config['id']);
-		if (isset($_config['model']) && trim($_config['model']) != '') {
-			$eqLogic->setName($eqLogic->getLogicalId() . ' ' . $_config['model']);
-		} else {
-			$eqLogic->setName('Device ' . $eqLogic->getLogicalId());
-		}
-		$eqLogic->setConfiguration('product_name', $_config['name']);
-		$eqLogic->setConfiguration('product_type', $_config['type']);
-		$eqLogic->setIsVisible(1);
-LgLog::debug('before saving lgthinq: ' . serialize($eqLogic));
-		$eqLogic->save();
-		//$eqLogic = openzwave::byId($eqLogic->getId());
-		// TODO
-		//$eqLogic->createCommand(false, $_config);
-LgLog::debug('return lgthinq');
-		return $eqLogic;
+			$eqLogic = new lgthinq();
+			$eqLogic->setEqType_name('lgthinq');
+			$eqLogic->setIsEnable(1);
+			$eqLogic->setLogicalId($_config['id']);
+			$eqLogic->setName($_config['name']);
+			$eqLogic->setProductModel($_config['model']);
+			$eqLogic->setProductType($_config['type']);
+			$eqLogic->setIsVisible(1);
+			$eqLogic->save();
+			LgLog::debug('Create LG Object ' . $eqLogic->getLogicalId() . ' - ' . 
+			  $eqLogic->getName() . ' - ' . $eqLogic->getProductModel() . ' - ' . $eqLogic->getProductType());
+			
+			// nécessaire de recharger le $eqLogic ??
+			//$eqLogic = lgthinq::byId($eqLogic->getId());
+			// générer les commandes
+			$eqLogic->createCommand();
+
+			return $eqLogic;
+		 }else{
+			 return null;
+		 }
 	}
 	
 	/**
-	 * refresh any object sensors values
+	 * refresh any object sensors values: TODO
 	 */
 	 private static function refreshData(){
 		 LgLog::debug('refresh LG data');
 	 }
 	
 	/**
-	 * refresh any object sensors values
+	 * refresh list of connected LG object 
 	 */
 	private static function refreshListObjects(){
 	}
@@ -193,21 +206,76 @@ LgLog::debug('return lgthinq');
 
     /*     * *********************Méthodes d'instance************************* */
 
+	/**
+	 * Création des commandes de l'objet avec un fichier de configuration au format json
+	 */
+	private function createCommand($_update = false) {
+		
+		if (false === $this->getConfFilePath()) {
+			event::add('jeedom::alert', [
+				'level' => 'warning',
+				'page' => 'lgthinq',
+				'message' => __('Fichier de configuration absent ', __FILE__) . $this->getConfFilePath(),
+			]);
+			return;
+		}
+		$device = is_json(file_get_contents(dirname(__FILE__) . self::RESOURCES_PATH . $this->getConfFilePath()), []);
+		if (!is_array($device) || !isset($device['commands'])) {
+			LgLog::debug('Config file empty or not a json format');
+			return true;
+		}
+		if (isset($device['name']) && !$_update) {
+			$this->setName('[' . $this->getLogicalId() . ']' . $device['name']);
+		}
+		$this->import($device);
+		sleep(1);
+		event::add('jeedom::alert', [
+			'level' => 'warning',
+			'page' => 'lgthinq',
+			'message' => '',
+		]);
+		LgLog::debug('Successfully created commands from config file:' . count($device));
+	}
+	
+	/**
+	 * le fichier de config est au format json
+	 * il est dans /config/devices/[product_type].[product_model].json
+	 par défaut on peut utiliser [product_type].json si celui spécifique au model n'est pas disponible
+	 */
+	private function getConfFilePath() {
+		if (is_file(dirname(__FILE__) . self::RESOURCES_PATH . $this->getConfiguration('fileconf'))) {
+			LgLog::debug('get confFilePath from configuration '. $this->getConfiguration('fileconf'));
+			return $this->getConfiguration('fileconf');
+		}
+		$id = $this->getConfiguration('product_type') . '.' . $this->getConfiguration('product_model') . '.json';
+		if (is_file(dirname(__FILE__) . self::RESOURCES_PATH . $id)) {
+			LgLog::debug('get confFilePath with specific model '. $id);
+			return $id;
+		}
+		$id = $this->getConfiguration('product_type') . '.json';
+		if (is_file(dirname(__FILE__) . self::RESOURCES_PATH . $id)) {
+			LgLog::debug('get generic confFilePath for product type '. $id);
+			return $id;
+		}
+
+		LgLog::warning('No json config file for device ' . $this->getConfiguration('product_type') . ' nor ' . $this->getConfiguration('product_model'));
+		return false;
+	}
+
     public function preInsert() {
-        
+        LgLog::debug("preInsert LgThinq");
     }
 
     public function postInsert() {
-        
+        LgLog::debug("postInsert LgThinq");
     }
 
     public function preSave() {
-        LgLog::debug("preSave $this");
+        LgLog::debug("preSave LgThinq");
     }
 
     public function postSave() {
-		LgLog::debug("postSave $this");
-        
+		LgLog::debug("postSave LgThinq");
     }
 
     public function preUpdate() {
@@ -262,6 +330,19 @@ LgLog::debug('return lgthinq');
     }
 
     /*     * **********************Getteur Setteur*************************** */
+	public function getProductType(){
+		return $this->getConfiguration('product_type');
+	}
+	public function setProductType($_productType){
+		$this->setConfiguration('product_type', $_productType);
+	}
+	
+	public function getProductModel(){
+		return $this->getConfiguration('product_model');
+	}
+	public function setProductModel($_productModel){
+		$this->setConfiguration('product_model', $_productModel);
+	}
 }
 
 class lgthinqCmd extends cmd {
@@ -281,7 +362,25 @@ class lgthinqCmd extends cmd {
      */
 
     public function execute($_options = array()) {
-        
+    
+		$eqlogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
+		
+		switch ($this->getLogicalId()) {	//vérifie le logicalid de la commande 			
+			case 'refresh': // LogicalId de la commande rafraîchir que l’on a créé dans la méthode Postsave de la classe vdm . 
+				
+				// interroger l'API cloud LG pour rafraichir l'information: 
+				$info = lgthinq::getApi()->mon($eqlogic->getLogicalId());
+				// maj la commande ...
+				$eqlogic->checkAndUpdateCmd('story', $info); // on met à jour la commande avec le LogicalId "story"  de l'eqlogic 
+
+				LgLog::debug('cmd refresh ' . $eqLogic . ' --- ' . json_encode($info));
+				break;
+				
+			default:
+				LgLog::debug('cmd execute ' . $this->getLogicalId() . '-' . $eqLogic);
+				break;
+		}
+    
     }
 
     /*     * **********************Getteur Setteur*************************** */

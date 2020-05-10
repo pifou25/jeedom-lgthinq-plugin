@@ -46,42 +46,64 @@ class InvalidUsage(Exception):
         
 
 def check_headers(headers):
-    """ check authentication with access token from the header request."""
+    """
+    check authentication with access token from the header request.
+    """
     if TOKEN_KEY not in headers:
         LOGGER.debug('request without token ' + str(headers))
         raise InvalidUsage('No jeedom token.' , status_code=401)
     if headers[TOKEN_KEY] != token_value:
         raise InvalidUsage('Invalid jeedom token ###' +  headers[TOKEN_KEY] +'###'+ token_value +'###', status_code=401)
 
+def Response(dict, code=200, mimetype='application/json'):
+    """
+    Response of this REST API is:
+    'state'= 'ok' or 'error'
+    'result' contains json encoded data
+    'code' = error code (404 , 500, ...) or 200 if OK
+    """
+    state = ('ok' if code < 300 else 'error')
+    r = jsonify(result=dict, state=state, code=code)
+    r.status_code = code
+    r.headers['Content-Type'] = mimetype
+    return r
+
 
 @api.errorhandler(InvalidUsage)
 def handle_invalid_usage(error):
-    response = jsonify(error.to_dict())
-    response.status_code = error.status_code
-    return response
+    """
+    default error handler
+    """
+    return Response(error.to_dict(), error.status_code)
     
  
 @api.errorhandler(404)
 def not_found(e):
     """Error 404 page not found"""
-    return jsonify({'msg':'Error 404 page not found!', 'err':str(e), 'url': request.url}), 404
+    js = json.dumps({'message': 'Error 404 page not found!', 'err': str(e), 'url': request.url})
+    resp = Response(js, code=404)
+    return resp
 
  
 @api.errorhandler(500)
 def server_error(e):
     """Server Error 500"""
-    return jsonify({ 'msg':'Server Error 500!', 'err':str(e), 'url': request.url, 'type':str(type(e)) }), 500
+    return Response({ 'message':'Server Error 500!', 'err':str(e), 'url': request.url, 'type':str(type(e)) }, 500)
 
   
 @api.route('/ping', methods=['GET'])
 def get_ping():
-    """check if server is alive"""
+    """
+    check if server is alive
+    """
     LOGGER.debug('ping token ' + str(token_value))
-    return jsonify({"state": "ok", "starting": starting, TOKEN_KEY: token_value != ''}), 200
+    return Response({'starting': starting, TOKEN_KEY: (token_value != '')})
 
 @api.route('/log/<string:level>', methods=['GET', 'POST'])
 def set_log(level):
-    """change log level for application: [debug|info|warn|error]"""
+    """
+    change log level for application: [debug|info|warn|error]
+    """
     level = level.lower()
     if level == 'debug':
         lvl = logging.DEBUG
@@ -96,8 +118,9 @@ def set_log(level):
 
     wideq.set_log_level(lvl)
     LOGGER.setLevel(lvl)
+    logging.basicConfig(level=lvl)
     api.logger.setLevel(lvl)    
-    return jsonify({'log':level,'result':'ok'}), 200
+    return Response({'log':level})
 
 
 @api.route('/gateway/<string:country>/<string:language>', methods=['GET'])
@@ -141,7 +164,7 @@ def get_auth(country, language):
     # Save the updated state.
     # state = client.dump()
         
-    return jsonify({'url':login_url}), 200
+    return Response({'url':login_url})
 
 @api.route('/auth', methods=['GET'])
 def get_auth_default():
@@ -150,7 +173,9 @@ def get_auth_default():
 
 @api.route('/token/<path:token>', methods=['GET', 'POST'])
 def get_token(token):
-    """URL from LG login with the token"""
+    """
+    URL from LG login with the token
+    """
     global client, token_value  # , state
 
     # client = wideq.Client.load(state)
@@ -159,23 +184,28 @@ def get_token(token):
     # state = client.dump()
     # generate jeedom token
     token_value = str(uuid.uuid4())
-    return jsonify({'token':'ok', TOKEN_KEY: token_value}), 200
+    return Response({TOKEN_KEY: token_value})
 
 
 #
 #
-#   list of available commands, requieres authentication with headers
+#   list of available commands, requiere authentication with headers
 #
 #
 
 
 @api.route('/save', methods=['GET'])
 def get_save_default():
+    """
+    Save the updated state to a default json file
+    """
     return get_save(STATE_FILE)
 
 @api.route('/save/<string:file>', methods=['GET'])
 def get_save(file):
-    """Save the updated state to a local json file"""
+    """
+    Save the updated state to a local json file
+    """
     check_headers( request.headers)
     with open(file, 'w') as f:
         # add token_value
@@ -183,12 +213,14 @@ def get_save(file):
         backup[TOKEN_KEY] = token_value
         json.dump(backup, f)
         LOGGER.debug("Wrote state file '%s'", os.path.abspath(file))
-    return jsonify({'config': backup, 'file': file}), 200
+    return Response({'config':backup, 'file':file})
 
 
 @api.route('/ls', methods=['GET' ])
 def get_ls():
-    """List the user's devices."""
+    """
+    List the user's devices.
+    """
     global client
     
     LOGGER.debug('request for ls: ' + str(request))
@@ -211,7 +243,7 @@ def get_ls():
             # Save the updated state.
             # state = client.dump()
             
-            return jsonify(result), 200
+            return Response(result)
 
         except wideq.NotLoggedInError:
             LOGGER.info('Session expired.')
@@ -262,7 +294,7 @@ def mon( device_id):
                                 result[key + '.min'] = desc.min
                                 result[key + '.max'] = desc.max
 
-                        return jsonify(result), 200                                
+                        return Response(result)
 
                 time.sleep(1)
                 print('Polling...')

@@ -3,6 +3,8 @@
  * this example use python wideq lib with Flask server and curl requests
  */
 
+class LgApiException extends \Exception {}
+
 class WideqAPI {
 
 	const TOKEN_KEY = 'jeedom_token';
@@ -81,17 +83,9 @@ class WideqAPI {
 			curl_setopt($ch, CURLINFO_HEADER_OUT, true);
 
 		$result = curl_exec($ch);
-		if (curl_errno($ch)) {
-			$curl_error = curl_error($ch);
-			curl_close($ch);
-			throw new Exception(__('Echec de la requête http : ', __FILE__) . $url . ' Curl error : ' . $curl_error, 404);
-		}
-
 		// for debug mode: show the request
 		if($this->debug)
 			$information = curl_getinfo($ch);
-
-		curl_close($ch);
 
 		$return = json_decode($result, true, 512, JSON_BIGINT_AS_STRING);
 		if($return == null){
@@ -99,12 +93,24 @@ class WideqAPI {
 			$return = json_decode($body, true, 512, JSON_BIGINT_AS_STRING);
 		}
 		
-		if(strpos($cmd, 'token') === 0){
-			if(isset($body)){
-				file_put_contents("body.token.json", $body);
-			}
-			file_put_contents("respone.token.json", $result);
+		$err = curl_errno($ch); // technical error
+		if($err) {
+			$curl_error = curl_error($ch);
+		}else if(isset($return['state']) && $return['state'] == 'error') { // check functionnal error
+			$err = isset($return['code']) ? $return['code'] : 500;
+			$curl_error = isset($return['result']) ? json_encode($return['result']) : 'Functionnal Error 500';
 		}
+
+		curl_close($ch);
+
+		if(isset($return['result'])){
+			$return = $return['result'];
+		}
+		// mock response
+		$filename = '../../test/mock/' . substr( str_replace(['.', '\\', '/', '?', ':', '=', '&'], '_', urldecode($cmd)), 0, 20);
+		file_put_contents($filename.'.json', json_encode( $return, JSON_PRETTY_PRINT));
+		file_put_contents($filename.'.txt', $result);
+		// for TEST only
 		
 		// show result for debug
 		$time = (microtime(true) - $time) * 1000;
@@ -113,6 +119,10 @@ class WideqAPI {
 			$arr['info'] = $information;
 		self::$requests[] = $arr;
 
+		if ($err) {
+			throw new LgApiException('Echec de la requête http : ' . $url . ' Curl error : ' . $curl_error, $err);
+		}
+
 		return $return;
 	}
 	
@@ -120,21 +130,20 @@ class WideqAPI {
 		if(isset($args['headers'])) $this->headers = $args['headers'];
 		if(isset($args['port'])) $this->port = $args['port'];
 		if(isset($args['debug'])) $this->debug = $args['debug'];
-		//LgLog::debug('construct WideqAPI '.json_encode($args));
 	}
 	
 	/**
 	 * ping the server
 	 */	
 	public function ping(){
-		return WideqAPI::callRestApi("ping");
+		return self::callRestApi("ping");
 	}
 	
 	/**
 	 * get the LG gateway url
 	 */	
 	public function gateway($country, $language){
-		return WideqAPI::callRestApi("gateway/$country/$language");
+		return self::callRestApi("gateway/$country/$language");
 	}
 	
 	/**
@@ -142,7 +151,7 @@ class WideqAPI {
 	 */
 	public function token($url){
 		$url = urlencode($url);
-		$result = WideqAPI::callRestApi("token/$url");
+		$result = self::callRestApi("token/$url");
 		if(isset($result[self::TOKEN_KEY])) {
 			$this->headers = [
 				self::TOKEN_KEY . ': ' . $result[self::TOKEN_KEY]
@@ -155,25 +164,34 @@ class WideqAPI {
 	}
 	
 	/**
-	 * list of every registered devices
+	 * list of every registered devices, keys by id.
 	 */
 	public function ls(){
-		return WideqAPI::callRestApi('ls');
+		$arr = self::callRestApi('ls');
+		$return = [];
+		foreach($arr as $key => $obj){
+			if(isset($obj['id']))
+				$return[$obj['id']] = $obj;
+			else
+				$return[] = $obj; // missing id ?
+		}
+		return $return;
 	}
 	
 	/**
 	 * monitor one device by id
 	 */
 	public function mon($device){
-		return WideqAPI::callRestApi("mon/$device");
+		return self::callRestApi("mon/$device");
 	}
 
 	/**
 	 * change log level or the python REST API
+	 * raise LgApiException in case of error
 	 */
 	public function changeLog($log){
-		$result = WideqAPI::callRestApi("log/$log");
-		return $result['result'] == 'ok';
+		$result = self::callRestApi("log/$log");
+		return true;
 	}
 	
 	/**
@@ -181,9 +199,13 @@ class WideqAPI {
 	 */
 	public function save($file = null){
 		if($file == null)
-			return WideqAPI::callRestApi("save");
+			return self::callRestApi("save");
 		else
-			return WideqAPI::callRestApi("save/$file");
+			return self::callRestApi("save/$file");
 	}
 	
+	/**
+	 * function to test 404 error
+	 */
+	public function fail(){return self::callRestApi("fail");}
 }

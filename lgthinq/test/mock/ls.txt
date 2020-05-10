@@ -1,7 +1,7 @@
 HTTP/1.0 200 OK
 Content-Type: application/json
-Content-Length: 127
+Content-Length: 162
 Server: Werkzeug/1.0.1 Python/3.8.2
-Date: Thu, 07 May 2020 23:19:30 GMT
+Date: Fri, 08 May 2020 21:50:36 GMT
 
-[{"id":"33d29e50-7196-11e7-a90d-b4e62a6453b5","model":"1REB1GLPX1___","name":"R\u00e9frig\u00e9rateur","type":"REFRIGERATOR"}]
+{"code":200,"result":[{"id":"33d29e50-7196-11e7-a90d-b4e62a6453b5","model":"1REB1GLPX1___","name":"R\u00e9frig\u00e9rateur","type":"REFRIGERATOR"}],"state":"ok"}

@@ -23,11 +23,9 @@ sendVarToJS('eqType', $plugin->getId());
 $eqLogics = eqLogic::byType($plugin->getId());
 ?>
 
-<div id="md_modal"/>
-
 <div class="row row-overflow">
    <div class="col-xs-12 eqLogicThumbnailDisplay">
-	  <legend><i class="fas fa-cog"></i>  {{Gestion}}</legend>
+	  <div><i class="fas fa-cog"></i>  {{Gestion}}</div>
 	  <div class="eqLogicThumbnailContainer">
 		<div class="cursor logoSecondary" id="LgBtSynchronize">
 			<i class="fas fa-sync-alt"></i>
@@ -41,7 +39,8 @@ $eqLogics = eqLogic::byType($plugin->getId());
 			<span>{{Configuration}}</span>
 		</div>
 	  </div>
-	  <legend><i class="fas fa-table"></i> {{Mes équipements}}</legend>
+
+	  <div><i class="fas fa-table"></i> {{Mes équipements}}</div>
 	   <input class="form-control" placeholder="{{Rechercher}}" id="in_searchEqlogic" />
 	   
 	<div class="eqLogicThumbnailContainer">
@@ -114,11 +113,18 @@ foreach (jeeObject::all() as $object) {
 				</div>
 			</div>
 		   <div class="form-group">
-			<label class="col-sm-3 control-label">{{paramètre 1}}</label>
-			<div class="col-sm-3">
-				<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="city" placeholder="param1"/>
+				<label class="col-sm-3 control-label">{{Modèle}}</label>
+				<div class="col-sm-3">
+					<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="product_model"/>
+				</div>
 			</div>
-		</div>
+		   <div class="form-group">
+				<label class="col-sm-3 control-label">{{Type}}</label>
+				<div class="col-sm-3">
+					<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="product_type"/>
+				</div>
+			</div>
+
 	</fieldset>
 	</form>
 	</div>

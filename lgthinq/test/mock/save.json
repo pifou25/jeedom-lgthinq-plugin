@@ -1,7 +1,7 @@
 {
     "config": {
         "auth": {
-            "access_token": "274f1821dc3ed96c0f1c1a58318e252f93f11a4ab8a8f93e76ffae3cee9dbb9c50cc9e59fdf0974b04754d6023e6d860",
+            "access_token": "68fb9cddba05ad20c9b431c8a8dcda7d74534b6ecf70bd3bba71f6ea60572f42d7c72ec27a7ce14ed02e83612199d4aa",
             "refresh_token": "22313d72ab473d118b5e3967c6f4640a68bc173da10e97167a18550ee392fe47c3b5472aad464ae91fd76dc227be214b"
         },
         "country": "FR",
@@ -12,7 +12,7 @@
             "language": "fr-FR",
             "oauth_root": "https:\/\/fr.lgeapi.com"
         },
-        "jeedom_token": "16db91c4-1189-4c96-ad36-b827cc250a92",
+        "jeedom_token": "809bb977-3b53-41fb-9406-74864035d4c6",
         "language": "fr-FR",
         "model_info": {
             "https:\/\/eic.lgthinq.com:46030\/api\/webContents\/modelJSON?modelName=1REB1GLPX1___&countryCode=WW&contentsId=JS0213025419441577&authKey=thinq": {
@@ -342,7 +342,7 @@
                 }
             }
         },
-        "session": "368B3456F6508ED8662BE561C24221EE.nodes_sadap_10"
+        "session": "756BFF00405FD94E0C2897C706976B70.nodes_sadap_10"
     },
     "file": "wideq_state.json"
 }

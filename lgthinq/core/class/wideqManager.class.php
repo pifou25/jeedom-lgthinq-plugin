@@ -109,15 +109,20 @@ class WideqManager {
 		exec($cmd);
 		sleep(2);
 		$i = 0;
-		while ($i < 30) {
-			$daemon_info = self::daemon_info();
-			if ($daemon_info['state'] == 'ok') {
-				break;
+		while ($i < 10) {
+			try{
+				$daemon_info = self::daemon_info();
+				if ($daemon_info['state'] == 'ok') {
+					break;
+				}
+			}catch(LgApiException $e){
+				LgLog::debug("Waiting for daemon starting ($i)...");
 			}
+
 			sleep(1);
 			$i++;
 		}
-		if ($i >= 30) {
+		if ($i >= 10) {
 			LgLog::error('Impossible de lancer le démon LgThinq, relancer le démon en debug et vérifiez la log', 'unableStartdaemon');
 			return false;
 		}

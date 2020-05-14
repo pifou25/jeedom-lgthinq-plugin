@@ -2,9 +2,10 @@
 
 ## Jeedom
 
-Jeedom est un projet de box domotique évolutif qui permet de gérer de multiples protocoles et objets connectés de la maison.
+Jeedom est un projet de **box domotique** évolutif qui permet de gérer de multiples protocoles
+ et objets connectés de la maison.
 
-Il s'appuie principalement sur un "market store" proposant des plugins interface avec toute sorte de protocoles et objets.
+Il s'appuie principalement sur un *market store* proposant des plugins interface avec toute sorte de protocoles et objets.
 
 Le "core" jeedom est également un projet opensource disponible sur github: 
 https://github.com/jeedom/core
@@ -15,14 +16,15 @@ d'un Raspberry Pi par exemple, puis acheter les plugins payants, et / ou install
 
 ## LG Smart-Thinq
 
-LG propose une application propriétaire pour ses appareils connectés Smart-Thinq, mais également une API permettant 
+LG propose une application propriétaire pour ses appareils connectés **Smart-Thinq**, mais également une **API** permettant 
 de communiquer avec ces appareils. Il est donc possible pour les développeurs d'implémenter cette API pour monitorer 
 et commander mon frigo, ma télé ou mon lave-linge.
 
-Il existe déjà une API mais hélas, celle-ci est en python
-https://pypi.org/project/wideq/ [lien github](https://github.com/sampsyo/wideq)
+Il existe déjà une API mais hélas, celle-ci est en python:
 
-Tandis que jeedom est un projet PHP à la base.
+* https://pypi.org/project/wideq/ [lien github](https://github.com/sampsyo/wideq)
+
+Tandis que jeedom est un projet **PHP** 
 
 Le but de ce plugin est donc simplement d'exposer les possibilités de la lib wideq pour communiquer avec l'API LG, 
 pour que jeedom puisse l'utiliser. Ce plugin se compose donc en 2 parties:
@@ -37,13 +39,13 @@ Pour pouvoir tester ce projet, une image docker sera faite, intégrant jeedom (s
 base mysql + le code jeedom). Plusieurs images pourront être utiliées pour simuler différents environnemnts:
 
 1.Debian 9
-. [ ] jeedom v3
-. [ ] jeedom v4
+* [ ] jeedom v3
+* [ ] jeedom v4
 2. Debian 10
-. [ ] jeedom v3
-. [ ] jeedom v4
+* [ ] jeedom v3
+* [ ] jeedom v4
 
-D'autres mélanges pourront être ajouté pour refléter l'ensemble du parc des box existantes.
+D'autres mélanges et saveurs pourront être ajouté pour refléter l'ensemble du parc des box existantes.
 
 Ensuite, il suffira de copier ce plugin dans le répertoire /var/www/html/plugins pour pouvoir le tester.
 

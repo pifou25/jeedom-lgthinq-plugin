@@ -20,24 +20,25 @@ LG propose une application propriétaire pour ses appareils connectés **Smart-T
 de communiquer avec ces appareils. Il est donc possible pour les développeurs d'implémenter cette API pour monitorer 
 et commander mon frigo, ma télé ou mon lave-linge.
 
-Il existe déjà une API mais hélas, celle-ci est en python:
+Il existe déjà une API mais hélas, celle-ci est en **python** :
 
-* https://pypi.org/project/wideq/ [lien github](https://github.com/sampsyo/wideq)
+* https://pypi.org/project/wideq/ ( [lien github](https://github.com/sampsyo/wideq) )
 
 Tandis que jeedom est un projet **PHP** 
 
 Le but de ce plugin est donc simplement d'exposer les possibilités de la lib wideq pour communiquer avec l'API LG, 
 pour que jeedom puisse l'utiliser. Ce plugin se compose donc en 2 parties:
 
-1. un serveur flask python, qui va exposer les fonctionnalités de wideq/LG, il s'agit donc de 
+1. un **serveur flask python**, qui va exposer les fonctionnalités de wideq/LG, il s'agit donc de 
 faire une API REST en python
-2. un plugin au sens jeedom, full PHP, permettant d'interroger cette API REST
+2. un **plugin jeedom**, full PHP, permettant d'interroger cette API REST
 
 ### Prérequis
 
 1. jeedom fonctionnel sur un serveur web + base de données
-2. jeedom v3.6 pour la librairie wideq
-3. un compte LG et un appareil connecté
+2. python > v3.6 pour la librairie wideq, avec les dépendances: flask, request
+3. Docker
+4. un compte LG et un appareil connecté
 
 ## Développement
 

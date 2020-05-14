@@ -63,6 +63,13 @@ mobile
 resources
 ```
 
+Il faut également respecter la norme jeedom pour les branches, à savoir au minimum:
+
+* stableV3 pour jeedom v3 
+* stableV4 pour jeedom v4
+* beta pour la version en cours de dev
+ 
+ 
 ## Test et Déploiement
 
 Pour pouvoir tester ce projet, une image docker sera faite, intégrant jeedom (serveur web + php + 

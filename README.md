@@ -33,7 +33,36 @@ pour que jeedom puisse l'utiliser. Ce plugin se compose donc en 2 parties:
 faire une API REST en python
 2. un plugin au sens jeedom, full PHP, permettant d'interroger cette API REST
 
-## TEST et Déploiement
+### Prérequis
+
+1. jeedom fonctionnel sur un serveur web + base de données
+2. jeedom v3.6 pour la librairie wideq
+3. un compte LG et un appareil connecté
+
+## Développement
+
+1. Le code python : un simple script python / flask 
+
+2. Le code PHP : doit respecter l'arborescence d'un plugin jeedom :
+```
+core
+- php
+- class
+- js
+- config
+3rparty
+desktop
+- php
+- class
+- js
+mobile
+- php
+- class
+- js
+resources
+```
+
+## Test et Déploiement
 
 Pour pouvoir tester ce projet, une image docker sera faite, intégrant jeedom (serveur web + php + 
 base mysql + le code jeedom). Plusieurs images pourront être utiliées pour simuler différents environnemnts:
@@ -48,5 +77,7 @@ base mysql + le code jeedom). Plusieurs images pourront être utiliées pour sim
 D'autres mélanges et saveurs pourront être ajouté pour refléter l'ensemble du parc des box existantes.
 
 Ensuite, il suffira de copier ce plugin dans le répertoire /var/www/html/plugins pour pouvoir le tester.
+
+***
 
 [Plus d'informations sur le wiki](https://github.com/pifou25/jeedom-lgthinq-plugin/wiki)

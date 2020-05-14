@@ -1,5 +1,7 @@
 # jeedom-lgthinq-plugin
 
+[![CodeFactor](https://www.codefactor.io/repository/github/pifou25/jeedom-lgthinq-plugin/badge)](https://www.codefactor.io/repository/github/pifou25/jeedom-lgthinq-plugin)
+
 ## Jeedom
 
 Jeedom est un projet de **box domotique** évolutif qui permet de gérer de multiples protocoles

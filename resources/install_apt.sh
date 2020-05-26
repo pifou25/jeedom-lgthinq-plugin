@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BASEDIR=$(dirname "$BASH_SOURCE")
-LOG_FILE=${BASEDIR}/../../../log/lgthinq_install.log
+LOG_FILE=`cd "${BASEDIR}/../../../log"; pwd`"/lgthinq_install.log"
 PROGRESS_FILE=/tmp/dependancy_networks_in_progress
 if [ ! -z $1 ]; then
 	PROGRESS_FILE=$1

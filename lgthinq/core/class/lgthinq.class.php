@@ -35,13 +35,13 @@ class lgthinq extends eqLogic {
 	/**
 	 * les attributs précédés de $_ ne sont pas sauvegardé en base
 	 */
-	 
+
 	// private static $_keysConfig = [];
-	
+
 	private static $_lgApi = null;
-	
+
 	private const RESOURCES_PATH = '/../../resources/devices/';
-	
+
     /*     * ***********************Methode static*************************** */
 
 	/**
@@ -56,14 +56,14 @@ class lgthinq extends eqLogic {
 				$headers = [];
 			}
 			$port = config::byKey('PortServerLg', 'lgthinq', 5025);
+			$url = config::byKey('UrlServerLg', 'lgthinq', 'http://127.0.0.1');
 			$debug = ( log::convertLogLevel(log::getLogLevel('lgthinq')) == 'debug' );
-			$arr = ['port' => $port, 'debug' => $debug, 'headers' => $headers];
-			//LgLog::debug(json_encode($arr, JSON_PRETTY_PRINT));
+			$arr = ['port' => $port, 'url' => $url, 'debug' => $debug, 'headers' => $headers];
 			self::$_lgApi = new WideqAPI( $arr );
 		}
 		return self::$_lgApi;
 	}
-	
+
 	/**
 	 * renew the token with wideq lib server
 	 */
@@ -93,7 +93,7 @@ class lgthinq extends eqLogic {
 			}
 		}
 	}
-	
+
 	/**
 	 * create the new object:
 	 * $_config has 4 mandatory keys: 'id' 'type' 'model' 'name'
@@ -108,7 +108,7 @@ class lgthinq extends eqLogic {
 			 }
 		 }
 		 if($valid){
-	
+
 			$eqLogic = new lgthinq();
 			$eqLogic->setEqType_name('lgthinq');
 			$eqLogic->setIsEnable(1);
@@ -118,9 +118,9 @@ class lgthinq extends eqLogic {
 			$eqLogic->setProductType($_config['type']);
 			$eqLogic->setIsVisible(1);
 			$eqLogic->save();
-			LgLog::debug('Create LG Object ' . $eqLogic->getLogicalId() . ' - ' . 
+			LgLog::debug('Create LG Object ' . $eqLogic->getLogicalId() . ' - ' .
 			  $eqLogic->getName() . ' - ' . $eqLogic->getProductModel() . ' - ' . $eqLogic->getProductType());
-			
+
 			// nécessaire de recharger le $eqLogic ??
 			//$eqLogic = lgthinq::byId($eqLogic->getId());
 			// générer les commandes
@@ -131,20 +131,20 @@ class lgthinq extends eqLogic {
 			 return null;
 		 }
 	}
-	
+
 	/**
 	 * refresh any object sensors values: TODO
 	 */
 	 private static function refreshData(){
 		 LgLog::debug('refresh LG data');
 	 }
-	
+
 	/**
-	 * refresh list of connected LG object 
+	 * refresh list of connected LG object
 	 */
 	private static function refreshListObjects(){
 	}
-	
+
     /*
      * Fonction exécutée automatiquement toutes les minutes par Jeedom
      */
@@ -184,11 +184,11 @@ class lgthinq extends eqLogic {
 
       }
 
-	
+
 	public static function deamon_info() {
 		return WideqManager::daemon_info();
 	}
-	
+
 	public static function deamon_start($_debug = false) {
 		$_debug = $_debug || ( log::convertLogLevel(log::getLogLevel('lgthinq')) == 'debug' );
 		$result = WideqManager::daemon_start($_debug);
@@ -198,7 +198,7 @@ class lgthinq extends eqLogic {
 
 		return $result;
 	}
-	
+
 	public static function deamon_stop() {
 		return WideqManager::daemon_stop();
 	}
@@ -210,7 +210,7 @@ class lgthinq extends eqLogic {
 	 * Création des commandes de l'objet avec un fichier de configuration au format json
 	 */
 	private function createCommand($_update = false) {
-		
+
 		if (false === $this->getConfFilePath()) {
 			event::add('jeedom::alert', [
 				'level' => 'warning',
@@ -236,11 +236,11 @@ class lgthinq extends eqLogic {
 		]);
 		LgLog::debug('Successfully created commands from config file:' . count($device));
 	}
-	
+
 	/**
 	 * le fichier de config est au format json
 	 * il est dans /config/devices/[product_type].[product_model].json
-	 par défaut on peut utiliser [product_type].json si celui spécifique au model n'est pas disponible
+	 * par défaut on peut utiliser [product_type].json si celui spécifique au model n'est pas disponible
 	 */
 	private function getConfFilePath() {
 		if (is_file(dirname(__FILE__) . self::RESOURCES_PATH . $this->getConfiguration('fileconf'))) {
@@ -279,19 +279,19 @@ class lgthinq extends eqLogic {
     }
 
     public function preUpdate() {
-        
+
     }
 
     public function postUpdate() {
-        
+
     }
 
     public function preRemove() {
-        
+
     }
 
     public function postRemove() {
-        
+
     }
 
     /*
@@ -311,7 +311,7 @@ class lgthinq extends eqLogic {
 	 * envoyer le nouveau token LgAuthUrl au serveur
      */
     public static function preConfig_LgAuthUrl( $_newValue) {
-		
+
 		$_oldValue = config::byKey('LgAuthUrl', 'lgthinq');
 		if($_newValue != $_oldValue){
 			// maj jeedom token
@@ -325,7 +325,7 @@ class lgthinq extends eqLogic {
 		// }catch(\Throwable | \Exception $e){
 			// LgLog::error(displayException($e));
 		// }
-		
+
 		return $_newValue;
     }
 
@@ -336,7 +336,7 @@ class lgthinq extends eqLogic {
 	public function setProductType($_productType){
 		$this->setConfiguration('product_type', $_productType);
 	}
-	
+
 	public function getProductModel(){
 		return $this->getConfiguration('product_model');
 	}
@@ -362,25 +362,25 @@ class lgthinqCmd extends cmd {
      */
 
     public function execute($_options = array()) {
-    
+
 		$eqlogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
-		
-		switch ($this->getLogicalId()) {	//vérifie le logicalid de la commande 			
-			case 'refresh': // LogicalId de la commande rafraîchir que l’on a créé dans la méthode Postsave de la classe vdm . 
-				
-				// interroger l'API cloud LG pour rafraichir l'information: 
+
+		switch ($this->getLogicalId()) {	//vérifie le logicalid de la commande
+			case 'refresh': // LogicalId de la commande rafraîchir que l’on a créé dans la méthode Postsave de la classe vdm .
+
+				// interroger l'API cloud LG pour rafraichir l'information:
 				$info = lgthinq::getApi()->mon($eqlogic->getLogicalId());
 				// maj la commande ...
-				$eqlogic->checkAndUpdateCmd('story', $info); // on met à jour la commande avec le LogicalId "story"  de l'eqlogic 
+				$eqlogic->checkAndUpdateCmd('story', $info); // on met à jour la commande avec le LogicalId "story"  de l'eqlogic
 
 				LgLog::debug('cmd refresh ' . $eqLogic . ' --- ' . json_encode($info));
 				break;
-				
+
 			default:
 				LgLog::debug('cmd execute ' . $this->getLogicalId() . '-' . $eqLogic);
 				break;
 		}
-    
+
     }
 
     /*     * **********************Getteur Setteur*************************** */

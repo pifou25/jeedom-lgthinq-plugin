@@ -18,14 +18,17 @@
 
 require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
+// include /plugins/lgthinq/core/LgLog.class.php
+include_file('core', 'LgLog', 'class', 'lgthinq');
+
 function lgthinq_install() {
-	// TODO ?
+  LgLog::info('install lgThinq plugin');
 }
 
 function lgthinq_update() {
-	// TODO ?
+	LgLog::info('update lgThinq plugin');
 }
 
 function lgthinq_remove() {
-	// TODO ?
+	LgLog::info('remove lgThinq plugin');
 }

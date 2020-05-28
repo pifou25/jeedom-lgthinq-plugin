@@ -61,9 +61,8 @@ else{
 
 	if(count($json) > 0 ){
     foreach($json as $id => $data){
-      $device = $json[0];
   		// test monitoring the first device
-  		$mon = $lgApi->mon($device['id']);
+  		$mon = $lgApi->mon($id);
       echo "\n ************************ \n\n monitoring {$data['name']} {$data['model']} {$data['type']}\n\n ************************\n";
   		echo json_encode( $mon, JSON_PRETTY_PRINT);
 

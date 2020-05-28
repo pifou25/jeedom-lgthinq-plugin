@@ -16,12 +16,7 @@
 * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once __DIR__  . '/../../../../core/php/core.inc.php';
-
 // include /plugins/lgthinq/core/LgLog.class.php
-include_file('core', 'LgLog', 'class', 'lgthinq');
-
-
 
 /* ****************** TEST TO DELETE *************** */
 function generateCallTrace()

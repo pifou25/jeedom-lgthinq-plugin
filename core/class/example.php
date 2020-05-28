@@ -2,7 +2,7 @@
 /*
  * this example use wideq python lib on command line
  */
- 
+
 class log{
 	public static function add(){print_r( func_get_args());}
 	public static function getPathToLog(){ return '/var/www/html/logs/';}
@@ -10,6 +10,7 @@ class log{
 
 include 'LgLog.class.php';
 include 'WideqAPI.class.php';
+include 'WideqManager.class.php';
 
 
 // $token = '64e0a91f-29d9-4ca7-aa44-62e9467cd4f0';
@@ -59,10 +60,14 @@ else{
 	//echo json_encode($json, JSON_PRETTY_PRINT);
 
 	if(count($json) > 0 ){
-		$device = $json[0];
-		// test monitoring the first device
-		$mon = $lgApi->mon($device['id']);
-		// echo json_encode( $mon, JSON_PRETTY_PRINT);
+    foreach($json as $id => $data){
+      $device = $json[0];
+  		// test monitoring the first device
+  		$mon = $lgApi->mon($device['id']);
+      echo "\n ************************ \n\n monitoring {$data['name']} {$data['model']} {$data['type']}\n\n ************************\n";
+  		echo json_encode( $mon, JSON_PRETTY_PRINT);
+
+    }
 	}
 }
 

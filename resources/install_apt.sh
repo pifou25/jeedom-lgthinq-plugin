@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BASEDIR=$(dirname "$BASH_SOURCE")
-LOG_FILE=`cd "${BASEDIR}/../../../log"; pwd`"/lgthinq_install.log"
+LOG_FILE=`cd "${BASEDIR}/../../../log"; pwd`"/lgthinq_install"
 PROGRESS_FILE=/tmp/dependancy_networks_in_progress
 if [ ! -z $1 ]; then
 	PROGRESS_FILE=$1
@@ -50,7 +50,8 @@ else
 
 		echo 50 > ${PROGRESS_FILE}
 		echo "$(date +'[%F %T]') configure Python-3.7" >> ${LOG_FILE}
-		./configure --enable-optimizations  --prefix=/usr/local --enable-shared \
+		# dont use too long option --enable-optimizations
+		./configure  --prefix=/usr/local --enable-shared \
 		  LDFLAGS="-Wl,-rpath /usr/local/lib" --with-ensurepip=install >> ${LOG_FILE}
 
 		# trèèèès long le make

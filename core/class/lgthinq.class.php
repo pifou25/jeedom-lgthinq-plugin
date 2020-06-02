@@ -202,8 +202,10 @@ class lgthinq extends eqLogic {
 				$return['state'] = 'in_progress';
 			} else {
 				if (exec(system::getCmdSudo() . system::get('cmd_check') . '-Ec "python3\-requests"') < 1) {
-					$return['state'] = 'nok';
-				} elseif (exec(system::getCmdSudo() . 'pip3 list | grep -Ec "wideq|flask|requests"') < 3) {
+		 			LgLog::debug('missing python3');
+		 			$return['state'] = 'nok';
+				} elseif (exec(system::getCmdSudo() . 'pip3 list | grep -Ec "wideq|Flask|requests"') < 5) {
+					LgLog::debug('missing pip dependancies');
 						$return['state'] = 'nok';
 				} else {
 					$return['state'] = 'ok';

@@ -8,6 +8,8 @@ if [ ! -z $1 ]; then
 fi
 
 touch ${PROGRESS_FILE}
+echo "$(date +'[%F %T]') Start install dependancies" >> ${LOG_FILE}
+echo "$(date +'[%F %T]') Start install dependancies"
 
 # check python version should be >=3.6
 echo 0 > ${PROGRESS_FILE}
@@ -73,13 +75,13 @@ else
 
 fi
 
+# dans le rep du daemon python:
+cd ${BASEDIR}/daemon
 # for jeedom to know the command for python3.7
 echo ${PYTHON_BASH} > python.cmd
 
 echo 90 > ${PROGRESS_FILE}
 echo "$(date +'[%F %T]') install python dependencies" >> ${LOG_FILE}
-# dans le rep du daemon python:
-cd ${BASEDIR}/daemon
 virtualenv -p ${PYTHON_BASH} env >> ${LOG_FILE}
 source env/bin/activate
 pip install -r requirements.txt >> ${LOG_FILE}

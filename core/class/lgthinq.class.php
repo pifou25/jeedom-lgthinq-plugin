@@ -201,14 +201,33 @@ class lgthinq extends eqLogic {
 			if (file_exists(jeedom::getTmpFolder(__CLASS__) . '/dependency')) {
 				$return['state'] = 'in_progress';
 			} else {
-				if (exec(system::getCmdSudo() . system::get('cmd_check') . '-Ec "python3\-requests"') < 1) {
-		 			LgLog::debug('missing python3');
-		 			$return['state'] = 'nok';
-				} elseif (exec(system::getCmdSudo() . 'pip3 list | grep -Ec "wideq|Flask|requests"') < 5) {
-					LgLog::debug('missing pip dependancies');
+				// run into docker container ?
+				// if(exec(system::getCmdSudo() . 'cat /proc/1/cgroup | grep -c "/docker/"') > 0)
+
+				$daemonDir = dirname(__FILE__) . '/../../resources/daemon/';
+
+				$return['state'] = 'ok';
+				$pythonVersion = $result = shell_exec(system::getCmdSudo()
+				 . 'python3 -c \'import sys; version=sys.version_info[:3]; print("{0}{1}".format(*version))\'');
+				if($pythonVersion === false || $pythonVersion < 36) {
+				// if (exec(system::getCmdSudo() . system::get('cmd_check') . '-Ec "python3\-requests"') < 1) {
+					$pythonCmd = file_get_contents($daemonDir . 'python.cmd');
+					if($pythonCmd === false){
+			 			LgLog::debug("missing python3 $pythonVersion");
+			 			$return['state'] = 'nok';
+					}else{
+						LgLog::debug("Cmd ok = $pythonCmd");
+					}
+				}
+
+				if ($return['state'] == 'ok'){
+					$deps = exec("source $daemonDir/env/bin/activate && " . 'pip3 list | grep -Ec "wideq|Flask|requests"')
+					if($deps < 5) {
+						LgLog::debug("missing pip dependancies ($deps)");
 						$return['state'] = 'nok';
-				} else {
-					$return['state'] = 'ok';
+					} else {
+						$return['state'] = 'ok';
+					}
 				}
 			}
 			return $return;

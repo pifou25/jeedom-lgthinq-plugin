@@ -84,7 +84,7 @@ echo 90 > ${PROGRESS_FILE}
 echo "$(date +'[%F %T]') install python dependencies" >> ${LOG_FILE}
 virtualenv -p ${PYTHON_BASH} env >> ${LOG_FILE}
 source env/bin/activate
-pip install -r requirements.txt >> ${LOG_FILE}
+pip3 install -r requirements.txt >> ${LOG_FILE}
 
 echo 100 > ${PROGRESS_FILE}
 echo "$(date +'[%F %T]') Everything is successfully installed!" >> ${LOG_FILE}

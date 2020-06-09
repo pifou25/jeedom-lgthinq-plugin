@@ -49,7 +49,7 @@ function generateCallTrace()
 class WideqManager {
 
 	const WIDEQ_SCRIPT = 'wideqServer.py';
-	const WIDEQ_DIR = '/../../3rparty/wideq/';
+	const WIDEQ_DIR = '/../../resources/daemon/';
 
 	const PYTHON = '/usr/bin/python3 ';
 

@@ -48,7 +48,7 @@ function generateCallTrace()
  */
 class WideqManager {
 
-	const WIDEQ_SCRIPT = 'wideqServer.py';
+	const WIDEQ_SCRIPT = 'launch.sh';
 	const WIDEQ_DIR = '/../../resources/daemon/';
 
 	const PYTHON = '/usr/bin/python3 ';
@@ -107,7 +107,7 @@ class WideqManager {
 			throw new Exception(__('Veuillez vérifier la configuration', __FILE__));
 		}
 
-		$cmd = system::getCmdSudo() . self::getPython() . dirname(__FILE__) . self::WIDEQ_DIR . self::WIDEQ_SCRIPT;
+		$cmd = system::getCmdSudo() . dirname(__FILE__) . self::WIDEQ_DIR . self::WIDEQ_SCRIPT;
 		$cmd .= ' --port ' . $daemon_info['port'];
 		if($_debug){
 			$cmd .= ' -v ';

@@ -221,9 +221,10 @@ class lgthinq extends eqLogic {
 				}
 
 				if ($return['state'] == 'ok'){
-					$deps = exec("source ${daemonDir}env/bin/activate && " . 'pip3 list | grep -Ec "wideq|Flask|requests"');
+					$cmd = "source ${daemonDir}env/bin/activate && " . 'pip3 list | grep -Ec "wideq|Flask|requests"';
+					$deps = exec($cmd);
 					if($deps < 5) {
-						LgLog::debug("missing pip dependancies ($deps)");
+						LgLog::debug("missing pip dependancies ($deps) ($cmd)");
 						$return['state'] = 'nok';
 					} else {
 						$return['state'] = 'ok';

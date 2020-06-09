@@ -54,17 +54,17 @@ else
 		echo "$(date +'[%F %T]') configure Python-3.7" >> ${LOG_FILE}
 		# dont use too long option --enable-optimizations
 		./configure  --prefix=/usr/local --enable-shared \
-		  LDFLAGS="-Wl,-rpath /usr/local/lib" --with-ensurepip=install >> ${LOG_FILE}
+		  LDFLAGS="-Wl,-rpath /usr/local/lib" --with-ensurepip=install > /dev/null
 
 		# trèèèès long le make
 		echo 60 > ${PROGRESS_FILE}
 		export NUMCPUS=`grep -c '^processor' /proc/cpuinfo`
 		echo "$(date +'[%F %T]') make Python-3.7 with $NUMCPUS threads" >> ${LOG_FILE}
-		make -j$NUMCPUS >> ${LOG_FILE}
+		make -j$NUMCPUS > /dev/null
 
 		echo 80 > ${PROGRESS_FILE}
 		echo "$(date +'[%F %T]') altinstall Python-3.7" >> ${LOG_FILE}
-		make altinstall >> ${LOG_FILE}
+		make altinstall > /dev/null
 
 		# fix error:
 		# python3.7: error while loading shared libraries: libpython3.7m.so.1.0: cannot open shared object file: No such file or directory

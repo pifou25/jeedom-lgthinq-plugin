@@ -107,7 +107,9 @@ class WideqManager {
 			throw new Exception(__('Veuillez vérifier la configuration', __FILE__));
 		}
 
-		$cmd = system::getCmdSudo() . dirname(__FILE__) . self::WIDEQ_DIR . self::WIDEQ_SCRIPT;
+    $file = dirname(__FILE__) . self::WIDEQ_DIR . self::WIDEQ_SCRIPT;
+    shell_exec(system::getCmdSudo() ." chmod +x $file");
+		$cmd = system::getCmdSudo() . " $file";
 		$cmd .= ' --port ' . $daemon_info['port'];
 		if($_debug){
 			$cmd .= ' -v ';

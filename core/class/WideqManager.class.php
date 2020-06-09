@@ -109,7 +109,7 @@ class WideqManager {
 
     $file = dirname(__FILE__) . self::WIDEQ_DIR . self::WIDEQ_SCRIPT;
     // ad +x flag and run the server:
-    // shell_exec(system::getCmdSudo() ." chmod +x $file");
+    shell_exec(system::getCmdSudo() ." chmod +x $file");
 		// $cmd = system::getCmdSudo() . " $file";
     $cmd = system::getCmdSudo() .' source '.dirname(__FILE__) . self::WIDEQ_DIR . 'env/bin/activate && '
       . system::getCmdSudo() .' '. self::getPython() . $file;

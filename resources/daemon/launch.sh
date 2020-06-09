@@ -1,6 +1,6 @@
 #!/bin/bash
-# check for requirements
+# activate virtualenv and launch python script
 
 source env/bin/activate
 echo "call launch.py $@"
-./launch.py "$@"
+bash ./python.cmd < launch.py "$@"

@@ -49,19 +49,24 @@ function generateCallTrace()
 class WideqManager {
 
 	const WIDEQ_SCRIPT = 'wideqServer.py'; // 'launch.sh';
-	const WIDEQ_DIR = '/../../resources/daemon/';
 
-	const PYTHON = '/usr/bin/python3 ';
-
+/**
+ * chemin de l'alias python3.7
+ * généré par l'install_apt.sh
+ */
   private static $pythonBash = null;
+
+  /**
+   * répertoire du démon wideqServer.py
+   */
   private static $wideqDir = null;
 
 	private static $wideqApi = null;
 
   private static function getWideqDir(){
     if(self::$wideqDir == null){
-      $dir = dirname(__FILE__) . self::WIDEQ_DIR;
-      self::$wideqDir = shell_exec("cd \"$dir\"; pwd");
+      $dir = dirname(__FILE__) . '/../../resources/daemon/';
+      self::$wideqDir = trim(shell_exec("cd \"$dir\"; pwd")). '/';
     }
     return self::$wideqDir;
   }
@@ -72,7 +77,7 @@ class WideqManager {
       self::$pythonBash = file_get_contents( self::getWideqDir() . 'python.cmd');
       if(self::$pythonBash === false){
         LgLog::debug('no file (' . self::getWideqDir() . 'python.cmd) found, use default : ' . self::$pythonBash);
-        self::$pythonBash = self::PYTHON;
+        self::$pythonBash = '/usr/bin/python3';
       }
     }
     return self::$pythonBash;
@@ -120,8 +125,8 @@ class WideqManager {
     // ad +x flag and run the server:
     shell_exec(system::getCmdSudo() ." chmod +x $file");
 		// $cmd = system::getCmdSudo() . " $file";
-    $cmd = system::getCmdSudo() .' source '. self::getWideqDir() . '.env/bin/activate; '
-      . system::getCmdSudo() .' '. self::getPython() . $file;
+    $cmd = system::getCmdSudo() .' source '. self::getWideqDir() . '.env/bin/activate && '
+      . system::getCmdSudo() .' '. self::getPython() ." $file";
 		$cmd .= ' --port ' . $daemon_info['port'];
 		if($_debug){
 			$cmd .= ' -v ';

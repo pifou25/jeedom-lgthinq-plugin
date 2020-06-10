@@ -24,9 +24,9 @@ then
     log "Valid Python version $PYTHON_VERSION"
 		PYTHON_BASH=python3
 
-		echo 20 > ${PROGRESS_FILE}
-		log "install required dependancies"
-		pip3 virtualenv >> ${LOG_FILE}
+		# echo 20 > ${PROGRESS_FILE}
+		# log "install required dependancies"
+		# pip3 virtualenv >> ${LOG_FILE}
 
 else
     log "Invalid Python version $PYTHON_VERSION (min 36 required)"
@@ -88,8 +88,8 @@ echo ${PYTHON_BASH} > python.cmd
 echo 90 > ${PROGRESS_FILE}
 log "install python dependencies"
 # virtualenv -p ${PYTHON_BASH} env >> ${LOG_FILE}
-${PYTHON_BASH} -m venv .env
-source .env/bin/activate
+# ${PYTHON_BASH} -m venv .env
+# source .env/bin/activate
 ${PYTHON_BASH} -m pip install -r requirements.txt >> ${LOG_FILE}
 
 echo 100 > ${PROGRESS_FILE}

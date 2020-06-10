@@ -26,7 +26,7 @@ try {
     if (!isConnect('admin')) {
         throw new Exception(__('401 - Accès non autorisé', __FILE__));
     }
-    
+
     ajax::init();
 
 	if(init('action') == 'log'){
@@ -34,16 +34,16 @@ try {
 		LgLog::info("ajax log:$log");
 		ajax::success(['result' => true]);
 	}
-	
+
 	if(init('action') == 'ping'){
 		$lgApi = lgthinq::getApi();
 		ajax::success($lgApi->ping());
 	}
-	
+
 	if (init('action') == 'getGateway') {
 		$lang = init('lang');
 		$country = init('country');
-		
+
 		$lgApi = lgthinq::getApi();
 		$url = $lgApi->gateway( $country, $lang);
 
@@ -63,22 +63,26 @@ try {
 		if(empty($auth)){
 			$auth = config::byKey('LgAuthUrl', 'lgthinq');
 		}
+    if(empty($auth)){
+			LgLog::error("refresh token: URL ne peut pas être vide ($auth)");
+			ajax::error("refresh token: URL ne peut pas être vide ($auth)", 401);
+		}
 		$result = lgthinq::initToken($auth);
-		
+
 		if($result !== true){
 			LgLog::error($result);
 			ajax::error($result, 401);
 		}else{
 			ajax::success('Token success');
 		}
-		
+
 	}
-	
+
 	if(init('action') == 'download'){
 		$lgApi = lgthinq::getApi();
 		ajax::success($lgApi->save());
 	}
-	
+
 	if(init('action') == 'addEqLogic'){
 		$id = init('id');
 		$api = lgthinq::getApi();
@@ -103,4 +107,3 @@ try {
 } catch (Exception $e) {
     ajax::error(displayException($e), $e->getCode());
 }
-

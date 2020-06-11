@@ -98,7 +98,13 @@ class WideqManager {
 			if(self::$wideqApi == null){
 				self::$wideqApi = lgthinq::getApi();
 			}
-			$return = array_merge( $return, self::$wideqApi->ping());
+      try {
+        $ping = self::$wideqApi->ping();
+        $return = array_merge( $return, $ping);
+      } catch (\Exception $e) {
+        LgLog::error("ping (err {$e->getCode()}): {$e->getMessage()}");
+      }
+
 		}
 
 		$return['port'] = config::byKey('port', 'lgthinq', 5025);

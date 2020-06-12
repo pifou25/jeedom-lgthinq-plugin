@@ -131,7 +131,7 @@ class WideqManager {
     // ad +x flag and run the server:
     shell_exec(system::getCmdSudo() ." chmod +x $file");
 		// $cmd = system::getCmdSudo() . " $file";
-    $cmd = system::getCmdSudo() .' '. self::getPython() ." $file";
+    $cmd = self::getPython() ." $file";
 		$cmd .= ' --port ' . $daemon_info['port'];
 		if($_debug){
 			$cmd .= ' -v ';

@@ -85,7 +85,7 @@ class WideqManager {
 
 	/**
 	 * infos about the python daemon
-	 * check state (nok/ok) running () python version (3.6 mini) ...
+	 * check state (nok/ok) if running i.e. when the process exists
 	 * add 'launchable_message' and 'log'
 	 */
 	public static function daemon_info() {
@@ -103,12 +103,11 @@ class WideqManager {
         $return = array_merge( $return, $ping);
       } catch (\Exception $e) {
         LgLog::error("ping (err {$e->getCode()}): {$e->getMessage()}");
+        $return['state'] = 'nok';
       }
 
 		}
 
-		$return['port'] = config::byKey('port', 'lgthinq', 5025);
-		$return['launchable'] = empty($return['port']) ? 'nok' : 'ok';
 		if(count($state) > 0){
 			$return = array_merge($state[0], $return);
 		}
@@ -118,10 +117,10 @@ class WideqManager {
 	/**
 	 * start daemon: the python flask script server
 	 */
-	public static function daemon_start($_debug = false) {
+	public static function daemon_start($daemon_info = []) {
 
+    $_debug = isset($daemon_info['debug']) && $daemon_info['debug'] ? true : false;
 		self::daemon_stop();
-		$daemon_info = self::daemon_info();
 		LgLog::debug("start server wideq: $_debug ___ " . json_encode( $daemon_info) . "\n" . generateCallTrace());
 		if ($daemon_info['launchable'] != 'ok') {
 			throw new Exception(__('Veuillez vérifier la configuration', __FILE__));
@@ -130,7 +129,6 @@ class WideqManager {
     $file = self::getWideqDir() . self::WIDEQ_SCRIPT;
     // ad +x flag and run the server:
     shell_exec(system::getCmdSudo() ." chmod +x $file");
-		// $cmd = system::getCmdSudo() . " $file";
     $cmd = self::getPython() ." $file";
 		$cmd .= ' --port ' . $daemon_info['port'];
 		if($_debug){

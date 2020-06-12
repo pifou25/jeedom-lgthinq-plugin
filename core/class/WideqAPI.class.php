@@ -8,36 +8,41 @@ class LgApiException extends \Exception {}
 class WideqAPI {
 
 	const TOKEN_KEY = 'jeedom_token';
-	
+
 	/**
 	 * headers are the jeedom_token for authentication with python server
 	 */
 	private $headers = [];
-	
+
 	/**
 	 * port is the jeedom variable PortServerLg
 	 */
-	private $portServeLg = 5025;
-	
+	private $port = 5025;
+
+	/**
+	 * url is the jeedom variable UrlServerLg
+	 */
+	private $url = 'http://127.0.0.1';
+
 	/**
 	 * optionnal timeout
 	 */
 	private $timeout = null;
-	
+
 	/**
 	 * debug level
 	 */
 	private $debug = false;
-	
+
 	/*
 	 * keep every requests for logging
 	 */
 	public static $requests = [];
-	
+
 	/*   ************************ Static Methods *************************** */
-	
+
 	/*   **********************Instance Methods ************************* */
-	
+
 	/**
 	 * call to the python REST API for wideq LG lib
 	 * return a json result
@@ -48,8 +53,8 @@ class WideqAPI {
 		$headersResponse = [];
 		$headersLength = 0;
 
-		$url = 'http://127.0.0.1:' . $this->portServeLg . '/' . trim($cmd, '/');
-		
+		$url = $this->url . $this->port . '/' . trim($cmd, '/');
+
 		$ch = curl_init();
 		$hasHeaders = !empty($this->headers);
 		curl_setopt_array($ch, [
@@ -63,7 +68,7 @@ class WideqAPI {
 		if(!empty($this->headers)){
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $this->headers);
 		}
-		
+
 		// this function is called by curl for each header received
 		curl_setopt($ch, CURLOPT_HEADERFUNCTION,
 		  function($curl, $header) use (&$headersResponse, &$headersLength)
@@ -92,7 +97,7 @@ class WideqAPI {
 			$body = trim( substr( $result, $headersLength)); // remove headers
 			$return = json_decode($body, true, 512, JSON_BIGINT_AS_STRING);
 		}
-		
+
 		$err = curl_errno($ch); // technical error
 		if($err) {
 			$curl_error = curl_error($ch);
@@ -106,12 +111,13 @@ class WideqAPI {
 		if(isset($return['result'])){
 			$return = $return['result'];
 		}
+
 		// mock response
-		$filename = '../../test/mock/' . substr( str_replace(['.', '\\', '/', '?', ':', '=', '&'], '_', urldecode($cmd)), 0, 20);
-		file_put_contents($filename.'.json', json_encode( $return, JSON_PRETTY_PRINT));
-		file_put_contents($filename.'.txt', $result);
+		// $filename = '../../test/mock/' . substr( str_replace(['.', '\\', '/', '?', ':', '=', '&'], '_', urldecode($cmd)), 0, 20);
+		// file_put_contents($filename.'.json', json_encode( $return, JSON_PRETTY_PRINT));
+		// file_put_contents($filename.'.txt', $result);
 		// for TEST only
-		
+
 		// show result for debug
 		$time = (microtime(true) - $time) * 1000;
 		$arr = ['cmd' => $cmd, 'time' => $time, 'result' => $return, 'headers' => $this->headers];
@@ -125,27 +131,28 @@ class WideqAPI {
 
 		return $return;
 	}
-	
+
 	public function __construct($args = []){
 		if(isset($args['headers'])) $this->headers = $args['headers'];
 		if(isset($args['port'])) $this->port = $args['port'];
 		if(isset($args['debug'])) $this->debug = $args['debug'];
+		if(isset($args['url'])) $this->url = $args['url'];
 	}
-	
+
 	/**
 	 * ping the server
-	 */	
+	 */
 	public function ping(){
 		return self::callRestApi("ping");
 	}
-	
+
 	/**
 	 * get the LG gateway url
-	 */	
+	 */
 	public function gateway($country, $language){
 		return self::callRestApi("gateway/$country/$language");
 	}
-	
+
 	/**
 	 * send redirect URL with token and access
 	 */
@@ -162,7 +169,7 @@ class WideqAPI {
 
 		return $result;
 	}
-	
+
 	/**
 	 * list of every registered devices, keys by id.
 	 */
@@ -177,7 +184,7 @@ class WideqAPI {
 		}
 		return $return;
 	}
-	
+
 	/**
 	 * monitor one device by id
 	 */
@@ -193,7 +200,7 @@ class WideqAPI {
 		$result = self::callRestApi("log/$log");
 		return true;
 	}
-	
+
 	/**
 	 * save every tokens and config as json file
 	 */
@@ -203,7 +210,7 @@ class WideqAPI {
 		else
 			return self::callRestApi("save/$file");
 	}
-	
+
 	/**
 	 * function to test 404 error
 	 */

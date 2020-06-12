@@ -236,15 +236,27 @@ class lgthinq extends eqLogic {
 
 
 /**
- * gestion du daemon LgThinq
+ * gestion du daemon LgThinq:
+ * on peut configurer
+ * PortServerLg = le port - 5025 par défaut
+ * UrlServerLg = l'url - http://127.0.0.1 par défaut
  */
 	public static function deamon_info() {
-		return WideqManager::daemon_info();
+		$return = WideqManager::daemon_info();
+		$return['port'] = config::byKey('PortServerLg', 'lgthinq', 5025);
+		$return['url'] = config::byKey('UrlServerLg', 'lgthinq', 'http://127.0.0.1');
+		$return['launchable'] = empty($return['port']) ? 'nok' : 'ok';
+		return $return;
 	}
 
+/**
+ * rechercher les param de config jeedom et lancer le serveur
+ */
 	public static function deamon_start($_debug = false) {
 		$_debug = $_debug || ( log::convertLogLevel(log::getLogLevel('lgthinq')) == 'debug' );
-		$result = WideqManager::daemon_start($_debug);
+		$daemon_info = self::(deamon_info());
+		$daemon_info['debug'] = $_debug;
+		$result = WideqManager::daemon_start($daemon_info);
 		// after restart, reinit the token
 		self::initToken();
 		LgLog::debug('Restart daemon and reinit token');

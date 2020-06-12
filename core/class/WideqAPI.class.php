@@ -53,7 +53,7 @@ class WideqAPI {
 		$headersResponse = [];
 		$headersLength = 0;
 
-		$url = $this->url . $this->port . '/' . trim($cmd, '/');
+		$url = $this->url . ':' . $this->port . '/' . trim($cmd, '/');
 
 		$ch = curl_init();
 		$hasHeaders = !empty($this->headers);

@@ -254,7 +254,7 @@ class lgthinq extends eqLogic {
  */
 	public static function deamon_start($_debug = false) {
 		$_debug = $_debug || ( log::convertLogLevel(log::getLogLevel('lgthinq')) == 'debug' );
-		$daemon_info = self::(deamon_info());
+		$daemon_info = self::(deamon_info();
 		$daemon_info['debug'] = $_debug;
 		$result = WideqManager::daemon_start($daemon_info);
 		// after restart, reinit the token

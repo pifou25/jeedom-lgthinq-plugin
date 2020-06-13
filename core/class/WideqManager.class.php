@@ -137,10 +137,11 @@ class WideqManager {
 		if($_debug){
 			$cmd .= ' -v ';
 		}
-		$cmd .= ' >> ' . log::getPathToLog('lgthinq_srv') . ' 2>&1 &';
+		$cmd .= ' >> ' . log::getPathToLog('lgthinq_srv') . ' 2>&1 & echo $!; ';
+    $pid = exec($cmd, $output);
+		LgLog::info( "Lancement démon LgThinq : $cmd => pid= $pid ($output)" );
+    self::$pid = $pid;
 
-		LgLog::info( 'Lancement démon LgThinq : ' . $cmd );
-		exec($cmd);
 		sleep(2);
 		$i = 0;
 		while ($i < 10) {

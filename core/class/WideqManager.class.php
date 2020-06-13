@@ -179,7 +179,7 @@ class WideqManager {
       if(self::$pid !== null){
         system::kill(self::$pid);
       }else{
-        LgLog::warn('no PID; kill the '.self::WIDEQ_SCRIPT);
+        LgLog::warning('no PID; kill the '.self::WIDEQ_SCRIPT);
         system::kill(self::WIDEQ_SCRIPT);
       }
 

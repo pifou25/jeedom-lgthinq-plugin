@@ -1,5 +1,3 @@
-#!/usr/bin/env
-
 import ssl
 import time
 import argparse

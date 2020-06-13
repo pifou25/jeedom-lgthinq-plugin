@@ -86,7 +86,7 @@ cd ${BASEDIR}/daemon
 echo ${PYTHON_BASH} > python.cmd
 
 echo 90 > ${PROGRESS_FILE}
-log "install python dependencies"
+log "install python dependencies in ${BASEDIR}/daemon"
 ${PYTHON_BASH} -m venv env >> ${LOG_FILE}
 source env/bin/activate
 ${PYTHON_BASH} -m pip install -r requirements.txt >> ${LOG_FILE}

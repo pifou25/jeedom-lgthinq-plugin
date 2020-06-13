@@ -87,10 +87,11 @@ echo ${PYTHON_BASH} > python.cmd
 
 echo 90 > ${PROGRESS_FILE}
 log "install python dependencies"
-# virtualenv -p ${PYTHON_BASH} env >> ${LOG_FILE}
-# ${PYTHON_BASH} -m venv .env
-# source .env/bin/activate
+${PYTHON_BASH} -m venv env >> ${LOG_FILE}
+source env/bin/activate
 ${PYTHON_BASH} -m pip install -r requirements.txt >> ${LOG_FILE}
+# sortie de l'env virtuel
+deactivate
 
 echo 100 > ${PROGRESS_FILE}
 log "Everything is successfully installed!"

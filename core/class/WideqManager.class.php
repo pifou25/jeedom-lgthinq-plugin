@@ -48,12 +48,17 @@ function generateCallTrace()
  */
 class WideqManager {
 
-	const WIDEQ_SCRIPT = 'wideqServer.py'; // 'launch.sh';
+	const WIDEQ_SCRIPT = 'launch.sh';
 
     /**
      * object WideqAPI.class.php
      */
   	private static $wideqApi = null;
+
+    /**
+     * numeric: the server process id
+     */
+  	private static $pid = null;
 
   /**
    * répertoire du démon wideqServer.py
@@ -132,16 +137,15 @@ class WideqManager {
     $file = self::getWideqDir() . self::WIDEQ_SCRIPT;
     // ad +x flag and run the server:
     shell_exec(system::getCmdSudo() ." chmod +x $file");
-    $cmd = system::getCmdSudo() .' '. self::getPython() ." $file";
+    $cmd = system::getCmdSudo() ." $file"; // ' '. self::getPython() ." $file";
 		$cmd .= ' --port ' . $daemon_info['port'];
 		if($_debug){
 			$cmd .= ' -v ';
 		}
 		$cmd .= ' >> ' . log::getPathToLog('lgthinq_srv') . ' 2>&1 & echo $!; ';
-    $pid = exec($cmd, $output);
+    self::$pid = exec($cmd, $output);
     $output = json_encode($output);
-		LgLog::info( "Lancement démon LgThinq : $cmd => pid= $pid ($output)" );
-    self::$pid = $pid;
+		LgLog::info( "Lancement démon LgThinq : $cmd => pid= {self::$pid} ($output)" );
 
 		sleep(2);
 		$i = 0;
@@ -172,10 +176,16 @@ class WideqManager {
 	public static function daemon_stop() {
 
 		try {
-			system::kill(self::WIDEQ_SCRIPT);
+      if(self::$pid !== null){
+        system::kill(self::$pid);
+      }else{
+        LgLog::warn('no PID; kill the '.self::WIDEQ_SCRIPT);
+        system::kill(self::WIDEQ_SCRIPT);
+      }
 
 			sleep(1);
-			LgLog::debug('server wideq successfully stoped!' . "\n" . generateCallTrace());
+			LgLog::debug('server wideq successfully stoped!' . generateCallTrace());
+      self::$pid = null;
 		} catch (\Exception $e) {
 			LgLog::error( 'Stop Daemon LgThinq : ' . $e.getMessage());
 

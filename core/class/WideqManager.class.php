@@ -50,18 +50,15 @@ class WideqManager {
 
 	const WIDEQ_SCRIPT = 'wideqServer.py'; // 'launch.sh';
 
-/**
- * chemin de l'alias python3.7
- * généré par l'install_apt.sh
- */
-  private static $pythonBash = null;
+    /**
+     * object WideqAPI.class.php
+     */
+  	private static $wideqApi = null;
 
   /**
    * répertoire du démon wideqServer.py
    */
   private static $wideqDir = null;
-
-	private static $wideqApi = null;
 
   private static function getWideqDir(){
     if(self::$wideqDir == null){
@@ -70,6 +67,12 @@ class WideqManager {
     }
     return self::$wideqDir;
   }
+
+  /**
+   * chemin de l'alias python3.7
+   * généré par l'install_apt.sh
+   */
+    private static $pythonBash = null;
 
   private static function getPython(){
     if(self::$pythonBash == null){
@@ -129,7 +132,7 @@ class WideqManager {
     $file = self::getWideqDir() . self::WIDEQ_SCRIPT;
     // ad +x flag and run the server:
     shell_exec(system::getCmdSudo() ." chmod +x $file");
-    $cmd = self::getPython() ." $file";
+    $cmd = system::getCmdSudo() .' '. self::getPython() ." $file";
 		$cmd .= ' --port ' . $daemon_info['port'];
 		if($_debug){
 			$cmd .= ' -v ';

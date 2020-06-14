@@ -158,7 +158,7 @@ class WideqManager {
 	/**
 	 * stop (kill) the python script server
 	 */
-	public static function daemon_stop( $pid == false) {
+	public static function daemon_stop( $pid = false) {
 
 		try {
       if($pid !== false){

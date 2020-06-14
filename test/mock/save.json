@@ -1,0 +1,348 @@
+{
+    "config": {
+        "auth": {
+            "access_token": "68fb9cddba05ad20c9b431c8a8dcda7d74534b6ecf70bd3bba71f6ea60572f42d7c72ec27a7ce14ed02e83612199d4aa",
+            "refresh_token": "22313d72ab473d118b5e3967c6f4640a68bc173da10e97167a18550ee392fe47c3b5472aad464ae91fd76dc227be214b"
+        },
+        "country": "FR",
+        "gateway": {
+            "api_root": "https:\/\/eic.lgthinq.com:46030\/api",
+            "auth_base": "https:\/\/fr.m.lgaccount.com",
+            "country": "FR",
+            "language": "fr-FR",
+            "oauth_root": "https:\/\/fr.lgeapi.com"
+        },
+        "jeedom_token": "809bb977-3b53-41fb-9406-74864035d4c6",
+        "language": "fr-FR",
+        "model_info": {
+            "https:\/\/eic.lgthinq.com:46030\/api\/webContents\/modelJSON?modelName=1REB1GLPX1___&countryCode=WW&contentsId=JS0213025419441577&authKey=thinq": {
+                "Config": {
+                    "blackBox": "Y",
+                    "fota": "true",
+                    "hasdoor": "Y",
+                    "visibleItems": [
+                        {
+                            "ControlTitle": "@RE_TERM_TEMP_REFRIGERATOR_W",
+                            "Feature": "TempRefrigerator",
+                            "ImageUrl": "",
+                            "Title": "@RE_TERM_REFRIGERATOR_W"
+                        },
+                        {
+                            "ControlTitle": "@RE_TERM_TEMP_FREEZER_W",
+                            "Feature": "TempFreezer",
+                            "ImageUrl": "",
+                            "Title": "@RE_TERM_FREEZER_W"
+                        },
+                        {
+                            "ControlTitle": "@RE_TERM_ICE_PLUS_W",
+                            "Feature": "IcePlus",
+                            "ImageUrl": "image\/icon_fridge_ice.png",
+                            "Title": "@RE_TERM_ICE_PLUS_W"
+                        },
+                        {
+                            "ControlTitle": "@RE_TERM_ECO_FRIENDLY_W",
+                            "Feature": "EcoFriendly",
+                            "ImageUrl": "image\/icon_fridge_eco.png",
+                            "Title": "@RE_TERM_ECO_FRIENDLY_W"
+                        }
+                    ],
+                    "wifiDiagnosis": "true"
+                },
+                "ControlWifi": {
+                    "action": {
+                        "SetControl": {
+                            "cmd": "Control",
+                            "cmdOpt": "Set",
+                            "value": "{ \"REEF\":\"{{EcoFriendly}}\", \"REFT\":\"{{TempFreezer}}\", \"RETM\":\"{{TempRefrigerator}}\", \"REIP\":\"{{IcePlus}}\" }"
+                        }
+                    },
+                    "type": "JSON"
+                },
+                "Info": {
+                    "country": "WW",
+                    "model": "Pollux WiFi",
+                    "modelName": "2REB1GLPX1___",
+                    "modelType": "BF",
+                    "networkType": "WIFI",
+                    "productType": "REF",
+                    "version": "1.5"
+                },
+                "Module": {
+                    "Menu": [
+                        "GCM_SDS01_SdsMain",
+                        "GRM_SET01_Main"
+                    ],
+                    "WPM": {
+                        "GCM_SDS01_SdsMain": "001",
+                        "GRM_CEN01_Main": "006",
+                        "GRM_CEN02_UserSaving": "001",
+                        "GRM_FOD01_Main": "001",
+                        "GRM_FOD02_EditFoodInfo": "001",
+                        "GRM_FOD03_EditFoodIcon": "001",
+                        "GRM_FOD04_AddFood": "001",
+                        "GRM_SET01_Main": "001",
+                        "GRM_SET02_PushList": "001"
+                    }
+                },
+                "Monitoring": {
+                    "protocol": [
+                        {
+                            "_comment": "Refrigerator Temperature(1byte)",
+                            "length": 1,
+                            "startByte": 1,
+                            "value": "TempRefrigerator"
+                        },
+                        {
+                            "_comment": "Freezer Temperature(1byte)",
+                            "length": 1,
+                            "startByte": 2,
+                            "value": "TempFreezer"
+                        },
+                        {
+                            "_comment": "Ice Plus(1byte)",
+                            "length": 1,
+                            "startByte": 3,
+                            "value": "IcePlus"
+                        },
+                        {
+                            "_comment": "Fresh Air Filter(1byte)",
+                            "length": 1,
+                            "startByte": 4,
+                            "value": "FreshAirFilter"
+                        },
+                        {
+                            "_comment": "Smart Saving Staus(1byte)",
+                            "length": 1,
+                            "startByte": 5,
+                            "value": "SmartSavingMode"
+                        },
+                        {
+                            "_comment": "Water Filter State(used month) => (remain : 6 - value)",
+                            "length": 1,
+                            "startByte": 6,
+                            "value": "WaterFilterUsedMonth"
+                        },
+                        {
+                            "_comment": "Door Open Info.",
+                            "length": 1,
+                            "startByte": 7,
+                            "value": "DoorOpenState"
+                        },
+                        {
+                            "_comment": "Temperature Unit : F or \u2103 ",
+                            "length": 1,
+                            "startByte": 8,
+                            "value": "TempUnit"
+                        },
+                        {
+                            "_comment": "Smart Mode Status(1byte)",
+                            "length": 1,
+                            "startByte": 9,
+                            "value": "SmartSavingModeStatus"
+                        },
+                        {
+                            "_comment": "LockingStatus : LOCK or UNLOCK",
+                            "length": 1,
+                            "startByte": 10,
+                            "value": "LockingStatus"
+                        },
+                        {
+                            "_comment": "Active Saving Status : OFF or ON",
+                            "length": 1,
+                            "startByte": 11,
+                            "value": "ActiveSavingStatus"
+                        },
+                        {
+                            "_comment": "Eco Friendly : OFF or ON",
+                            "length": 1,
+                            "startByte": 12,
+                            "value": "EcoFriendly"
+                        }
+                    ],
+                    "type": "BINARY(BYTE)"
+                },
+                "Push": [
+                    {
+                        "category": "PUSH_REF_STATE",
+                        "groupCode": "10101",
+                        "label": "@RE_SETTING_PUSH_PRODUCT_STATE_W",
+                        "pushList": [
+                            {
+                                "0001": "ICE_PLUS_START"
+                            },
+                            {
+                                "0002": "ICE_PLUS_CANCEL"
+                            },
+                            {
+                                "0003": "ICE_PLUS_COMPLETE"
+                            },
+                            {
+                                "0008": "DOOR_OPEN"
+                            },
+                            {
+                                "0009": "FreshAirFilter_START"
+                            },
+                            {
+                                "0010": "FreshAirFilter_CANCEL"
+                            }
+                        ]
+                    }
+                ],
+                "SmartMode": {
+                    "MODE010": {
+                        "_comment": "MODE_HOME_OUT",
+                        "actionName": "",
+                        "control": [
+                            {
+                                "command": "SetControl",
+                                "value": ""
+                            }
+                        ]
+                    },
+                    "MODE030": {
+                        "_comment": "MODE_VACATION",
+                        "actionName": "",
+                        "control": [
+                            {
+                                "command": "SetControl",
+                                "value": ""
+                            }
+                        ]
+                    },
+                    "MODE040": {
+                        "_comment": "MODE_SLEEP",
+                        "actionName": "",
+                        "control": [
+                            {
+                                "command": "SetControl",
+                                "value": ""
+                            }
+                        ]
+                    }
+                },
+                "Value": {
+                    "ActiveSavingStatus": {
+                        "default": 255,
+                        "option": {
+                            "max": 3,
+                            "min": 0,
+                            "step": 1
+                        },
+                        "type": "Range"
+                    },
+                    "DoorOpenState": {
+                        "default": "1",
+                        "option": [
+                            "CLOSE",
+                            "OPEN"
+                        ],
+                        "type": "Enum"
+                    },
+                    "EcoFriendly": {
+                        "default": "1",
+                        "option": [
+                            "@CP_OFF_EN_W",
+                            "@CP_ON_EN_W"
+                        ],
+                        "type": "Enum"
+                    },
+                    "FreshAirFilter": {
+                        "default": "255",
+                        "option": {
+                            "0": "NOT_USE",
+                            "1": "@CP_TERM_OFF_KO_W",
+                            "2": "@RE_STATE_FRESH_AIR_FILTER_MODE_AUTO_W",
+                            "255": "NOT_USE",
+                            "3": "@RE_STATE_FRESH_AIR_FILTER_MODE_POWER_W",
+                            "6": "@RE_STATE_SMART_SMART_CARE_OFF"
+                        },
+                        "type": "Enum"
+                    },
+                    "IcePlus": {
+                        "default": "1",
+                        "option": {
+                            "1": "@CP_OFF_EN_W",
+                            "2": "@CP_ON_EN_W"
+                        },
+                        "type": "Enum"
+                    },
+                    "LockingStatus": {
+                        "default": "1",
+                        "option": {
+                            "1": "UNLOCK",
+                            "2": "LOCK"
+                        },
+                        "type": "Enum"
+                    },
+                    "SmartSavingMode": {
+                        "default": "255",
+                        "option": {
+                            "0": "@CP_TERM_USE_NOT_W",
+                            "1": "@RE_SMARTSAVING_MODE_NIGHT_W",
+                            "2": "@RE_SMARTSAVING_MODE_CUSTOM_W",
+                            "255": "NOT_USE"
+                        },
+                        "type": "Enum"
+                    },
+                    "SmartSavingModeStatus": {
+                        "default": "0",
+                        "option": [
+                            "OFF",
+                            "ON"
+                        ],
+                        "type": "Enum"
+                    },
+                    "TempFreezer": {
+                        "_comment": "unit : Celsius(\u2103)",
+                        "default": "5",
+                        "option": {
+                            "1": "-15",
+                            "2": "-16",
+                            "3": "-17",
+                            "4": "-18",
+                            "5": "-19",
+                            "6": "-20",
+                            "7": "-21",
+                            "8": "-22",
+                            "9": "-23"
+                        },
+                        "type": "Enum"
+                    },
+                    "TempRefrigerator": {
+                        "_comment": "unit : Celsius(\u2103)",
+                        "default": "4",
+                        "option": {
+                            "1": "7",
+                            "2": "6",
+                            "3": "5",
+                            "4": "4",
+                            "5": "3",
+                            "6": "2",
+                            "7": "1"
+                        },
+                        "type": "Enum"
+                    },
+                    "TempUnit": {
+                        "default": "1",
+                        "option": [
+                            "\uff26",
+                            "\u2103"
+                        ],
+                        "type": "Enum"
+                    },
+                    "WaterFilterUsedMonth": {
+                        "default": 255,
+                        "option": {
+                            "max": 6,
+                            "min": 0,
+                            "step": 1
+                        },
+                        "type": "Range"
+                    }
+                }
+            }
+        },
+        "session": "756BFF00405FD94E0C2897C706976B70.nodes_sadap_10"
+    },
+    "file": "wideq_state.json"
+}

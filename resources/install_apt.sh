@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BASEDIR=$(dirname "$BASH_SOURCE")
-LOG_FILE=`cd "${BASEDIR}/../../../log"; pwd`"/lgthinq_install"
+LOG_FILE=$(cd "${BASEDIR}/../../../log"; pwd)"/lgthinq_install"
 PROGRESS_FILE=/tmp/dependancy_networks_in_progress
 if [ ! -z $1 ]; then
 	PROGRESS_FILE=$1
@@ -18,7 +18,7 @@ log "Start install dependancies"
 
 # check python version should be >=3.6
 echo 0 > ${PROGRESS_FILE}
-export PYTHON_VERSION=`python3 -c 'import sys; version=sys.version_info[:3]; print("{0}{1}".format(*version))'`
+export PYTHON_VERSION=$(python3 -c 'import sys; version=sys.version_info[:3]; print("{0}{1}".format(*version))')
 if [[ "$PYTHON_VERSION" -ge "36" ]]
 then
     log "Valid Python version $PYTHON_VERSION"
@@ -37,7 +37,7 @@ else
 
 		echo 10 > ${PROGRESS_FILE}
 		log "update package list"
-		apt-get update > ${LOG_FILE}
+		apt-get update >> ${LOG_FILE}
 
 		echo 20 > ${PROGRESS_FILE}
 		log "install required dependancies"
@@ -63,7 +63,7 @@ else
 
 		# trèèèès long le make
 		echo 60 > ${PROGRESS_FILE}
-		export NUMCPUS=`grep -c '^processor' /proc/cpuinfo`
+		export NUMCPUS=$(grep -c '^processor' /proc/cpuinfo)
 		log "make Python-3.7 with $NUMCPUS threads"
 		make -j$NUMCPUS > /dev/null
 

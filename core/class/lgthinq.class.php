@@ -40,7 +40,7 @@ class lgthinq extends eqLogic {
 
 	private static $_lgApi = null;
 
-	private const RESOURCES_PATH = '/../../resources/devices/';
+	const RESOURCES_PATH = '/../../resources/devices/';
 
     /*     * ***********************Methode static*************************** */
 

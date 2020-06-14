@@ -44,16 +44,23 @@ try {
 		$lang = init('lang');
 		$country = init('country');
 
-		$lgApi = lgthinq::getApi();
-		$url = $lgApi->gateway( $country, $lang);
+    if(empty($lang)){
+			ajax::error('Erreur, vous devez renseigner la langue (ex: FR)', 401);
+    }else if(empty($country)){
+      ajax::error('Erreur, vous devez renseigner le pays (ex: fr_FR)', 401);
+    }else{
 
-		LgLog::debug("call gateway $lang $country with result (" . json_encode($url) . ')');
-		if(!isset($url['url'])){
-			LgLog::error("call LgThinq gateway $lang $country fails!");
-			ajax::error('getGateway error: ' + $url['message'], 401);
-		}else{
-			ajax::success($url);
-		}
+  		$lgApi = lgthinq::getApi();
+  		$url = $lgApi->gateway( $country, $lang);
+
+  		LgLog::debug("call gateway $lang $country with result (" . json_encode($url) . ')');
+  		if(!isset($url['url'])){
+  			LgLog::error("call LgThinq gateway $lang $country fails!");
+  			ajax::error('getGateway error: ' + $url['message'], 401);
+  		}else{
+  			ajax::success($url);
+  		}
+    }
 	}
 
 	if(init('action') == 'refreshToken'){

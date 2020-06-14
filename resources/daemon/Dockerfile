@@ -1,8 +1,9 @@
-FROM arm32v7/python:3
+# derniere version de python (min 3.6 pour la lib wideq)
+FROM python:3
 
-# docker run -it --rm --name my-running-script
-#   -v "$PWD":/usr/src/myapp -w /usr/src/myapp
-#   arm32v7/python:3 python your-daemon-or-script.py
+# commande pour build + run:
+# docker build -t wideq_image .
+# docker run -it --rm --name wideqServerContainer wideq_image
 
 WORKDIR /usr/src/app
 
@@ -10,11 +11,11 @@ WORKDIR /usr/src/app
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-# copy everything there
-COPY . .
+# copy everything there:
+COPY wideqServer.py .
 
-# flask default port
-EXPOSE 5000
+# default port for jeedom
+EXPOSE 5025
 
 # launch the user script
 CMD [ "python", "./wideqServer.py" ]

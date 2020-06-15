@@ -143,14 +143,14 @@ class WideqAPI {
 	 * ping the server
 	 */
 	public function ping(){
-		return self::callRestApi("ping");
+		return $this->callRestApi("ping");
 	}
 
 	/**
 	 * get the LG gateway url
 	 */
 	public function gateway($country, $language){
-		return self::callRestApi("gateway/$country/$language");
+		return $this->callRestApi("gateway/$country/$language");
 	}
 
 	/**
@@ -158,7 +158,7 @@ class WideqAPI {
 	 */
 	public function token($url){
 		$url = urlencode($url);
-		$result = self::callRestApi("token/$url");
+		$result = $this->callRestApi("token/$url");
 		if(isset($result[self::TOKEN_KEY])) {
 			$this->headers = [
 				self::TOKEN_KEY . ': ' . $result[self::TOKEN_KEY]
@@ -174,7 +174,7 @@ class WideqAPI {
 	 * list of every registered devices, keys by id.
 	 */
 	public function ls(){
-		$arr = self::callRestApi('ls');
+		$arr = $this->callRestApi('ls');
 		$return = [];
 		foreach($arr as $key => $obj){
 			if(isset($obj['id']))
@@ -189,7 +189,7 @@ class WideqAPI {
 	 * monitor one device by id
 	 */
 	public function mon($device){
-		return self::callRestApi("mon/$device");
+		return $this->callRestApi("mon/$device");
 	}
 
 	/**
@@ -197,7 +197,7 @@ class WideqAPI {
 	 * raise LgApiException in case of error
 	 */
 	public function changeLog($log){
-		$result = self::callRestApi("log/$log");
+		$this->callRestApi("log/$log");
 		return true;
 	}
 
@@ -206,13 +206,15 @@ class WideqAPI {
 	 */
 	public function save($file = null){
 		if($file == null)
-			return self::callRestApi("save");
+			return $this->callRestApi("save");
 		else
-			return self::callRestApi("save/$file");
+			return $this->callRestApi("save/$file");
 	}
 
 	/**
 	 * function to test 404 error
 	 */
-	public function fail(){return self::callRestApi("fail");}
+	public function fail(){
+		return $this->callRestApi("fail");
+	}
 }

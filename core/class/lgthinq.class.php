@@ -425,15 +425,15 @@ class lgthinqCmd extends cmd {
 
     public function execute($_options = array()) {
 
-		$eqlogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
+		$eqLogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
 
 		switch ($this->getLogicalId()) {	//vérifie le logicalid de la commande
 			case 'refresh': // LogicalId de la commande rafraîchir que l’on a créé dans la méthode Postsave de la classe vdm .
 
 				// interroger l'API cloud LG pour rafraichir l'information:
-				$info = lgthinq::getApi()->mon($eqlogic->getLogicalId());
+				$info = lgthinq::getApi()->mon($eqLogic->getLogicalId());
 				// maj la commande ...
-				$eqlogic->checkAndUpdateCmd('story', $info); // on met à jour la commande avec le LogicalId "story"  de l'eqlogic
+				$eqLogic->checkAndUpdateCmd('story', $info); // on met à jour la commande avec le LogicalId "story"  de l'eqlogic
 
 				LgLog::debug('cmd refresh ' . $eqLogic . ' --- ' . json_encode($info));
 				break;

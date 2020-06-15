@@ -111,7 +111,7 @@ class WideqManager {
 	public static function daemon_start($daemon_info = []) {
 
     $_debug = isset($daemon_info['debug']) && $daemon_info['debug'] ? true : false;
-    $pid == isset($daemon_info['pid']) ? $daemon_info['pid'] : false;
+    $pid = isset($daemon_info['pid']) ? $daemon_info['pid'] : false;
 		self::daemon_stop($pid);
 		LgLog::debug("start server wideq: $_debug ___ " . json_encode( $daemon_info));
 		if ($daemon_info['launchable'] != 'ok') {

@@ -78,7 +78,7 @@ try{
 				 
 				 if(is_array($save) && isset($save['config']['model_info'])){
 					 $count = is_array($save['config']['model_info']) ? count($save['config']['model_info']) : 'N/A';
-					 $msg .= "\n\t(infos $count)\n" . json_encode($save['config']['model_info'], JSON_PRETTY_PRINT);;
+					 $msg .= "\n\t(infos $count)\n" . json_encode($save['config']['model_info'], JSON_PRETTY_PRINT);
 				 }else{
 					 $msg .= json_encode($save, JSON_PRETTY_PRINT);
 				 }
@@ -140,7 +140,7 @@ $( function(){
 				handleAjaxError(request, status, error, $('#divAjaxAlert'));
 			},
 			success: function (data, textStatus) {
-				if(data['state']=='ok'){
+				if(data['state']==='ok'){
 					console.log(data['result']);
 				}else{
 					$('#divAjaxAlert').showAlert({message: data['state'] + ' : ' + data['result'], level: 'danger'});;
@@ -155,7 +155,7 @@ $( function(){
 
 <?php
 
-}catch(\Throwable | \Exception $e){
+}catch( \Exception $e){
 	LgLog::error(displayException($e));
 	$msg .= displayException($e);
 	echo $msg;

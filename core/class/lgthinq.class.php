@@ -190,7 +190,7 @@ class lgthinq extends eqLogic {
     public static function dependancy_install() {
         log::remove(__CLASS__ . '_update');
         return [
-            'script' => dirname(__FILE__) . '/../../resources/install_#stype#.sh ' . jeedom::getTmpFolder(__CLASS__) . '/dependency',
+            'script' => WideqManager::getResourcesDir() . 'install_#stype#.sh ' . jeedom::getTmpFolder(__CLASS__) . '/dependency',
             'log' => log::getPathToLog(__CLASS__ . '_update')];
     }
 
@@ -203,7 +203,6 @@ class lgthinq extends eqLogic {
         } else {
             // run into docker container ?
             // if(exec(system::getCmdSudo() . 'cat /proc/1/cgroup | grep -c "/docker/"') > 0)
-
 
             $return['state'] = 'ok';
             $pythonVersion = WideqManager::getPython();

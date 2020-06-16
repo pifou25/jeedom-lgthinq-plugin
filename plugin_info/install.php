@@ -22,13 +22,16 @@ require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 include_file('core', 'LgLog', 'class', 'lgthinq');
 
 function lgthinq_install() {
-  LgLog::info('install lgThinq plugin');
+    LgLog::info('install lgThinq plugin');
 }
 
 function lgthinq_update() {
-	LgLog::info('update lgThinq plugin');
+        $file = WideqManager::getWideqDir() . WideqManager::WIDEQ_LAUNCHER
+                . ' ' . WideqManager::getWideqDir() . 'check.sh ';
+    exec(system::getCmdSudo() . " chmod +x $file");
+    LgLog::info('update lgThinq plugin - set +x flag ok');
 }
 
 function lgthinq_remove() {
-	LgLog::info('remove lgThinq plugin');
+    LgLog::info('remove lgThinq plugin');
 }

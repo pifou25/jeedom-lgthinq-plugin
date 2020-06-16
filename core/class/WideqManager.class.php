@@ -119,8 +119,7 @@ class WideqManager {
         }
 
         $file = self::getWideqDir() . self::WIDEQ_LAUNCHER;
-        // ad +x flag and run the server:
-        shell_exec(system::getCmdSudo() . " chmod +x $file");
+        // (add +x at install.php) flag and run the server:
         $cmd = system::getCmdSudo() . " $file --port {$daemon_info['port']}";
         if (isset($daemon_info['debug']) && $daemon_info['debug']) {
             $cmd .= ' -v ';

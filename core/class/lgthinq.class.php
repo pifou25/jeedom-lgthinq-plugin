@@ -37,7 +37,11 @@ class lgthinq extends eqLogic {
     // private static $_keysConfig = [];
 
     private static $_lgApi = null;
+    
+    private static $_debug = null;
 
+    private static $_destruct = false;
+    
     const RESOURCES_PATH = '/../../resources/devices/';
 
     /*     * ***********************Methode static*************************** */
@@ -55,8 +59,7 @@ class lgthinq extends eqLogic {
             }
             $port = config::byKey('PortServerLg', 'lgthinq', 5025);
             $url = config::byKey('UrlServerLg', 'lgthinq', 'http://127.0.0.1');
-            $debug = ( log::convertLogLevel(log::getLogLevel('lgthinq')) == 'debug' );
-            $arr = ['port' => $port, 'url' => $url, 'debug' => $debug, 'headers' => $headers];
+            $arr = ['port' => $port, 'url' => $url, 'debug' => self::isDebug(), 'headers' => $headers];
             self::$_lgApi = new WideqAPI($arr);
         }
         return self::$_lgApi;
@@ -121,6 +124,25 @@ class lgthinq extends eqLogic {
 
             // nécessaire de recharger le $eqLogic ??
             //$eqLogic = lgthinq::byId($eqLogic->getId());
+            
+            if($eqLogic->getConfFilePath() === false){
+                require_once 'LgParameters.class.php';
+                // recuperer conf LG
+                $param = new LgParameters(self::getApi()->save());
+                $eqLogicConf = [];
+                foreach ($param->getDevices() as $device) {
+                    $eqLogicConf[] = $param->getConfig($device);
+                }
+                // générer le fichier de conf par défaut
+                $file = $this->getConfiguration('product_type') . '.' . $this->getConfiguration('product_model') . '.json';
+                file_put_contents($file, $eqLogicConf);
+                LgLog::info("Création du fichier de conf $file");
+                if(self::$_debug){
+                    $log = $param->getLog();
+                    LgLog::debug("LgParam config:\n $log");
+                }
+                
+            }
             // générer les commandes
             $eqLogic->createCommand();
 
@@ -245,7 +267,7 @@ class lgthinq extends eqLogic {
      */
     public static function deamon_start($_debug = false) {
         $daemon_info = self::deamon_info();
-        $daemon_info['debug'] = $_debug || ( log::convertLogLevel(log::getLogLevel('lgthinq')) == 'debug' );
+        $daemon_info['debug'] = $_debug || self::isDebug();
         $result = WideqManager::daemon_start($daemon_info);
 
         if ($result !== false) {
@@ -263,37 +285,52 @@ class lgthinq extends eqLogic {
         return WideqManager::daemon_stop();
     }
 
+    private static function addEvent($message, $level = 'warning'){
+        event::add('jeedom::alert', [
+            'level' => $level,
+            'page' => 'lgthinq',
+            'message' => $message
+        ]);
+    }
+    
+    private static function isDebug(){
+        if(self::$_debug == null){
+            self::$_debug = ( log::convertLogLevel(log::getLogLevel('lgthinq')) == 'debug' );
+        }
+        return self::$_debug;
+    }
     /*     * *********************Méthodes d'instance************************* */
 
+    public function __destruct(){
+        if(!self::$_destruct){
+            self::$_destruct = true;
+            if(self::$_debug){
+                LgLog::debug(json_encode(self::getApi()::getRequests()));
+            }
+        }
+    }
     /**
      * Création des commandes de l'objet avec un fichier de configuration au format json
      */
     private function createCommand($_update = false) {
 
         if (false === $this->getConfFilePath()) {
-            event::add('jeedom::alert', [
-                'level' => 'warning',
-                'page' => 'lgthinq',
-                'message' => __('Fichier de configuration absent ', __FILE__) . $this->getConfFilePath(),
-            ]);
-            return;
+            self::addEvent( __('Fichier de configuration absent ', __FILE__) . $this->getConfFilePath());
+            return false;
         }
         $device = is_json(file_get_contents(dirname(__FILE__) . self::RESOURCES_PATH . $this->getConfFilePath()), []);
         if (!is_array($device) || !isset($device['commands'])) {
             LgLog::debug('Config file empty or not a json format');
-            return true;
+            return false;
         }
         if (isset($device['name']) && !$_update) {
             $this->setName('[' . $this->getLogicalId() . ']' . $device['name']);
         }
         $this->import($device);
         sleep(1);
-        event::add('jeedom::alert', [
-            'level' => 'warning',
-            'page' => 'lgthinq',
-            'message' => '',
-        ]);
+        self::addEvent( '');
         LgLog::debug('Successfully created commands from config file:' . count($device));
+        return true;
     }
 
     /**
@@ -308,16 +345,18 @@ class lgthinq extends eqLogic {
         }
         $id = $this->getConfiguration('product_type') . '.' . $this->getConfiguration('product_model') . '.json';
         if (is_file(dirname(__FILE__) . self::RESOURCES_PATH . $id)) {
+            $this->setConfiguration('fileconf', $id);
             LgLog::debug('get confFilePath with specific model ' . $id);
             return $id;
         }
         $id = $this->getConfiguration('product_type') . '.json';
         if (is_file(dirname(__FILE__) . self::RESOURCES_PATH . $id)) {
+            $this->setConfiguration('fileconf', $id);
             LgLog::debug('get generic confFilePath for product type ' . $id);
             return $id;
         }
 
-        LgLog::warning('No json config file for device ' . $this->getConfiguration('product_type') . ' nor ' . $this->getConfiguration('product_model'));
+        LgLog::info('No json config file for device ' . $this->getConfiguration('product_type') . ' nor ' . $this->getConfiguration('product_model'));
         return false;
     }
 
@@ -376,6 +415,7 @@ class lgthinq extends eqLogic {
         if ($_newValue != $_oldValue) {
             // maj jeedom token
             $json = self::initToken($_newValue);
+            LgLog::debug('initToken=' . $json);
         } else {
             LgLog::debug('LgAuthUrl non modifié=' . $_newValue);
         }
@@ -389,7 +429,7 @@ class lgthinq extends eqLogic {
         return $_newValue;
     }
 
-    /*     * **********************Getteur Setteur*************************** */
+    /*     * ********************** Getter Setter *************************** */
 
     public function getProductType() {
         return $this->getConfiguration('product_type');

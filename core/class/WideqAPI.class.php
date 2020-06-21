@@ -40,10 +40,14 @@ class WideqAPI {
     /*
      * keep every requests for logging
      */
-    public static $requests = [];
+    private static $requests = [];
 
     /*     * *********************** Static Methods *************************** */
 
+    public static function getRequests(){
+        return self::$requests;
+    }
+    
     /*     * *********************Instance Methods ************************* */
 
     /**
@@ -119,8 +123,10 @@ class WideqAPI {
         // file_put_contents($filename.'.txt', $result);
         // for TEST only
         // show result for debug
-        $time = (microtime(true) - $time) * 1000;
-        $arr = ['cmd' => $cmd, 'time' => $time, 'result' => $return, 'headers' => $this->headers];
+        $arr = ['cmd' => $cmd,
+            'time' => ((microtime(true) - $time) * 1000),
+            'result' => $return,
+            'headers' => $this->headers];
         if ($this->debug)
             $arr['info'] = $information;
         self::$requests[] = $arr;
@@ -209,10 +215,17 @@ class WideqAPI {
      * save every tokens and config as json file
      */
     public function save($file = null) {
-        if ($file == null)
-            return $this->callRestApi("save");
-        else
-            return $this->callRestApi("save/$file");
+        // simply keep $save result in cache
+        static $save = null;
+        static $file0 = null;
+        if ($save == null || $file !== $file0) {
+            $file0 = $file;
+            if ($file == null)
+                $save = $this->callRestApi("save");
+            else
+                $save = $this->callRestApi("save/$file");
+        }
+        return $save;
     }
 
     /**

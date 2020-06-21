@@ -24,6 +24,7 @@ try {
     // include /plugins/lgthinq/core/WideqAPI.class.php
     include_file('core', 'lgthinq', 'class', 'lgthinq');
 
+    // lister les objets connectes et synchroniser
     $lgApi = lgthinq::getApi();
     $msg = '';
     try {
@@ -38,10 +39,11 @@ try {
         $msg .= 'No object found... auth required.';
     } else {
 
+        // objets deja créés dans jeedom
         $jeedomObjects = lgthinq::byType('lgthinq');
         $msg .= sprintf('Synchroniser les objets LG (%s LG) (%s jeedom)', count($lgObjects), count($jeedomObjects));
         foreach ($jeedomObjects as $eqLogic) {
-            // remove existing objects
+            // valoriser les objets deja present
             if (isset($lgObjects[$eqLogic->getLogicalId()])) {
                 $lgObjects[$eqLogic->getLogicalId()]['eqLogic'] = $eqLogic;
             } else {
@@ -50,7 +52,7 @@ try {
             }
         }
 
-        // create every new objects
+        // creer les nouveaux objets decouverts
         $nbCreated = 0;
         $created = [];
         foreach ($lgObjects as &$lgObj) {

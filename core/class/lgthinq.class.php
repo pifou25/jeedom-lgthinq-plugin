@@ -38,7 +38,7 @@ class lgthinq extends eqLogic {
 
     private static $_lgApi = null;
     
-    private static $_debug = null;
+    private static $__debug = null;
 
     private static $_destruct = false;
     
@@ -134,10 +134,10 @@ class lgthinq extends eqLogic {
                     $eqLogicConf[] = $param->getConfig($device);
                 }
                 // générer le fichier de conf par défaut
-                $file = $this->getConfiguration('product_type') . '.' . $this->getConfiguration('product_model') . '.json';
+                $file = $eqLogic->getConfiguration('product_type') . '.' . $eqLogic->getConfiguration('product_model') . '.json';
                 file_put_contents($file, $eqLogicConf);
                 LgLog::info("Création du fichier de conf $file");
-                if(self::$_debug){
+                if(self::getDebug()){
                     $log = $param->getLog();
                     LgLog::debug("LgParam config:\n $log");
                 }
@@ -294,18 +294,19 @@ class lgthinq extends eqLogic {
     }
     
     private static function isDebug(){
-        if(self::$_debug == null){
-            self::$_debug = ( log::convertLogLevel(log::getLogLevel('lgthinq')) == 'debug' );
+        if(self::$__debug == null){
+            self::$__debug = ( log::convertLogLevel(log::getLogLevel('lgthinq')) == 'debug' );
         }
-        return self::$_debug;
+        return self::$__debug;
     }
     /*     * *********************Méthodes d'instance************************* */
 
     public function __destruct(){
         if(!self::$_destruct){
             self::$_destruct = true;
-            if(self::$_debug){
-                LgLog::debug(json_encode(self::getApi()::getRequests()));
+            if(self::$__debug === true){
+                $lgApi = self::getApi();
+                LgLog::debug(json_encode($lgApi::getRequests()));
             }
         }
     }

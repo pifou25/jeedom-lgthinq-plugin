@@ -126,7 +126,6 @@ class WideqManager {
         }
         $cmd .= ' >> ' . log::getPathToLog('lgthinq_srv') . ' 2>&1 & echo $!; ';
         $pid = exec($cmd);
-        $output = json_encode($output);
         LgLog::info("Lancement démon LgThinq : $cmd => pid= {$pid}");
 
         sleep(5);

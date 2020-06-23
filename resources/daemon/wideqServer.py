@@ -5,6 +5,7 @@ import re
 import uuid
 import os.path
 import logging
+import requests
 from flask import Flask, json, jsonify, request
 from flask.logging import create_logger
 

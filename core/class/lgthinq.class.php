@@ -138,7 +138,7 @@ class lgthinq extends eqLogic {
             // générer le fichier de conf par défaut
             $file = dirname(__FILE__) . self::RESOURCES_PATH . $eqLogic->getConfiguration('product_type')
                     . '.' . $eqLogic->getConfiguration('product_model') . '.json';
-            file_put_contents($file, $eqLogicConf);
+            file_put_contents($file, json_encode( $eqLogicConf, JSON_PRETTY_PRINT));
             LgLog::info("Création du fichier de conf $file");
             if(self::isDebug()){
                 $log = $param->getLog();

@@ -108,48 +108,48 @@ class lgthinq extends eqLogic {
                 $valid = false;
             }
         }
-        if ($valid) {
-
-            $eqLogic = new lgthinq();
-            $eqLogic->setEqType_name('lgthinq');
-            $eqLogic->setIsEnable(1);
-            $eqLogic->setLogicalId($_config['id']);
-            $eqLogic->setName($_config['name']);
-            $eqLogic->setProductModel($_config['model']);
-            $eqLogic->setProductType($_config['type']);
-            $eqLogic->setIsVisible(1);
-            $eqLogic->save();
-            LgLog::debug('Create LG Object ' . $eqLogic->getLogicalId() . ' - ' .
-                    $eqLogic->getName() . ' - ' . $eqLogic->getProductModel() . ' - ' . $eqLogic->getProductType());
-
-            // nécessaire de recharger le $eqLogic ??
-            //$eqLogic = lgthinq::byId($eqLogic->getId());
-            
-            if($eqLogic->getConfFilePath() === false){
-                require_once 'LgParameters.class.php';
-                // recuperer conf LG
-                $param = new LgParameters(self::getApi()->save());
-                $eqLogicConf = [];
-                foreach ($param->getDevices() as $device) {
-                    $eqLogicConf[] = $param->getConfig($device);
-                }
-                // générer le fichier de conf par défaut
-                $file = $eqLogic->getConfiguration('product_type') . '.' . $eqLogic->getConfiguration('product_model') . '.json';
-                file_put_contents($file, $eqLogicConf);
-                LgLog::info("Création du fichier de conf $file");
-                if(self::getDebug()){
-                    $log = $param->getLog();
-                    LgLog::debug("LgParam config:\n $log");
-                }
-                
-            }
-            // générer les commandes
-            $eqLogic->createCommand();
-
-            return $eqLogic;
-        } else {
+        if (!$valid) {
             return null;
         }
+
+        $eqLogic = new lgthinq();
+        $eqLogic->setEqType_name('lgthinq');
+        $eqLogic->setIsEnable(1);
+        $eqLogic->setLogicalId($_config['id']);
+        $eqLogic->setName($_config['name']);
+        $eqLogic->setProductModel($_config['model']);
+        $eqLogic->setProductType($_config['type']);
+        $eqLogic->setIsVisible(1);
+        $eqLogic->save();
+        LgLog::debug('Create LG Object ' . $eqLogic->getLogicalId() . ' - ' .
+                $eqLogic->getName() . ' - ' . $eqLogic->getProductModel() . ' - ' . $eqLogic->getProductType());
+
+        // nécessaire de recharger le $eqLogic ??
+        //$eqLogic = lgthinq::byId($eqLogic->getId());
+
+        if($eqLogic->getConfFilePath() === false){
+            require_once 'LgParameters.class.php';
+            // recuperer conf LG
+            $param = new LgParameters(self::getApi()->save());
+            $eqLogicConf = [];
+            foreach ($param->getDevices() as $device) {
+                $eqLogicConf[] = $param->getConfig($device);
+            }
+            // générer le fichier de conf par défaut
+            $file = dirname(__FILE__) . self::RESOURCES_PATH . $eqLogic->getConfiguration('product_type')
+                    . '.' . $eqLogic->getConfiguration('product_model') . '.json';
+            file_put_contents($file, $eqLogicConf);
+            LgLog::info("Création du fichier de conf $file");
+            if(self::isDebug()){
+                $log = $param->getLog();
+                LgLog::debug("LgParam config:\n $log");
+            }
+
+        }
+        // générer les commandes
+        $eqLogic->createCommand();
+
+        return $eqLogic;
     }
 
     /**

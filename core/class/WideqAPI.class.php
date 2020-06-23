@@ -44,10 +44,10 @@ class WideqAPI {
 
     /*     * *********************** Static Methods *************************** */
 
-    public static function getRequests(){
+    public static function getRequests() {
         return self::$requests;
     }
-    
+
     /*     * *********************Instance Methods ************************* */
 
     /**
@@ -186,11 +186,13 @@ class WideqAPI {
     public function ls() {
         $arr = $this->callRestApi('ls');
         $return = [];
-        foreach ($arr as $key => $obj) {
-            if (isset($obj['id']))
-                $return[$obj['id']] = $obj;
-            else
-                $return[] = $obj; // missing id ?
+        if (is_array($arr)) {
+            foreach ($arr as $key => $obj) {
+                if (isset($obj['id']))
+                    $return[$obj['id']] = $obj;
+                else
+                    $return[] = $obj; // missing id ?
+            }
         }
         return $return;
     }

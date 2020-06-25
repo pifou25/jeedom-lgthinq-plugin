@@ -131,10 +131,11 @@ class lgthinq extends eqLogic {
             require_once 'LgParameters.class.php';
             // recuperer conf LG
             $param = new LgParameters(self::getApi()->save());
-            $eqLogicConf = [];
-            foreach ($param->getDevices() as $device) {
-                $eqLogicConf[] = $param->getConfig($device);
+            if(!isset($param->getDevices()[$eqLogic->getProductModel()])){
+                LgLog::warning("No device model {$eqLogic->getProductModel()}");
+                return null;
             }
+            $eqLogicConf = $param->getDevices()[$eqLogic->getProductModel()];
             // générer le fichier de conf par défaut
             $file = dirname(__FILE__) . self::RESOURCES_PATH . $eqLogic->getConfiguration('product_type')
                     . '.' . $eqLogic->getConfiguration('product_model') . '.json';

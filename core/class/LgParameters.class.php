@@ -98,10 +98,12 @@ class LgParameters {
             $cmt = $this->getComment($protocol, $name);
             $type = $cmd['type'];
 
-            echo "$name: $cmt ($type)\n";
+            $this->log .= "$name: $cmt ($type)\n";
             $cmd = ['name' => $name,
                 'type' => 'info',
                 'subType' => 'string',
+                'remark' => $cmt,
+                'remoteType' => $type, // binary ou enum
                 'isVisible' => 1
             ];
             $commands[] = $cmd;

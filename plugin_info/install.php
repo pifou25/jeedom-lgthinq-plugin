@@ -21,17 +21,31 @@ require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 // include /plugins/lgthinq/core/LgLog.class.php
 include_file('core', 'LgLog', 'class', 'lgthinq');
 
-function lgthinq_install() {
-        $file = WideqManager::getWideqDir() . WideqManager::WIDEQ_LAUNCHER
-                . ' ' . WideqManager::getWideqDir() . 'check.sh ';
+function initLgthinqParameters() {
+
+    // initialiser le plugin avec ces valeurs
+    $defaultParams = ['PortServerLg' => '5025',
+        'UrlServerLg' => 'http://127.0.0.1',
+        'LgLanguage' => 'FR',
+        'LgCountry' => 'fr_FR'];
+
+    foreach ($defaultParams as $key => $value) {
+        if (config::byKey($key, 'lgthinq', '') == '') {
+            config::save($key, $value, 'lgthinq');
+        }
+    }
+    $file = WideqManager::getWideqDir() . WideqManager::WIDEQ_LAUNCHER
+            . ' ' . WideqManager::getWideqDir() . 'check.sh ';
     exec(system::getCmdSudo() . " chmod +x $file");
+}
+
+function lgthinq_install() {
+    initLgthinqParameters();
     LgLog::info('install lgThinq plugin - set +x flag ok');
 }
 
 function lgthinq_update() {
-        $file = WideqManager::getWideqDir() . WideqManager::WIDEQ_LAUNCHER
-                . ' ' . WideqManager::getWideqDir() . 'check.sh ';
-    exec(system::getCmdSudo() . " chmod +x $file");
+    initLgthinqParameters();
     LgLog::info('update lgThinq plugin - set +x flag ok');
 }
 

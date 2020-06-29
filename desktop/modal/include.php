@@ -24,6 +24,9 @@ try {
     // include /plugins/lgthinq/core/WideqAPI.class.php
     include_file('core', 'lgthinq', 'class', 'lgthinq');
 
+    // include /plugins/lgthinq/core/LgParameters.class.php
+    include_file('core', 'LgParameters', 'class', 'lgthinq');
+
     // lister les objets connectes et synchroniser
     $lgApi = lgthinq::getApi();
     $msg = '';
@@ -52,7 +55,6 @@ try {
             }
         }
         
-        require_once 'LgParameters.class.php';
         $param = new LgParameters(lgthinq::getApi()->save());
         $devices = array_keys(LgParameters::getDevices());
         if(lgthinq::isDebug()){

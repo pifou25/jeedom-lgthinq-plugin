@@ -33,7 +33,7 @@ try {
     try {
         $lgObjects = $lgApi->ls();
     } catch (LgApiException $e) {
-        $msg = $e->getMessage();
+        $msg .= $e->getMessage();
         lgthinq::initToken();
         $lgObjects = $lgApi->ls();
     }
@@ -46,8 +46,10 @@ try {
         $jeedomObjects = lgthinq::byType('lgthinq');
         $msg .= sprintf('Synchroniser les objets LG (%s LG) et Jeedom (%s jeedom)', count($lgObjects), count($jeedomObjects));
         foreach ($jeedomObjects as $eqLogic) {
+            $eqId = $eqLogic->getLogicalId();
+            $msg .= "\n'$eqId' ... ";
             // valoriser les objets deja present
-            if (isset($lgObjects[$eqLogic->getLogicalId()])) {
+            if (isset($lgObjects[$eqId])) {
                 $lgObjects[$eqLogic->getLogicalId()]['eqLogic'] = $eqLogic;
             } else {
                 LgLog::info('Objet Jeedom fantôme: ' . $eqLogic->getName() . '-' .

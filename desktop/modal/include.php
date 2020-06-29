@@ -41,7 +41,7 @@ try {
 
         // objets deja créés dans jeedom
         $jeedomObjects = lgthinq::byType('lgthinq');
-        $msg .= sprintf('Synchroniser les objets LG (%s LG) (%s jeedom)', count($lgObjects), count($jeedomObjects));
+        $msg .= sprintf('Synchroniser les objets LG (%s LG) et Jeedom (%s jeedom)', count($lgObjects), count($jeedomObjects));
         foreach ($jeedomObjects as $eqLogic) {
             // valoriser les objets deja present
             if (isset($lgObjects[$eqLogic->getLogicalId()])) {
@@ -51,40 +51,47 @@ try {
                         $eqLogic->getProductModel() . '-' . $eqLogic->getProductType() . '-' . $eqLogic->getLogicalId());
             }
         }
+        
+        require_once 'LgParameters.class.php';
+        $param = new LgParameters(lgthinq::getApi()->save());
+        $devices = array_keys(LgParameters::getDevices());
+        if(lgthinq::isDebug()){
+            $msg .= json_encode($devices, JSON_PRETTY_PRINT);
+        }
 
         // creer les nouveaux objets decouverts
-        $nbCreated = 0;
-        $created = [];
-        foreach ($lgObjects as &$lgObj) {
-            if (!isset($lgObj['eqLogic'])) {
-                LgLog::debug('create object with ' . json_encode($lgObj));
-                // create any missing object
-                $eqLogic = lgthinq::CreateEqLogic($lgObj);
-                if ($eqLogic !== null) {
-                    $nbCreated++;
-                    $lgObj['eqLogic'] = $eqLogic;
-                    $lgObj['created'] = true;
-                    $created[] = $lgObj['id'];
-                }
-            }
-        }
-
-        $msg .= ", ($nbCreated objets créés)\n";
-
-        if (!empty($created)) {
-            foreach ($created as $id) {
-                $json = $lgApi->mon($id);
-                $msg .= json_encode($json, JSON_PRETTY_PRINT);
-                $save = $lgApi->save();
-
-                if (is_array($save) && isset($save['config']['model_info'])) {
-                    $count = is_array($save['config']['model_info']) ? count($save['config']['model_info']) : 'N/A';
-                    $msg .= "\n\t(infos $count)\n" . json_encode($save['config']['model_info'], JSON_PRETTY_PRINT);
-                } else {
-                    $msg .= json_encode($save, JSON_PRETTY_PRINT);
-                }
-            }
-        }
+//        $nbCreated = 0;
+//        $created = [];
+//        foreach ($lgObjects as &$lgObj) {
+//            if (!isset($lgObj['eqLogic'])) {
+//                LgLog::debug('create object with ' . json_encode($lgObj));
+//                // create any missing object
+//                $eqLogic = lgthinq::CreateEqLogic($lgObj);
+//                if ($eqLogic !== null) {
+//                    $nbCreated++;
+//                    $lgObj['eqLogic'] = $eqLogic;
+//                    $lgObj['created'] = true;
+//                    $created[] = $lgObj['id'];
+//                }
+//            }
+//        }
+//
+//        $msg .= ", ($nbCreated objets créés)\n";
+//
+//        if (!empty($created)) {
+//            foreach ($created as $id) {
+//                $json = $lgApi->mon($id);
+//                $msg .= json_encode($json, JSON_PRETTY_PRINT);
+//                $save = $lgApi->save();
+//
+//                if (is_array($save) && isset($save['config']['model_info'])) {
+//                    $count = is_array($save['config']['model_info']) ? count($save['config']['model_info']) : 'N/A';
+//                    $msg .= "\n\t(infos $count)\n" . json_encode($save['config']['model_info'], JSON_PRETTY_PRINT);
+//                } else {
+//                    $msg .= json_encode($save, JSON_PRETTY_PRINT);
+//                }
+//            }
+//        }
 
         // $msg .= json_encode($lgObjects, JSON_PRETTY_PRINT);
         // $msg .= "\n".json_encode(WideqAPI::$requests, JSON_PRETTY_PRINT);
@@ -93,23 +100,39 @@ try {
 
     <h4>{{Synchroniser}}</h4>
 
-    <form class="form-horizontal">
+    <form class="form-horizontal" id="LgSynchronize">
         <fieldset>
             <legend>{{Liste des objets détectés}}</legend>
             <div class="form-group">
     <?php
     foreach ($lgObjects as $obj) {
-
-        $checked = (isset($obj['created']) && $obj['created']) ? ' checked="checked"' : '';
+        $checked = (isset($obj['eqLogic'])) ? '' :' checked="checked"';
         ?>
-            <div class="col-lg-4">
-            <?php echo <<<EOT
+            <div class="col-lg-3">
+            <?php 
+            // LG device checked if not defined on jeedom
+            echo <<<EOT
                 <input type="checkbox" name="selected[]" id="{$obj['id']}" value="{$obj['id']}" $checked />
                 <label for="{$obj['id']}"> {$obj['name']} ( {$obj['model']} ) </for>
 EOT;
+                // if not defined: list of all available LG config
+                if(!empty($checked)){
+            ?>
+            </div>
+            <div class="col-lg-3">
+            <?php 
+                sprintf("<select id=\"lg%s\" name=\"lg%s\">", $obj['id'], $obj['id']);
+                foreach($devices as $device){
+                    sprintf("\t\t<option value=\"%s\">%s</option>\n", $device, $device);
+                }
+                echo '</select>';
+                }
             ?>
             </div>
             <?php } ?>
+            </div>
+            <div class="col-lg-2">
+                <a class="btn btn-success btn-xs" id="bt_synchro" target="_blank"><i class="far fa-check-circle icon-white"></i> {{Enregistrer}}</a>
             </div>
 
         </fieldset>
@@ -124,3 +147,29 @@ EOT;
     $msg .= displayException($e);
     echo $msg;
 }
+?>
+
+<script>
+$( function(){
+    $('#bt_synchro').on('click',function(){
+        $.post({
+            url: 'plugins/lgthinq/core/ajax/lgthinq.ajax.php?action=synchro',
+            data: $('#LgSynchronize').serialize(),
+            dataType: 'json',
+            global: false,
+            error: function (request, status, error) {
+                bootbox.alert('error: ' + request.responseText + ' - ' + error + '(' + status +')');
+            },
+            success: function (data, textStatus) {
+                if(data['state'] === 'ok'){
+                    console.log(data['result']);
+                    bootbox.alert('message is: ' + data['result']);
+                }else{
+                    bootbox.alert({message: data['state'] + ' : ' + data['result'], level: 'danger'});;
+                }
+            }
+
+        });
+    });
+});
+</script>

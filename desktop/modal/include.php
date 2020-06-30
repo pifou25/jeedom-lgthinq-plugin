@@ -117,26 +117,27 @@ try {
             // LG device checked if not defined on jeedom
             echo <<<EOT
                 <input type="checkbox" name="selected[]" id="{$obj['id']}" value="{$obj['id']}" $checked />
-                <label for="{$obj['id']}"> {$obj['name']} ( {$obj['model']} ) </for>
+                <label for="{$obj['id']}"> {$obj['name']} ( {$obj['model']} ) </label>
 EOT;
                 // if not defined: list of all available LG config
                 if(!empty($checked)){
             ?>
             </div>
             <div class="col-lg-3">
+                <label for="lg{$obj['id']}">Select item :</label>
+                <select id="lg{$obj['id']}" name="lg{$obj['id']}">
             <?php 
-                sprintf("<select id=\"lg%s\" name=\"lg%s\">", $obj['id'], $obj['id']);
                 foreach($devices as $device){
                     sprintf("\t\t<option value=\"%s\">%s</option>\n", $device, $device);
                 }
-                echo '</select>';
-                }
             ?>
-            </div>
-            <?php } ?>
+                </select>
+            <?php } // foreach $device ?>
             </div>
             <div class="col-lg-2">
                 <a class="btn btn-success btn-xs" id="bt_synchro" target="_blank"><i class="far fa-check-circle icon-white"></i> {{Enregistrer}}</a>
+            </div>
+            <?php } // foreach $obj ?>
             </div>
 
         </fieldset>

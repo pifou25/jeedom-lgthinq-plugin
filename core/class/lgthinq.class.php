@@ -294,7 +294,7 @@ class lgthinq extends eqLogic {
         ]);
     }
     
-    private static function isDebug(){
+    public static function isDebug(){
         if(self::$__debug == null){
             self::$__debug = ( log::convertLogLevel(log::getLogLevel('lgthinq')) == 'debug' );
         }

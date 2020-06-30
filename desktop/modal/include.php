@@ -61,6 +61,8 @@ try {
         $devices = array_keys($param->getDevices());
         if(lgthinq::isDebug()){
             $msg .= json_encode($devices, JSON_PRETTY_PRINT);
+            $msg .= $param->getLog();
+            $msg .= print_r($lgObjects, true);
         }
 
         // creer les nouveaux objets decouverts
@@ -148,9 +150,8 @@ EOT;
     </p>
     <?php
 } catch (\Exception $e) {
-    echo '<pre>' . $e . '</pre>';
     $msg .= displayException($e);
-    echo $msg;
+    echo '<pre>' . $e . "\n\n$msg" . '</pre>';
     LgLog::error(displayException($e));
 }
 ?>

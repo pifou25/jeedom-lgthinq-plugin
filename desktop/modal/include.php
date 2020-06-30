@@ -128,6 +128,7 @@ EOT;
             <div class="col-lg-3">
                 <label for="lg{$obj['id']}">Select item :</label>
                 <select id="lg{$obj['id']}" name="lg{$obj['id']}">
+                    <option value="">ignore</option>
             <?php 
                 foreach($devices as $device){
                     sprintf("\t\t<option value=\"%s\">%s</option>\n", $device, $device);

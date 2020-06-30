@@ -24,7 +24,7 @@ try{
 		echo 'erreur changement de log';
 	}
 }catch(LgApiException $e){
-	echo serialize($e);
+	echo $e;
 }
 // set log level
 if(!$lgApi->changeLog('debug')){
@@ -74,8 +74,7 @@ $lgApi->save();
 try{
 	echo json_encode( $lgApi->fail(), JSON_PRETTY_PRINT);
 }catch(LgApiException $e){
-	echo $e->getMessage();
-	echo serialize($e);
+	echo "\n" . $e ."\n";
 }
-echo " last request = \n" . json_encode( WideqAPI::$requests[count(WideqAPI::$requests)-1], JSON_PRETTY_PRINT);
+echo "\nlast request = \n" . json_encode( WideqAPI::getRequests()[count(WideqAPI::getRequests())-1], JSON_PRETTY_PRINT);
 // https://eic.lgthinq.com:46030/api/webContents/modelJSON?modelName=1REB1GLPX1___&countryCode=WW&contentsId=JS0213025419441577&authKey=thinq

@@ -33,7 +33,7 @@ try {
     try {
         $lgObjects = $lgApi->ls();
     } catch (LgApiException $e) {
-        $msg .= $e->getMessage();
+        $msg .= $e->getMessage() . ' reinit token...';
         lgthinq::initToken();
         $lgObjects = $lgApi->ls();
     }
@@ -58,7 +58,7 @@ try {
         }
         
         $param = new LgParameters(lgthinq::getApi()->save());
-        $devices = array_keys(LgParameters::getDevices());
+        $devices = array_keys($param->getDevices());
         if(lgthinq::isDebug()){
             $msg .= json_encode($devices, JSON_PRETTY_PRINT);
         }
@@ -147,9 +147,10 @@ EOT;
     </p>
     <?php
 } catch (\Exception $e) {
-    LgLog::error(displayException($e));
+    echo '<pre>' . $e . '</pre>';
     $msg .= displayException($e);
     echo $msg;
+    LgLog::error(displayException($e));
 }
 ?>
 

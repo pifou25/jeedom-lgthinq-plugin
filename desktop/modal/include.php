@@ -130,7 +130,7 @@ EOT;
                 <select id="lg{$obj['id']}" name="lg{$obj['id']}">
                     <option value="">ignore</option>
             <?php 
-                foreach($devices as $device){
+                foreach(LgParameters::getAllConfig() as $device){
                     sprintf("\t\t<option value=\"%s\">%s</option>\n", $device, $device);
                 }
             ?>

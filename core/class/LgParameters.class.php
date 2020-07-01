@@ -10,16 +10,29 @@ class LgParameters {
     private $log = '';
     private $devices = null;
 
+    public static function clean($string) {
+        $string = str_replace(' ', '_', $string); // Replaces all spaces with hyphens.
+        $string = preg_replace('/[^A-Za-z0-9\-_]/', '', $string); // Removes special chars.
+
+        return preg_replace('/-+/', '-', $string); // Replaces multiple hyphens with single one.
+    }
+
+    public static function getAllConfig(){
+        return array_diff(scandir(dirname(__FILE__) . '/../../resources/devices/'), array('.', '..'));
+    }
+    
     public function __construct($json) {
 
-        if (!$this->isIndexArray($json, 'config')) {
-            $this->log .= "no config;\n";
-        } else if (!$this->isIndexArray($json['config'], 'model_info')) {
-            $this->log .= "no model_info into config;\n";
-        } else if (empty($json['config']['model_info'])) {
+        if ($this->isIndexArray($json, 'config')) {
+            $json = $json['config'];
+        }
+        if ($this->isIndexArray($json, 'model_info')) {
+            $json = $json['model_info'];
+        }
+        if (empty($json)) {
             $this->log .= "model_info found but empty;\n";
         } else {
-            $this->devices = $this->computeDevices($json['config']['model_info']);
+            $this->devices = $this->computeDevices($json);
         }
     }
 
@@ -102,10 +115,12 @@ class LgParameters {
             $cmd = ['name' => $name,
                 'type' => 'info',
                 'subType' => 'string',
-                'remark' => $cmt,
                 'remoteType' => $type, // binary ou enum
                 'isVisible' => 1
             ];
+            if ($cmt) {
+                $cmd['remark'] = $cmt;
+            }
             $commands[] = $cmd;
         }
         return $commands;
@@ -114,6 +129,7 @@ class LgParameters {
     public function getLog() {
         return $this->log;
     }
+
     public function getDevices() {
         return $this->devices;
     }

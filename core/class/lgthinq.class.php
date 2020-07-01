@@ -28,6 +28,9 @@ include_file('core', 'WideqManager', 'class', 'lgthinq');
 // include /plugins/lgthinq/core/WideqAPI.class.php
 include_file('core', 'WideqAPI', 'class', 'lgthinq');
 
+// require_once '/plugins/lgthinq/core/LgParameters.class.php';
+include_file('core', 'LgParameters', 'class', 'lgthinq');
+
 class lgthinq extends eqLogic {
     /*     * *************************Attributs****************************** */
 
@@ -128,7 +131,6 @@ class lgthinq extends eqLogic {
         //$eqLogic = lgthinq::byId($eqLogic->getId());
 
         if($eqLogic->getConfFilePath() === false){
-            require_once 'LgParameters.class.php';
             // recuperer conf LG
             $param = new LgParameters(self::getApi()->save());
             if(!isset($param->getDevices()[$eqLogic->getProductModel()])){
@@ -345,7 +347,8 @@ class lgthinq extends eqLogic {
             LgLog::debug('get confFilePath from configuration ' . $this->getConfiguration('fileconf'));
             return $this->getConfiguration('fileconf');
         }
-        $id = $this->getConfiguration('product_type') . '.' . $this->getConfiguration('product_model') . '.json';
+        $model = LgParameters::clean($this->getConfiguration('product_model'));
+        $id = $this->getConfiguration('product_type') . '.' . $model . '.json';
         if (is_file(dirname(__FILE__) . self::RESOURCES_PATH . $id)) {
             $this->setConfiguration('fileconf', $id);
             LgLog::debug('get confFilePath with specific model ' . $id);

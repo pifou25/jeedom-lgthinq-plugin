@@ -1,0 +1,866 @@
+{
+    "name": "RAC Model",
+    "commands": [
+        {
+            "name": "ACOHighLimit",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "ACOLowLimit",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "AirClean",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "AirPolution",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Range",
+            "isVisible": 1
+        },
+        {
+            "name": "AntiBugs",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "AromaColor",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "AromaSound",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "AromaState",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "AutoDry",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "CoolHighLimit",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "CoolLowLimit",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "DiagCode",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "enum",
+            "isVisible": 1
+        },
+        {
+            "name": "DisplayControl",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "EnergyDesiredValueDay",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Range",
+            "isVisible": 1
+        },
+        {
+            "name": "EnergyDesiredValueMonth",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Range",
+            "isVisible": 1
+        },
+        {
+            "name": "EnergyDesiredValueWeek",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Range",
+            "isVisible": 1
+        },
+        {
+            "name": "ExtraOp",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "FeedbackSound",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "FlowForest",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "FlowLongPower",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "FlowShower",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "HeatHighLimit",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "HeatLowLimit",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "HomeCareDelay",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Range",
+            "isVisible": 1
+        },
+        {
+            "name": "HomeCareImageNumber",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Range",
+            "isVisible": 1
+        },
+        {
+            "name": "HomeCareInterval",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Range",
+            "isVisible": 1
+        },
+        {
+            "name": "HomeCareOnOff",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "HumanCare",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "IceValley",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "IndirectWind",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "InterfaceWindStrength",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "Jet",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "LowHeating",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "MagicLightBrightness",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "MagicLightColor",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "ModeEx",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "MoodLight",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "OffTime",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Range",
+            "isVisible": 1
+        },
+        {
+            "name": "OnTime",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Range",
+            "isVisible": 1
+        },
+        {
+            "name": "OpMode",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "Operation",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "PowerSave",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "PowerSaveDry",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "QVioceSensitivity",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "QVoiceOperation",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "QVoiceOption",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "RacAddFunc",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "RobotCleanAuto",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "RobotCleanManual",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "Schedule",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "String",
+            "isVisible": 1
+        },
+        {
+            "name": "SensorHumidity",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Range",
+            "isVisible": 1
+        },
+        {
+            "name": "SensorMon",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SensorPM1",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Range",
+            "isVisible": 1
+        },
+        {
+            "name": "SensorPM10",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Range",
+            "isVisible": 1
+        },
+        {
+            "name": "SensorPM2",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Range",
+            "isVisible": 1
+        },
+        {
+            "name": "SignalLighting",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SleepTime",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Range",
+            "isVisible": 1
+        },
+        {
+            "name": "SmartCare",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SpkVolume",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Range",
+            "isVisible": 1
+        },
+        {
+            "name": "Support2setMode",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SupportAccumulate",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SupportAirPolution",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SupportAroma",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SupportDRED",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SupportDuctZoneType",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SupportExtraOp",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SupportGroupType",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SupportLight",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SupportMFilter",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SupportMicom",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SupportOpMode",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SupportPACMode",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SupportPush",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SupportQVoice",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SupportQVoiceOption",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SupportRACMode",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SupportRACSubMode",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SupportRemocon",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SupportReserve",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SupportSmartFunc",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SupportStandbyPwr",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SupportTempCfg",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SupportTempCtrl",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SupportTempLimit",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SupportVision",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SupportWindDir",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SupportWindMode",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SupportWindStrength",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "TempCelToFah",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "TempCfg",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Range",
+            "isVisible": 1
+        },
+        {
+            "name": "TempCur",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Range",
+            "isVisible": 1
+        },
+        {
+            "name": "TempCurTwoSet",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Range",
+            "isVisible": 1
+        },
+        {
+            "name": "TempFahToCel",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "TempUnit",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "TimeBsOff",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "String",
+            "isVisible": 1
+        },
+        {
+            "name": "TimeBsOn",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "String",
+            "isVisible": 1
+        },
+        {
+            "name": "TotalAirPolution",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Range",
+            "isVisible": 1
+        },
+        {
+            "name": "Turbo",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "TwoSetACOState",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "TwoSetCoolLSL",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Range",
+            "isVisible": 1
+        },
+        {
+            "name": "TwoSetCoolTemp",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Range",
+            "isVisible": 1
+        },
+        {
+            "name": "TwoSetCoolUSL",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Range",
+            "isVisible": 1
+        },
+        {
+            "name": "TwoSetHeatLSL",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Range",
+            "isVisible": 1
+        },
+        {
+            "name": "TwoSetHeatTemp",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Range",
+            "isVisible": 1
+        },
+        {
+            "name": "TwoSetHeatUSL",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Range",
+            "isVisible": 1
+        },
+        {
+            "name": "TwoSetModeDeadband",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Range",
+            "isVisible": 1
+        },
+        {
+            "name": "TwoSetState",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "VoiceLogging",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "VoiceRecog",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "VoiceSensitivity",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "VoiceStudy",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "VoiceVolume",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "WDirAuto",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "WDirDown",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "WDirHStep",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "WDirLeft",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "WDirLeftRight",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "WDirRight",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "WDirSide",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "WDirUp",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "WDirUpDown",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "WDirVStep",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "WindStrength",
+            "type": "info",
+            "subType": "string",
+            "remoteType": "Enum",
+            "isVisible": 1
+        }
+    ]
+}

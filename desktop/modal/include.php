@@ -137,10 +137,10 @@ EOT;
                 </select>
             <?php } // foreach $device ?>
             </div>
+            <?php } // foreach $obj ?>
+            </div>
             <div class="col-lg-2">
                 <a class="btn btn-success btn-xs" id="bt_synchro" target="_blank"><i class="far fa-check-circle icon-white"></i> {{Enregistrer}}</a>
-            </div>
-            <?php } // foreach $obj ?>
             </div>
 
         </fieldset>

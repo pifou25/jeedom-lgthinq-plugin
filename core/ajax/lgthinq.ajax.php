@@ -27,7 +27,9 @@ try {
         throw new Exception(__('401 - Accès non autorisé', __FILE__));
     }
 
-    ajax::init();
+    if (!headers_sent()) {
+        header('Content-Type: application/json');
+    }
 
     if (init('action') == 'log') {
         $log = init('log');
@@ -90,21 +92,27 @@ try {
     }
 
     if (init('action') == 'synchro') {
-        ajax::error(json_encode($_POST), 401);
-        $id = init('id');
+        //ajax::error(json_encode($_POST), 401);
         $api = lgthinq::getApi();
         $objects = $api->ls();
-        if (empty($objects) || empty($id)) {
-            ajax::error("No object or id ($object) ($id)", 401);
+        $selected = init('selected');
+        if (empty($objects) || empty($selected)) {
+            ajax::error("Aucun objet LG connecté, ou aucun sélectionné." . json_encode($_POST), 401);
         } else {
-            foreach ($objects as $obj) {
-                if ($obj['id'] == $id) {
-                    LgLog::debug("add object (" . json_encode($config) . ')');
-                    $eq = lgthinq::CreateEqLogic($config);
-                    ajax::success('object added');
+            $counter = 0;
+            foreach ($selected as $id) {
+                $obj = init('lg' . $id);
+                if (empty($obj)) {
+                    ajax::error("Aucun objet $obj" . json_encode($_POST), 401);
+                } else if (!isset($objects[$id])) {
+                    ajax::error("Objet id=$id introuvable..." . json_encode($_POST), 401);
+                } else {
+                    LgLog::debug("map $id sur $obj");
+                    $eq = lgthinq::CreateEqLogic($objects[$id], $obj);
+                    $counter++;
                 }
             }
-            ajax::error("object with id not found ($id)", 401);
+            ajax::success("$counter objets configurés !");
         }
     }
 

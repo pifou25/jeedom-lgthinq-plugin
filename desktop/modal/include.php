@@ -126,12 +126,12 @@ EOT;
             ?>
             </div>
             <div class="col-lg-3">
-                <label for="lg{$obj['id']}">Select item :</label>
-                <select id="lg{$obj['id']}" name="lg{$obj['id']}">
+                <label for="lg<?= $obj['id'] ?>">Select item :</label>
+                <select id="lg<?= $obj['id'] ?>" name="lg<?= $obj['id'] ?>">
                     <option value="">ignore</option>
             <?php 
                 foreach(LgParameters::getAllConfig() as $device){
-                    sprintf("\t\t<option value=\"%s\">%s</option>\n", $device, $device);
+                    printf("\t\t<option value=\"%s\">%s</option>\n", $device, $device);
                 }
             ?>
                 </select>
@@ -160,7 +160,8 @@ EOT;
 <script>
 $( function(){
     $('#bt_synchro').on('click',function(){
-        $.post({
+        $.ajax({
+            type: 'POST',
             url: 'plugins/lgthinq/core/ajax/lgthinq.ajax.php?action=synchro',
             data: $('#LgSynchronize').serialize(),
             dataType: 'json',

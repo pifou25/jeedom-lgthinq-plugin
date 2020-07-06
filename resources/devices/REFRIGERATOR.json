@@ -1,52 +1,101 @@
 {
-    "product_name": "Generic Refrigerator", 
-    "type": "REFRIGERATOR", 
-    "remark": "", 
-    "imglink": "none", 
-	"category"; [
-		"Autre"
-	],
-    "configuration": {
-    }, 
+    "name": "2REB1GLPX1___",
     "commands": [
         {
-            "name": "ActiveSavingStatus", 
-            "type": "info", 
-            "isVisible": 1, 
-            "isHistorized": 1, 
-            "configuration": {
-                "class": 48, 
-                "value": "", 
-                "index": 0, 
-                "instance": 1, 
-                "minValue": 0, 
-                "maxValue": 3
-            }, 
-            "subtype": "binary", 
-            "display": {
-                "generic_type": "PRESENCE"
-            }, 
-            "unite": "",
-			"description": "Active Saving Status : OFF or ON"
-        }, 
+            "name": "ActiveSavingStatus",
+            "type": "info",
+            "subType": "string",
+            "remark": "Active Saving Status : OFF or ON",
+            "remoteType": "Range",
+            "isVisible": 1
+        },
         {
-            "name": "DoorOpenState", 
-            "type": "info", 
-            "isVisible": 1, 
-            "isHistorized": 1, 
-            "configuration": {
-                "class": 128, 
-                "value": "", 
-                "index": 0, 
-                "instance": 1, 
-                "minValue": 0, 
-                "maxValue": 100
-            }, 
-            "subtype": "binary", 
-            "display": {
-                "generic_type": "OPENING"
-            }, 
-            "unite": "%"
+            "name": "DoorOpenState",
+            "type": "info",
+            "subType": "string",
+            "remark": "Door Open Info.",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "EcoFriendly",
+            "type": "info",
+            "subType": "string",
+            "remark": "Eco Friendly : OFF or ON",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "FreshAirFilter",
+            "type": "info",
+            "subType": "string",
+            "remark": "Fresh Air Filter(1byte)",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "IcePlus",
+            "type": "info",
+            "subType": "string",
+            "remark": "Ice Plus(1byte)",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "LockingStatus",
+            "type": "info",
+            "subType": "string",
+            "remark": "LockingStatus : LOCK or UNLOCK",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SmartSavingMode",
+            "type": "info",
+            "subType": "string",
+            "remark": "Smart Saving Staus(1byte)",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "SmartSavingModeStatus",
+            "type": "info",
+            "subType": "string",
+            "remark": "Smart Mode Status(1byte)",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "TempFreezer",
+            "type": "info",
+            "subType": "string",
+            "remark": "Freezer Temperature(1byte)",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "TempRefrigerator",
+            "type": "info",
+            "subType": "string",
+            "remark": "Refrigerator Temperature(1byte)",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "TempUnit",
+            "type": "info",
+            "subType": "string",
+            "remark": "Temperature Unit : F or \u2103 ",
+            "remoteType": "Enum",
+            "isVisible": 1
+        },
+        {
+            "name": "WaterFilterUsedMonth",
+            "type": "info",
+            "subType": "string",
+            "remark": "Water Filter State(used month) => (remain : 6 - value)",
+            "remoteType": "Range",
+            "isVisible": 1
         }
     ]
 }

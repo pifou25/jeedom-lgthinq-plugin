@@ -5,14 +5,15 @@ import re
 import uuid
 import os.path
 import logging
+import requests
 from flask import Flask, json, jsonify, request
 from flask.logging import create_logger
+from werkzeug.exceptions import HTTPException
 
 import wideq
 
 api = Flask(__name__)
 
-LOGGER = logging.getLogger("wideq.server")
 STATE_FILE = 'wideq_state.json'
 TOKEN_KEY = 'jeedom_token'
 
@@ -23,6 +24,15 @@ client = None
 token_value = ''
 # starting datetime
 starting = time.time()
+
+
+@api.errorhandler(Exception)
+def handle_error(e):
+    code = 500
+    if isinstance(e, HTTPException):
+        code = e.code
+    logging.debug(e, exc_info=True)
+    return jsonify(error=str(e)), code
 
 
 class InvalidUsage(Exception):
@@ -52,7 +62,7 @@ def check_headers(headers):
     check authentication with access token from the header request.
     """
     if TOKEN_KEY not in headers:
-        LOGGER.debug('request without token ' + str(headers))
+        logging.debug('request without token ' + str(headers))
         raise InvalidUsage('No jeedom token.', status_code=401)
     if headers[TOKEN_KEY] != token_value:
         raise InvalidUsage('Invalid jeedom token ###' +  headers[TOKEN_KEY] + \
@@ -77,23 +87,8 @@ def handle_invalid_usage(error):
     """
     default error handler
     """
+    logging.debug(error, exc_info=True)
     return Response(error.to_dict(), error.status_code)
-
-
-@api.errorhandler(404)
-def not_found(exception):
-    """Error 404 page not found"""
-    jsDump = json.dumps({'message': 'Error 404 page not found!',
-      'err': str(exception), 'url': request.url})
-    resp = Response(jsDump, code=404)
-    return resp
-
-
-@api.errorhandler(500)
-def server_error(exception):
-    """Server Error 500"""
-    return Response({'message':'Server Error 500!', 'err':str(exception),
-      'url': request.url, 'type':str(type(exception)) },500)
 
 
 @api.route('/ping', methods=['GET'])
@@ -101,7 +96,7 @@ def get_ping():
     """
     check if server is alive
     """
-    LOGGER.debug('ping token ' + str(token_value))
+    logging.debug('ping token ' + str(token_value))
     return Response({'starting': starting, TOKEN_KEY: (token_value != '')})
 
 @api.route('/log/<string:level>', methods=['GET', 'POST'])
@@ -122,8 +117,7 @@ def set_log(level):
         raise InvalidUsage('Unknown Log level {}'.format(level) ,status_code=410)
 
     wideq.set_log_level(lvl)
-    LOGGER.setLevel(lvl)
-    logging.basicConfig(level=lvl)
+    logging.setLevel(lvl)
     create_logger(api).setLevel(lvl)
     return Response({'log':level})
 
@@ -133,7 +127,7 @@ def get_auth(country, language):
     """get the auth Url for country and market"""
     global client
 
-    LOGGER.debug('get auth with country %s and lang %s ', country, language)
+    logging.debug('get auth with country %s and lang %s ', country, language)
 
     if not country:
         country = wideq.DEFAULT_COUNTRY
@@ -142,7 +136,7 @@ def get_auth(country, language):
     if not country_regex.match(country):
         msg = "Country must be two or three letters" \
            " all upper case (e.g. US, NO, KR) got: '{}'".format(country)
-        LOGGER.error(msg)
+        logging.error(msg)
         raise InvalidUsage(msg, 410)
 
     if not language:
@@ -153,10 +147,10 @@ def get_auth(country, language):
         msg = "Language must be a combination of language" \
            " and country (e.g. en-US, no-NO, kr-KR)" \
            " got: '{}'".format(language)
-        LOGGER.error(msg)
+        logging.error(msg)
         raise InvalidUsage(msg, 410)
 
-    LOGGER.info("auth country=%s, lang=%s", country, language)
+    logging.info("auth country=%s, lang=%s", country, language)
 
     client = wideq.Client.load({}) # state vide = {}
     if country:
@@ -173,7 +167,7 @@ def get_auth(country, language):
 
 @api.route('/auth', methods=['GET'])
 def get_auth_default():
-    LOGGER.debug('get default auth')
+    logging.debug('get default auth')
     return get_auth(wideq.DEFAULT_COUNTRY, wideq.DEFAULT_LANGUAGE)
 
 @api.route('/token/<path:token>', methods=['GET', 'POST'])
@@ -217,7 +211,7 @@ def get_save(file):
         backup = dict(client.dump()) # state
         backup[TOKEN_KEY] = token_value
         json.dump(backup, wri)
-        LOGGER.debug("Wrote state file '%s'", os.path.abspath(file))
+        logging.debug("Wrote state file '%s'", os.path.abspath(file))
     return Response({'config':backup, 'file':file})
 
 
@@ -228,7 +222,7 @@ def get_ls():
     """
     global client
 
-    LOGGER.debug('request for ls: ' + str(request))
+    logging.debug('request for ls: ' + str(request))
     check_headers(request.headers)
 
     # client = wideq.Client.load(state)
@@ -241,10 +235,10 @@ def get_ls():
         try:
             result = []
             for device in client.devices:
-                LOGGER.debug('{0.id}: {0.name} ({0.type.name} {0.model_id})'.format(device))
+                logging.debug('{0.id}: {0.name} ({0.type.name} {0.model_id})'.format(device))
                 result.append({'id':device.id, 'name':device.name,
                   'type':device.type.name, 'model':device.model_id})
-            LOGGER.debug(str(len(result)) + ' elements: ' + str(result))
+            logging.debug(str(len(result)) + ' elements: ' + str(result))
 
             # Save the updated state.
             # state = client.dump()
@@ -252,11 +246,11 @@ def get_ls():
             return Response(result)
 
         except wideq.NotLoggedInError:
-            LOGGER.info('Session expired.')
+            logging.info('Session expired.')
             client.refresh()
 
         except UserError as exc:
-            LOGGER.error(exc.msg)
+            logging.error(exc.msg)
             raise InvalidUsage(exc.msg, 401)
 
     raise InvalidUsage('Error, no response from LG cloud', 401)
@@ -409,6 +403,14 @@ def _build_ssl_context(maximum_version=None, minimum_version=None):
     """
     if not hasattr(ssl, "SSLContext"):
         raise RuntimeError("httplib2 requires Python 3.2+ for ssl.SSLContext")
+
+    # fix ssl.SSLError: [SSL: DH_KEY_TOO_SMALL] dh key too small (_ssl.c:1056)
+    requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += 'HIGH:!DH:!aNULL'
+    try:
+      requests.packages.urllib3.contrib.pyopenssl.DEFAULT_SSL_CIPHER_LIST += 'HIGH:!DH:!aNULL'
+    except AttributeError:
+      # no pyopenssl support used / needed / available
+      pass
 
     context = ssl.SSLContext(ssl.PROTOCOL_TLS)
     context.verify_mode = ssl.CERT_NONE

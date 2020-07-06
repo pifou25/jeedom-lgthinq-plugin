@@ -2,3 +2,5 @@
 docs/
 resources/daemon/*.json
 __pycache__
+#netbeans parameters
+/nbproject/

@@ -46,6 +46,9 @@ if (!isConnect()) {
 				<input type="hidden" class="configKey form-control" data-l1key="LgGateway" id="LgGateway" placeholder="url pour login LG" disabled />
             </div>
         </div>
+  </fieldset>
+
+    <fieldset>
         <div class="form-group">
 		<legend>{{Step 2: Authentification sur le portail LG Account:}}</legend>
             <label class="col-lg-3 control-label">{{Cliquez ici pour ouvrir LG Account portal}}</label>

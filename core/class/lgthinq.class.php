@@ -171,31 +171,31 @@ class lgthinq extends eqLogic {
     }
 
     public static function cron5() {
-        if(config::byKey('functionality::cron::enable', 'lgthinq', 1) == 0){
+        if (config::byKey('functionality::cron::enable', 'lgthinq', 1) == 0) {
             self::refreshData();
         }
     }
 
     public static function cron10() {
-        if(config::byKey('functionality::cron::enable', 'lgthinq', 1) == 0 || 
-                config::byKey('functionality::cron5::enable', 'lgthinq', 1) == 0 ){
+        if (config::byKey('functionality::cron::enable', 'lgthinq', 1) == 0 ||
+                config::byKey('functionality::cron5::enable', 'lgthinq', 1) == 0) {
             self::refreshData();
         }
     }
 
     public static function cron15() {
-        if(config::byKey('functionality::cron::enable', 'lgthinq', 1) == 0 || 
-           config::byKey('functionality::cron5::enable', 'lgthinq', 1) == 0 || 
-                config::byKey('functionality::cron10::enable', 'lgthinq', 1) == 0 ){
+        if (config::byKey('functionality::cron::enable', 'lgthinq', 1) == 0 ||
+                config::byKey('functionality::cron5::enable', 'lgthinq', 1) == 0 ||
+                config::byKey('functionality::cron10::enable', 'lgthinq', 1) == 0) {
             self::refreshData();
         }
     }
 
     public static function cron30() {
-        if(config::byKey('functionality::cron::enable', 'lgthinq', 1) == 0 || 
-           config::byKey('functionality::cron5::enable', 'lgthinq', 1) == 0 || 
-           config::byKey('functionality::cron10::enable', 'lgthinq', 1) == 0 || 
-                config::byKey('functionality::cron15::enable', 'lgthinq', 1) == 0 ){
+        if (config::byKey('functionality::cron::enable', 'lgthinq', 1) == 0 ||
+                config::byKey('functionality::cron5::enable', 'lgthinq', 1) == 0 ||
+                config::byKey('functionality::cron10::enable', 'lgthinq', 1) == 0 ||
+                config::byKey('functionality::cron15::enable', 'lgthinq', 1) == 0) {
             self::refreshData();
         }
     }
@@ -203,12 +203,13 @@ class lgthinq extends eqLogic {
     /*
      * Fonction exécutée automatiquement toutes les heures par Jeedom
      */
+
     public static function cronHourly() {
-        if(config::byKey('functionality::cron::enable', 'lgthinq', 1) == 0 || 
-           config::byKey('functionality::cron5::enable', 'lgthinq', 1) == 0 || 
-           config::byKey('functionality::cron10::enable', 'lgthinq', 1) == 0 || 
-           config::byKey('functionality::cron15::enable', 'lgthinq', 1) == 0 || 
-                config::byKey('functionality::cron30::enable', 'lgthinq', 1) == 0 ){
+        if (config::byKey('functionality::cron::enable', 'lgthinq', 1) == 0 ||
+                config::byKey('functionality::cron5::enable', 'lgthinq', 1) == 0 ||
+                config::byKey('functionality::cron10::enable', 'lgthinq', 1) == 0 ||
+                config::byKey('functionality::cron15::enable', 'lgthinq', 1) == 0 ||
+                config::byKey('functionality::cron30::enable', 'lgthinq', 1) == 0) {
             self::refreshData();
         }
     }
@@ -216,13 +217,14 @@ class lgthinq extends eqLogic {
     /*
      * Fonction exécutée automatiquement tous les jours par Jeedom
      */
+
     public static function cronDaily() {
-        if(config::byKey('functionality::cron::enable', 'lgthinq', 1) == 0 || 
-           config::byKey('functionality::cron5::enable', 'lgthinq', 1) == 0 || 
-           config::byKey('functionality::cron10::enable', 'lgthinq', 1) == 0 || 
-           config::byKey('functionality::cron15::enable', 'lgthinq', 1) == 0 || 
-           config::byKey('functionality::cron30::enable', 'lgthinq', 1) == 0 || 
-                config::byKey('functionality::cronHourly::enable', 'lgthinq', 1) == 0 ){
+        if (config::byKey('functionality::cron::enable', 'lgthinq', 1) == 0 ||
+                config::byKey('functionality::cron5::enable', 'lgthinq', 1) == 0 ||
+                config::byKey('functionality::cron10::enable', 'lgthinq', 1) == 0 ||
+                config::byKey('functionality::cron15::enable', 'lgthinq', 1) == 0 ||
+                config::byKey('functionality::cron30::enable', 'lgthinq', 1) == 0 ||
+                config::byKey('functionality::cronHourly::enable', 'lgthinq', 1) == 0) {
             self::refreshData();
         }
     }
@@ -335,21 +337,20 @@ class lgthinq extends eqLogic {
 
     public function RefreshCommands() {
         if ($this->getIsEnable() == 1) {//vérifie que l'équipement est actif
-            
             // list toutes les commandes
             $cmds = $this->getCmd();
-            if(is_object($cmds)){
+            if (is_object($cmds)) {
                 $cmds = [$cmds];
             }
-            
+
             // interroger l'API cloud LG pour rafraichir l'information:
             $infos = lgthinq::getApi()->mon($this->getLogicalId());
-            
-            foreach($cmds as $cmd){
-                if(isset($infos[$cmd->getLogicalId()])){
+
+            foreach ($cmds as $cmd) {
+                if (isset($infos[$cmd->getLogicalId()])) {
                     // maj la commande ...
-                    $this->checkAndUpdateCmd( $cmd, $infos[$cmd->getLogicalId()]);
-                }else{
+                    $this->checkAndUpdateCmd($cmd, $infos[$cmd->getLogicalId()]);
+                } else {
                     LgLog::debug("Pas d'info pour {$cmd->getLogicalId()}");
                 }
             }
@@ -507,6 +508,11 @@ class lgthinqCmd extends cmd {
 
     /*     * *********************Methode d'instance************************* */
 
+    public function preSave() {
+        //$this->setLogicalId($this->getConfiguration('instance') . '.' . $this->getConfiguration('class') . '.' . $this->getConfiguration('index'));
+        $this->setLogicalId($this->getName());
+    }
+
     /*
      * Non obligatoire permet de demander de ne pas supprimer les commandes même si elles ne sont pas dans la nouvelle configuration de l'équipement envoyé en JS
       public function dontRemoveCmd() {
@@ -515,6 +521,9 @@ class lgthinqCmd extends cmd {
      */
 
     public function execute($_options = array()) {
+        if ($this->getType() != 'action') {
+                return;
+        }
 
         switch ($this->getLogicalId()) { //vérifie le logicalid de la commande
             case 'refresh': // LogicalId de la commande rafraîchir que l’on a créé dans la méthode Postsave de la classe lgthinq

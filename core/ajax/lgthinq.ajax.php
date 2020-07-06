@@ -97,7 +97,7 @@ try {
         $objects = $api->ls();
         $selected = init('selected');
         if (empty($objects) || empty($selected)) {
-            ajax::error("Aucun objet LG connecté, ou aucun sélectionné." . json_encode($_POST), 401);
+            ajax::error("Aucun objet LG connecté, ou aucun sélectionné.", 401);
         } else {
             $counter = 0;
             foreach ($selected as $id) {
@@ -112,7 +112,7 @@ try {
                     $counter++;
                 }
             }
-            ajax::success("$counter objets configurés !");
+            ajax::success("$counter objets configurés ! Rechargez la page (F5) pour voir les nouveaux objets.");
         }
     }
 

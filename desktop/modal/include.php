@@ -172,7 +172,7 @@ $( function(){
             success: function (data, textStatus) {
                 if(data['state'] === 'ok'){
                     console.log(data['result']);
-                    bootbox.alert('message is: ' + data['result']);
+                    bootbox.alert(data['result']);
                 }else{
                     bootbox.alert({message: data['state'] + ' : ' + data['result'], level: 'danger'});;
                 }

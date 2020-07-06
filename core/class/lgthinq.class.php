@@ -40,11 +40,9 @@ class lgthinq extends eqLogic {
     // private static $_keysConfig = [];
 
     private static $_lgApi = null;
-    
     private static $__debug = null;
-
     private static $_destruct = false;
-    
+
     const RESOURCES_PATH = '/../../resources/devices/';
 
     /*     * ***********************Methode static*************************** */
@@ -130,10 +128,10 @@ class lgthinq extends eqLogic {
         // nécessaire de recharger le $eqLogic ??
         //$eqLogic = lgthinq::byId($eqLogic->getId());
 
-        if($eqLogic->getConfFilePath() === false){
+        if ($eqLogic->getConfFilePath() === false) {
             // recuperer conf LG
             $param = new LgParameters(self::getApi()->save());
-            if(!isset($param->getDevices()[$eqLogic->getProductModel()])){
+            if (!isset($param->getDevices()[$eqLogic->getProductModel()])) {
                 LgLog::warning("No device model {$eqLogic->getProductModel()}");
                 return null;
             }
@@ -141,13 +139,12 @@ class lgthinq extends eqLogic {
             // générer le fichier de conf par défaut
             $file = dirname(__FILE__) . self::RESOURCES_PATH . $eqLogic->getConfiguration('product_type')
                     . '.' . $eqLogic->getConfiguration('product_model') . '.json';
-            file_put_contents($file, json_encode( $eqLogicConf, JSON_PRETTY_PRINT));
+            file_put_contents($file, json_encode($eqLogicConf, JSON_PRETTY_PRINT));
             LgLog::info("Création du fichier de conf $file");
-            if(self::isDebug()){
+            if (self::isDebug()) {
                 $log = $param->getLog();
                 LgLog::debug("LgParam config:\n $log");
             }
-
         }
         // générer les commandes
         $eqLogic->createCommand();
@@ -156,17 +153,13 @@ class lgthinq extends eqLogic {
     }
 
     /**
-     * refresh any object sensors values: TODO
+     * refresh any object sensors values
      */
     private static function refreshData() {
-        LgLog::debug('refresh LG data');
-    }
-
-    /**
-     * refresh list of connected LG object
-     */
-    private static function refreshListObjects() {
-
+        LgLog::debug('refresh LG data for all devices');
+        foreach (self::byType('lgthinq') as $eqLogic) {//parcours tous les équipements du plugin vdm
+            $eqLogic->RefreshCommands();
+        }
     }
 
     /*
@@ -178,35 +171,60 @@ class lgthinq extends eqLogic {
     }
 
     public static function cron5() {
-        self::refreshData();
+        if(config::byKey('functionality::cron::enable', 'lgthinq', 1) == 0){
+            self::refreshData();
+        }
     }
 
     public static function cron10() {
-        self::refreshData();
+        if(config::byKey('functionality::cron::enable', 'lgthinq', 1) == 0 || 
+                config::byKey('functionality::cron5::enable', 'lgthinq', 1) == 0 ){
+            self::refreshData();
+        }
     }
 
     public static function cron15() {
-        self::refreshData();
+        if(config::byKey('functionality::cron::enable', 'lgthinq', 1) == 0 || 
+           config::byKey('functionality::cron5::enable', 'lgthinq', 1) == 0 || 
+                config::byKey('functionality::cron10::enable', 'lgthinq', 1) == 0 ){
+            self::refreshData();
+        }
     }
 
     public static function cron30() {
-        self::refreshData();
+        if(config::byKey('functionality::cron::enable', 'lgthinq', 1) == 0 || 
+           config::byKey('functionality::cron5::enable', 'lgthinq', 1) == 0 || 
+           config::byKey('functionality::cron10::enable', 'lgthinq', 1) == 0 || 
+                config::byKey('functionality::cron15::enable', 'lgthinq', 1) == 0 ){
+            self::refreshData();
+        }
     }
 
     /*
      * Fonction exécutée automatiquement toutes les heures par Jeedom
      */
-
     public static function cronHourly() {
-        self::refreshData();
+        if(config::byKey('functionality::cron::enable', 'lgthinq', 1) == 0 || 
+           config::byKey('functionality::cron5::enable', 'lgthinq', 1) == 0 || 
+           config::byKey('functionality::cron10::enable', 'lgthinq', 1) == 0 || 
+           config::byKey('functionality::cron15::enable', 'lgthinq', 1) == 0 || 
+                config::byKey('functionality::cron30::enable', 'lgthinq', 1) == 0 ){
+            self::refreshData();
+        }
     }
 
     /*
      * Fonction exécutée automatiquement tous les jours par Jeedom
      */
-
     public static function cronDaily() {
-        self::refreshData();
+        if(config::byKey('functionality::cron::enable', 'lgthinq', 1) == 0 || 
+           config::byKey('functionality::cron5::enable', 'lgthinq', 1) == 0 || 
+           config::byKey('functionality::cron10::enable', 'lgthinq', 1) == 0 || 
+           config::byKey('functionality::cron15::enable', 'lgthinq', 1) == 0 || 
+           config::byKey('functionality::cron30::enable', 'lgthinq', 1) == 0 || 
+                config::byKey('functionality::cronHourly::enable', 'lgthinq', 1) == 0 ){
+            self::refreshData();
+        }
     }
 
     /**
@@ -288,38 +306,65 @@ class lgthinq extends eqLogic {
         return WideqManager::daemon_stop();
     }
 
-    private static function addEvent($message, $level = 'warning'){
+    private static function addEvent($message, $level = 'warning') {
         event::add('jeedom::alert', [
             'level' => $level,
             'page' => 'lgthinq',
             'message' => $message
         ]);
     }
-    
-    public static function isDebug(){
-        if(self::$__debug == null){
+
+    public static function isDebug() {
+        if (self::$__debug == null) {
             self::$__debug = ( log::convertLogLevel(log::getLogLevel('lgthinq')) == 'debug' );
         }
         return self::$__debug;
     }
+
     /*     * *********************Méthodes d'instance************************* */
 
-    public function __destruct(){
-        if(!self::$_destruct){
+    public function __destruct() {
+        if (!self::$_destruct) {
             self::$_destruct = true;
-            if(self::$__debug === true){
+            if (self::$__debug === true) {
                 $lgApi = self::getApi();
                 LgLog::debug(json_encode($lgApi::getRequests()));
             }
         }
     }
+
+    public function RefreshCommands() {
+        if ($this->getIsEnable() == 1) {//vérifie que l'équipement est actif
+            
+            // list toutes les commandes
+            $cmds = $this->getCmd();
+            if(is_object($cmds)){
+                $cmds = [$cmds];
+            }
+            
+            // interroger l'API cloud LG pour rafraichir l'information:
+            $infos = lgthinq::getApi()->mon($this->getLogicalId());
+            
+            foreach($cmds as $cmd){
+                if(isset($infos[$cmd->getLogicalId()])){
+                    // maj la commande ...
+                    $this->checkAndUpdateCmd( $cmd, $infos[$cmd->getLogicalId()]);
+                }else{
+                    LgLog::debug("Pas d'info pour {$cmd->getLogicalId()}");
+                }
+            }
+
+            LgLog::debug("Refresh {$this->getLogicalId()} avec " . count($cmds) . " commandes.");
+        }
+    }
+
     /**
      * Création des commandes de l'objet avec un fichier de configuration au format json
      */
     private function createCommand($_update = false) {
 
         if (false === $this->getConfFilePath()) {
-            self::addEvent( __('Fichier de configuration absent ', __FILE__) . $this->getConfFilePath());
+            self::addEvent(__('Fichier de configuration absent ', __FILE__) . $this->getConfFilePath());
             return false;
         }
         $device = is_json(file_get_contents(dirname(__FILE__) . self::RESOURCES_PATH . $this->getConfFilePath()), []);
@@ -332,7 +377,7 @@ class lgthinq extends eqLogic {
         }
         $this->import($device);
         sleep(1);
-        self::addEvent( '');
+        self::addEvent('');
         LgLog::debug('Successfully created commands from config file:' . count($device));
         return true;
     }
@@ -365,37 +410,36 @@ class lgthinq extends eqLogic {
         return false;
     }
 
-    public function preInsert() {
-        LgLog::debug("preInsert LgThinq");
-    }
-
-    public function postInsert() {
-        LgLog::debug("postInsert LgThinq");
-    }
-
-    public function preSave() {
-        LgLog::debug("preSave LgThinq");
-    }
-
-    public function postSave() {
-        LgLog::debug("postSave LgThinq");
-    }
-
-    public function preUpdate() {
-
-    }
-
-    public function postUpdate() {
-
-    }
-
-    public function preRemove() {
-
-    }
-
-    public function postRemove() {
-
-    }
+//    public function preInsert() {
+//        LgLog::debug("preInsert LgThinq");
+//    }
+//
+//    public function postInsert() {
+//        LgLog::debug("postInsert LgThinq");
+//    }
+//
+//    public function preSave() {
+//        LgLog::debug("preSave LgThinq");
+//    }
+//
+//    public function postSave() {
+//        LgLog::debug("postSave LgThinq");
+//    }
+//    public function preUpdate() {
+//
+//    }
+//
+//    public function postUpdate() {
+//
+//    }
+//
+//    public function preRemove() {
+//
+//    }
+//
+//    public function postRemove() {
+//
+//    }
 
     /*
      * Non obligatoire mais permet de modifier l'affichage du widget si vous en avez besoin
@@ -472,20 +516,14 @@ class lgthinqCmd extends cmd {
 
     public function execute($_options = array()) {
 
-        $eqLogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
-
         switch ($this->getLogicalId()) { //vérifie le logicalid de la commande
-            case 'refresh': // LogicalId de la commande rafraîchir que l’on a créé dans la méthode Postsave de la classe vdm .
-                // interroger l'API cloud LG pour rafraichir l'information:
-                $info = lgthinq::getApi()->mon($eqLogic->getLogicalId());
+            case 'refresh': // LogicalId de la commande rafraîchir que l’on a créé dans la méthode Postsave de la classe lgthinq
                 // maj la commande ...
-                $eqLogic->checkAndUpdateCmd('story', $info); // on met à jour la commande avec le LogicalId "story"  de l'eqlogic
-
-                LgLog::debug('cmd refresh ' . $eqLogic . ' --- ' . json_encode($info));
+                $this->getEqLogic()->RefreshCommands(); // on met à jour toutes les commandes de l'eqLogic
                 break;
 
             default:
-                LgLog::debug('cmd execute ' . $this->getLogicalId() . '-' . $eqLogic);
+                LgLog::debug('cmd execute ' . $this->getLogicalId());
                 break;
         }
     }

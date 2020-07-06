@@ -1,0 +1,1 @@
+{"code":200,"result":{"jeedom_token":true,"starting":1588974126.1711893},"state":"ok"}

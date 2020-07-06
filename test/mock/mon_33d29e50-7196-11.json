@@ -1,0 +1,18 @@
+{
+    "ActiveSavingStatus": "255",
+    "ActiveSavingStatus.max": 3,
+    "ActiveSavingStatus.min": 0,
+    "DoorOpenState": "CLOSE",
+    "EcoFriendly": "@CP_OFF_EN_W",
+    "FreshAirFilter": "NOT_USE",
+    "IcePlus": "@CP_OFF_EN_W",
+    "LockingStatus": "UNLOCK",
+    "SmartSavingMode": "NOT_USE",
+    "SmartSavingModeStatus": "255",
+    "TempFreezer": "-18",
+    "TempRefrigerator": "4",
+    "TempUnit": "\u2103",
+    "WaterFilterUsedMonth": "255",
+    "WaterFilterUsedMonth.max": 6,
+    "WaterFilterUsedMonth.min": 0
+}

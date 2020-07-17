@@ -174,7 +174,7 @@ class WideqAPI {
                 self::TOKEN_KEY . ': ' . $result[self::TOKEN_KEY]
             ];
         } else {
-            $result['message'] = "No {self::TOKEN_KEY} ! ($url)\n";
+            $result['message'] = sprint_f('No %s ! (%s)', self::TOKEN_KEY, $url);
         }
 
         return $result;

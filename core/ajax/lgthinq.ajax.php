@@ -27,6 +27,13 @@ try {
         throw new Exception(__('401 - Accès non autorisé', __FILE__));
     }
 
+    if (init('action') == 'download') {
+        header('Content-disposition: attachment; filename=file.json');
+        header('Content-type: application/json');
+        $lgApi = lgthinq::getApi();
+        exit(json_encode($lgApi->save(), JSON_PRETTY_PRINT));
+    }
+
     if (!headers_sent()) {
         header('Content-Type: application/json');
     }
@@ -84,11 +91,6 @@ try {
         } else {
             ajax::success('Token success');
         }
-    }
-
-    if (init('action') == 'download') {
-        $lgApi = lgthinq::getApi();
-        ajax::success($lgApi->save());
     }
 
     if (init('action') == 'synchro') {

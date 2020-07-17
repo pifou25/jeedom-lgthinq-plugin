@@ -9,6 +9,7 @@ class LgParameters {
 
     private $log = '';
     private $devices = null;
+    private $authUrl = null;
 
     public static function clean($string) {
         $string = str_replace(' ', '_', $string); // Replaces all spaces with hyphens.
@@ -23,6 +24,7 @@ class LgParameters {
     
     public function __construct($json) {
 
+        $this->authUrl = $this->computeAuthUrl($json);
         if ($this->isIndexArray($json, 'config')) {
             $json = $json['config'];
         }
@@ -36,6 +38,23 @@ class LgParameters {
         }
     }
 
+    public function computeAuthUrl($json){
+        // "$authBase/login/iabClose?access_token=$access&refresh_token=$refresh&oauth2_backend_url=$oauthRoot"
+        if ($this->isIndexArray($json, 'config')) {
+            $json = $json['config'];
+        }
+        $refresh = $access = $authBase = $oauthRoot = '';
+        if ($this->isIndexArray($json, 'gateway')) {
+            $authBase = $json['gateway']['auth_base'];
+            $oauthRoot = $json['gateway']['oauth_root'];
+        }
+        if ($this->isIndexArray($json, 'auth')) {
+            $refresh = $json['auth']['refresh_token'];
+            $access = $json['auth']['access_token'];
+        }
+        return "$authBase/login/iabClose?access_token=$access&refresh_token=$refresh&oauth2_backend_url=$oauthRoot";        
+    }
+    
     // get list of commands for the device
     public function getConfig($device) {
 
@@ -73,7 +92,7 @@ class LgParameters {
     private function getInArray($arr, $key, $value, $result) {
         if (!empty($arr))
             foreach ($arr as $arr0) {
-                if (isset($arr0[$key]) && $arr0[$key] == $value) {
+                if (isset($arr0[$key]) && $arr0[$key] == $value && isset($arr0[$result])) {
                     return $arr0[$result];
                 }
             }
@@ -134,4 +153,7 @@ class LgParameters {
         return $this->devices;
     }
 
+    public function getAuthUrl(){
+        return $this->authUrl;
+    }
 }

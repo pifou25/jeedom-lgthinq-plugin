@@ -41,6 +41,9 @@ try {
     if (empty($lgObjects)) {
         $msg .= 'No object found... auth required.';
     } else {
+        if(lgthinq::isDebug()){
+            $msg .= "Appareils détectés\n" . json_encode($lgObjects, JSON_PRETTY_PRINT)."\n";
+        }
 
         // objets deja créés dans jeedom
         $jeedomObjects = lgthinq::byType('lgthinq');
@@ -57,12 +60,13 @@ try {
             }
         }
         
-        $param = new LgParameters(lgthinq::getApi()->save());
+        $save = $lgApi->save();
+        $param = new LgParameters($save);
         $devices = array_keys($param->getDevices());
         if(lgthinq::isDebug()){
-            $msg .= json_encode($devices, JSON_PRETTY_PRINT);
-            $msg .= $param->getLog();
-            $msg .= print_r($lgObjects, true);
+            $msg .= json_encode($devices, JSON_PRETTY_PRINT) ."\n";
+            $msg .= $param->getLog() ."\n";
+            $msg .= json_encode($save, JSON_PRETTY_PRINT) ."\n";
         }
 
         // creer les nouveaux objets decouverts

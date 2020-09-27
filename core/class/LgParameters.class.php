@@ -145,6 +145,10 @@ class LgParameters {
         return preg_replace('/-+/', '-', $string); // Replaces multiple hyphens with single one.
     }
 
+    /**
+     * list of every config files into ./resources/devices
+     * @return array of json file names
+     */
     public static function getAllConfig(){
         return array_diff(scandir(dirname(__FILE__) . '/../../resources/devices/'), array('.', '..'));
     }

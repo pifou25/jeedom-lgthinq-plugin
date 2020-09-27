@@ -324,7 +324,7 @@ def set_command(client, device_id, temp):
                 client, _force_device(client, device_id))
             refrigerator.set_temp_refrigerator_c(int(temp))
         else:
-            raise raise InvalidUsage(
+            raise InvalidUsage(
                 'set-temp only suported for AC or refrigerator devices', 401)
 
     elif command == 'temp_freezer':

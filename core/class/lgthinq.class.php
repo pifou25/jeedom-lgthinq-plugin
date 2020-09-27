@@ -100,35 +100,23 @@ class lgthinq extends eqLogic {
      * create the new object:
      * $_config has 4 mandatory keys: 'id' 'type' 'model' 'name'
      */
-    public static function CreateEqLogic($_config) {
+    public static function CreateEqLogic($_config, $_json = null) {
 
-        $valid = true;
-        foreach (['id', 'type', 'model', 'name'] as $key) {
-            if (!isset($_config[$key])) {
-                LgLog::error("Missing $key in LG response:" . json_encode($_config));
-                $valid = false;
-            }
-        }
-        if (!$valid) {
+        if (lgthinq::assertArrayContains($_config, ['id', 'type', 'model', 'name'])) {
             return null;
         }
 
-        $eqLogic = new lgthinq();
-        $eqLogic->setEqType_name('lgthinq');
-        $eqLogic->setIsEnable(1);
-        $eqLogic->setLogicalId($_config['id']);
-        $eqLogic->setName($_config['name']);
-        $eqLogic->setProductModel($_config['model']);
-        $eqLogic->setProductType($_config['type']);
-        $eqLogic->setIsVisible(1);
+        $eqLogic = new lgthinq($_config);
         $eqLogic->save();
         LgLog::debug('Create LG Object ' . $eqLogic->getLogicalId() . ' - ' .
-                $eqLogic->getName() . ' - ' . $eqLogic->getProductModel() . ' - ' . $eqLogic->getProductType());
+                $eqLogic->getName() . ' - ' . $eqLogic->getProductModel() . ' - ' .
+                $eqLogic->getProductType() .
+                ($_json == null ? ' - default config' : ' - ' . $_json));
 
         // nécessaire de recharger le $eqLogic ??
         //$eqLogic = lgthinq::byId($eqLogic->getId());
 
-        if ($eqLogic->getConfFilePath() === false) {
+        if ($eqLogic->configureFilepath( $_json) === false) {
             // recuperer conf LG
             $param = new LgParameters(self::getApi()->save());
             if (!isset($param->getDevices()[$eqLogic->getProductModel()])) {
@@ -137,13 +125,12 @@ class lgthinq extends eqLogic {
             }
             $eqLogicConf = $param->getDevices()[$eqLogic->getProductModel()];
             // générer le fichier de conf par défaut
-            $file = dirname(__FILE__) . self::RESOURCES_PATH . $eqLogic->getConfiguration('product_type')
-                    . '.' . $eqLogic->getConfiguration('product_model') . '.json';
+            $file = dirname(__FILE__) . self::RESOURCES_PATH . $eqLogic->getProductType()
+                    . '.' . $eqLogic->getProductModel() . '.json';
             file_put_contents($file, json_encode($eqLogicConf, JSON_PRETTY_PRINT));
             LgLog::info("Création du fichier de conf $file");
             if (self::isDebug()) {
-                $log = $param->getLog();
-                LgLog::debug("LgParam config:\n $log");
+                LgLog::debug("LgParam config:\n" . $param->getLog());
             }
         }
         // générer les commandes
@@ -316,6 +303,23 @@ class lgthinq extends eqLogic {
         ]);
     }
 
+    /**
+     * check that every key of 'example' exists into 'config'
+     * @param array $_config
+     * @param array $_example
+     * @return boolean
+     */
+    public static function assertArrayContains($_config, $_example){
+       $valid = true;
+        foreach ($_example as $key) {
+            if (!array_key_exists($key, $_config)) {
+                LgLog::error("Missing $key in LG response:" . json_encode($_config));
+                $valid = false;
+            }
+        }
+        return $valid;
+    }
+    
     public static function isDebug() {
         if (self::$__debug == null) {
             self::$__debug = ( log::convertLogLevel(log::getLogLevel('lgthinq')) == 'debug' );
@@ -324,6 +328,21 @@ class lgthinq extends eqLogic {
     }
 
     /*     * *********************Méthodes d'instance************************* */
+
+    /**
+     * create default object with id, name, model and type
+     * @param array $_config
+     */
+    private function __construct($_config){
+        $this->setEqType_name('lgthinq');
+        $this->setIsEnable(1);
+        $this->setLogicalId($_config['id']);
+        $this->setName($_config['name']);
+        $this->setProductModel($_config['model']);
+        $this->setProductType($_config['type']);
+        $this->setIsVisible(1);
+        parent::__construct();
+    }
 
     public function __destruct() {
         if (!self::$_destruct) {
@@ -365,7 +384,7 @@ class lgthinq extends eqLogic {
     public function Monitoring(){
             return lgthinq::getApi()->mon($this->getLogicalId());
     }
-
+    
     /**
      * Création des commandes de l'objet avec un fichier de configuration au format json
      */
@@ -373,11 +392,11 @@ class lgthinq extends eqLogic {
 
         $this->createDefaultCommands();
 
-        if (false === $this->getConfFilePath()) {
-            self::addEvent(__('Fichier de configuration absent ', __FILE__) . $this->getConfFilePath());
+        if (false === $this->getFileconf()) {
+            self::addEvent(__('Fichier de configuration absent ', __FILE__) . $this->getFileconf());
             return false;
         }
-        $device = is_json(file_get_contents(dirname(__FILE__) . self::RESOURCES_PATH . $this->getConfFilePath()), []);
+        $device = is_json(file_get_contents(dirname(__FILE__) . self::RESOURCES_PATH . $this->getFileconf()), []);
         if (!is_array($device) || !isset($device['commands'])) {
             LgLog::debug('Config file empty or not a json format');
             return false;
@@ -425,26 +444,24 @@ class lgthinq extends eqLogic {
      * il est dans /config/devices/[product_type].[product_model].json
      * par défaut on peut utiliser [product_type].json si celui spécifique au model n'est pas disponible
      */
-    private function getConfFilePath() {
-        if (is_file(dirname(__FILE__) . self::RESOURCES_PATH . $this->getConfiguration('fileconf'))) {
-            LgLog::debug('get confFilePath from configuration ' . $this->getConfiguration('fileconf'));
-            return $this->getConfiguration('fileconf');
+    private function configureFilepath($_json = null) {
+        if ($_json !== null && $this->setFileconf($_json)) {
+            LgLog::debug('get confFilePath from configuration ' . $_json);
+            return true;
         }
-        $model = LgParameters::clean($this->getConfiguration('product_model'));
-        $id = $this->getConfiguration('product_type') . '.' . $model . '.json';
-        if (is_file(dirname(__FILE__) . self::RESOURCES_PATH . $id)) {
-            $this->setConfiguration('fileconf', $id);
+        $model = LgParameters::clean($this->getProductModel());
+        $id = $this->getProductType() . '.' . $model . '.json';
+        if ($this->setFileconf( $id)) {
             LgLog::debug('get confFilePath with specific model ' . $id);
-            return $id;
+            return true;
         }
-        $id = $this->getConfiguration('product_type') . '.json';
-        if (is_file(dirname(__FILE__) . self::RESOURCES_PATH . $id)) {
-            $this->setConfiguration('fileconf', $id);
+        $id = $this->getProductType() . '.json';
+        if ($this->setFileconf( $id)) {
             LgLog::debug('get generic confFilePath for product type ' . $id);
-            return $id;
+            return true;
         }
 
-        LgLog::info('No json config file for device ' . $this->getConfiguration('product_type') . ' nor ' . $this->getConfiguration('product_model'));
+        LgLog::info('No json config file for device ' . $this->getProductType() . ' nor ' . $this->getProductModel());
         return false;
     }
 
@@ -533,6 +550,24 @@ class lgthinq extends eqLogic {
     public function setProductModel($_productModel) {
         $this->setConfiguration('product_model', $_productModel);
     }
+    
+    public function getFileconf(){
+        return $this->getConfiguration('fileconf');
+    }
+    
+    /**
+     * this setter returns true if $_fileconf is a correct filename into RESOURCES_PATH
+     * @param string $_fileconf
+     * @return boolean
+     */
+    public function setFileconf($_fileconf){
+        if(is_file(dirname(__FILE__) . self::RESOURCES_PATH . $_fileconf)){
+            $this->setConfiguration('fileconf', $_fileconf);
+            return true;
+        }else{
+            return false;
+        }
+    }
 
 }
 
@@ -565,16 +600,16 @@ class lgthinqCmd extends cmd {
         }
 
         // récupérer l'objet eqLogic de cette commande
-        lgthinq::getApi()->mon($this->getLogicalId());
+        $eqLogic = $this->getEqLogic();
         switch ($this->getLogicalId()) { //vérifie le logicalid de la commande
             case 'refresh': // LogicalId de la commande rafraîchir
                 // maj la commande 'monitor' avec les infos de monitoring
                 $infos = lgthinq::getApi()->mon($this->getLogicalId());
-                $eqlogic->checkAndUpdateCmd('monitor', $infos);
+                $eqLogic->checkAndUpdateCmd('monitor', $infos);
                 break;
 
             default:
-                LgLog::debug('cmd execute ' . $this->getLogicalId());
+                LgLog::info('cmd execute ' . $this->getLogicalId());
                 break;
         }
     }

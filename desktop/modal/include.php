@@ -39,7 +39,7 @@ try {
     }
 
     if (empty($lgObjects)) {
-        $msg .= 'No object found... auth required.';
+        $msg .= 'Aucun objet détecté... authentification requise.';
     } else {
         if(lgthinq::isDebug()){
             $msg .= "Appareils détectés\n" . json_encode($lgObjects, JSON_PRETTY_PRINT)."\n";

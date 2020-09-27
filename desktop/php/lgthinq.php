@@ -149,5 +149,3 @@ foreach (jeeObject::all() as $object) {
 <?php
 include_file('desktop', 'lgthinq', 'js', 'lgthinq');
 include_file('core', 'plugin.template', 'js');
-
-?>

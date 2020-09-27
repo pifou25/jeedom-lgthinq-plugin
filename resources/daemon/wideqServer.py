@@ -304,6 +304,45 @@ def monitor(device_id):
 
     raise InvalidUsage('Error, no response from LG cloud', 401)
 
+
+
+@api.route('/set/<command>/<device_id>/<value>', methods=['GET'])
+def set_command(client, device_id, temp):
+    """
+    Set the configured command for an AC or refrigerator device.
+    command is: temp, temp_freezer, turn
+    """
+
+    device = client.get_device(device_id)
+
+    if command == 'temp':
+        if device.type == wideq.client.DeviceType.AC:
+            ac = wideq.ACDevice(client, _force_device(client, device_id))
+            ac.set_fahrenheit(int(temp))
+        elif device.type == wideq.client.DeviceType.REFRIGERATOR:
+            refrigerator = wideq.RefrigeratorDevice(
+                client, _force_device(client, device_id))
+            refrigerator.set_temp_refrigerator_c(int(temp))
+        else:
+            raise raise InvalidUsage(
+                'set-temp only suported for AC or refrigerator devices', 401)
+
+    elif command == 'temp_freezer':
+        if device.type == wideq.client.DeviceType.REFRIGERATOR:
+            refrigerator = wideq.RefrigeratorDevice(
+                client, _force_device(client, device_id))
+            refrigerator.set_temp_freezer_c(int(temp))
+        else:
+            raise InvalidUsage(
+                'set-temp-freezer only suported for refrigerator devices', 401)
+
+    elif command == 'turn':
+        _ac = wideq.ACDevice(client, _force_device(device_id))
+        _ac.set_on(on_off == 'on')
+
+    else:
+        raise InvalidUsage('unsupported command: {}'.format(command), 401)
+
 #
 #
 #   list of not available commands, TODO
@@ -361,26 +400,13 @@ class UserError(Exception):
 
 def _force_device(device_id):
     """Look up a device in the client (using `get_device`), but raise
-    UserError if the device is not found.
+    InvalidUsage if the device is not found.
     """
     device = client.get_device(device_id)
     if not device:
-        raise UserError('device "{}" not found'.format(device_id))
+        raise InvalidUsage('device "{}" not found'.format(device_id), 401)
     return device
 
-
-def set_temp(device_id, temp):
-    """Set the configured temperature for an AC device."""
-
-    _ac = wideq.ACDevice(client, _force_device(device_id))
-    _ac.set_fahrenheit(int(temp))
-
-
-def turn(device_id, on_off):
-    """Turn on/off an AC device."""
-
-    _ac = wideq.ACDevice(client, _force_device(device_id))
-    _ac.set_on(on_off == 'on')
 
 
 def ac_config(device_id):

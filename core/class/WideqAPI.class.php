@@ -205,6 +205,13 @@ class WideqAPI {
     }
 
     /**
+     * set a command / value for one device by id
+     */
+    public function set($device, $command, $value) {
+        return $this->callRestApi("set/$command/$device/$value");
+    }
+
+    /**
      * change log level or the python REST API
      * raise LgApiException in case of error
      */

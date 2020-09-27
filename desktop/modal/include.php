@@ -67,41 +67,8 @@ try {
             $msg .= json_encode($devices, JSON_PRETTY_PRINT) ."\n";
             $msg .= $param->getLog() ."\n";
             $msg .= json_encode($save, JSON_PRETTY_PRINT) ."\n";
+            $msg .= json_encode(WideqAPI::getRequests(), JSON_PRETTY_PRINT) ."\n";
         }
-
-        // creer les nouveaux objets decouverts
-//        $nbCreated = 0;
-//        $created = [];
-//        foreach ($lgObjects as &$lgObj) {
-//            if (!isset($lgObj['eqLogic'])) {
-//                LgLog::debug('create object with ' . json_encode($lgObj));
-//                // create any missing object
-//                $eqLogic = lgthinq::CreateEqLogic($lgObj);
-//                if ($eqLogic !== null) {
-//                    $nbCreated++;
-//                    $lgObj['eqLogic'] = $eqLogic;
-//                    $lgObj['created'] = true;
-//                    $created[] = $lgObj['id'];
-//                }
-//            }
-//        }
-//
-//        $msg .= ", ($nbCreated objets créés)\n";
-//
-//        if (!empty($created)) {
-//            foreach ($created as $id) {
-//                $json = $lgApi->mon($id);
-//                $msg .= json_encode($json, JSON_PRETTY_PRINT);
-//                $save = $lgApi->save();
-//
-//                if (is_array($save) && isset($save['config']['model_info'])) {
-//                    $count = is_array($save['config']['model_info']) ? count($save['config']['model_info']) : 'N/A';
-//                    $msg .= "\n\t(infos $count)\n" . json_encode($save['config']['model_info'], JSON_PRETTY_PRINT);
-//                } else {
-//                    $msg .= json_encode($save, JSON_PRETTY_PRINT);
-//                }
-//            }
-//        }
 
         // $msg .= json_encode($lgObjects, JSON_PRETTY_PRINT);
         // $msg .= "\n".json_encode(WideqAPI::$requests, JSON_PRETTY_PRINT);

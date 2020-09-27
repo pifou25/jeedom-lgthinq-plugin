@@ -7,32 +7,21 @@
  */
 class LgParameters {
 
-    private $log = '';
+    private static $log = '';
     private $devices = null;
     private $authUrl = null;
-
-    public static function clean($string) {
-        $string = str_replace(' ', '_', $string); // Replaces all spaces with hyphens.
-        $string = preg_replace('/[^A-Za-z0-9\-_]/', '', $string); // Removes special chars.
-
-        return preg_replace('/-+/', '-', $string); // Replaces multiple hyphens with single one.
-    }
-
-    public static function getAllConfig(){
-        return array_diff(scandir(dirname(__FILE__) . '/../../resources/devices/'), array('.', '..'));
-    }
     
     public function __construct($json) {
 
         $this->authUrl = $this->computeAuthUrl($json);
-        if ($this->isIndexArray($json, 'config')) {
+        if (self::isIndexArray($json, 'config')) {
             $json = $json['config'];
         }
-        if ($this->isIndexArray($json, 'model_info')) {
+        if (self::isIndexArray($json, 'model_info')) {
             $json = $json['model_info'];
         }
         if (empty($json)) {
-            $this->log .= "model_info found but empty;\n";
+            self::$log .= "model_info found but empty;\n";
         } else {
             $this->devices = $this->computeDevices($json);
         }
@@ -40,15 +29,15 @@ class LgParameters {
 
     public function computeAuthUrl($json){
         // "$authBase/login/iabClose?access_token=$access&refresh_token=$refresh&oauth2_backend_url=$oauthRoot"
-        if ($this->isIndexArray($json, 'config')) {
+        if (self::isIndexArray($json, 'config')) {
             $json = $json['config'];
         }
         $refresh = $access = $authBase = $oauthRoot = '';
-        if ($this->isIndexArray($json, 'gateway')) {
+        if (self::isIndexArray($json, 'gateway')) {
             $authBase = $json['gateway']['auth_base'];
             $oauthRoot = $json['gateway']['oauth_root'];
         }
-        if ($this->isIndexArray($json, 'auth')) {
+        if (self::isIndexArray($json, 'auth')) {
             $refresh = $json['auth']['refresh_token'];
             $access = $json['auth']['access_token'];
         }
@@ -60,16 +49,16 @@ class LgParameters {
 
         $commands = [];
         $protocol = [];
-        if (!$this->isIndexArray($device, 'Monitoring')) {
-            $this->log .= "\tno monitoring for model ();\n";
-        } else if (!$this->isIndexArray($device['Monitoring'], 'protocol')) {
-            $this->log .= "\tno protocol in monitoring for model ();\n";
+        if (!self::isIndexArray($device, 'Monitoring')) {
+            self::$log .= "\tno monitoring for model ();\n";
+        } else if (!self::isIndexArray($device['Monitoring'], 'protocol')) {
+            self::$log .= "\tno protocol in monitoring for model ();\n";
         } else {
             $protocol = $device['Monitoring']['protocol'];
         }
 
-        if (!$this->isIndexArray($device, 'Value')) {
-            $this->log .= "\tno value for model_info () into config;\n";
+        if (!self::isIndexArray($device, 'Value')) {
+            self::$log .= "\tno value for model_info () into config;\n";
         } else {
 
             $commands = $this->getCommands($device['Value'], $protocol);
@@ -79,42 +68,15 @@ class LgParameters {
             'commands' => $commands];
     }
 
-    private function isIndexArray($arr, $index) {
-        if (isset($arr[$index]) && is_array($arr[$index]))
-            return true;
-        else {
-            $this->log .= "\tno $index;\n";
-            return false;
-        }
-    }
-
-    // return $arr[$result] where $arr[$key] = $value
-    private function getInArray($arr, $key, $value, $result) {
-        if (!empty($arr))
-            foreach ($arr as $arr0) {
-                if (isset($arr0[$key]) && $arr0[$key] == $value && isset($arr0[$result])) {
-                    return $arr0[$result];
-                }
-            }
-        $count = count($arr);
-        $this->log .= "\t $result not found with $key = $value ($count);\n";
-        return false;
-    }
-
-    // return $protocol[_comment] si $protocol[value] == $value
-    private function getComment($protocol, $value) {
-        return $this->getInArray($protocol, 'value', $value, '_comment');
-    }
-
     // get every config.model_info.[].Info.modelName
     private function computeDevices($json) {
         $result = [];
         // check every device
         foreach ($json as $value) {
-            if (!$this->isIndexArray($value, 'Info')) {
-                $this->log .= "no model_info for device ();\n";
+            if (!self::isIndexArray($value, 'Info')) {
+                self::$log .= "no model_info for device ();\n";
             } else if (!isset($value['Info']['modelName'])) {
-                $this->log .= "no modelName for device ();\n";
+                self::$log .= "no modelName for device ();\n";
             } else {
                 $result[$value['Info']['modelName']] = $value;
             }
@@ -127,10 +89,10 @@ class LgParameters {
         $commands = [];
         foreach ($device as $name => $cmd) {
 
-            $cmt = $this->getComment($protocol, $name);
+            $cmt = self::getComment($protocol, $name);
             $type = $cmd['type'];
 
-            $this->log .= "$name: $cmt ($type)\n";
+            self::$log .= "$name: $cmt ($type)\n";
             $cmd = ['name' => $name,
                 'type' => 'info',
                 'subType' => 'string',
@@ -145,8 +107,50 @@ class LgParameters {
         return $commands;
     }
 
-    public function getLog() {
-        return $this->log;
+    /**
+     * public static functions
+     */
+   
+    public static function isIndexArray($arr, $index) {
+        if (isset($arr[$index]) && is_array($arr[$index]))
+            return true;
+        else {
+            self::$log .= "\tno $index;\n";
+            return false;
+        }
+    }
+
+    // return $arr[$result] where $arr[$key] = $value
+    public static function getInArray($arr, $key, $value, $result) {
+        if (!empty($arr))
+            foreach ($arr as $arr0) {
+                if (isset($arr0[$key]) && $arr0[$key] == $value && isset($arr0[$result])) {
+                    return $arr0[$result];
+                }
+            }
+        $count = count($arr);
+        self::$log .= "\t $result not found with $key = $value ($count);\n";
+        return false;
+    }
+
+    // return $protocol[_comment] si $protocol[value] == $value
+    public static function getComment($protocol, $value) {
+        return self::getInArray($protocol, 'value', $value, '_comment');
+    }
+
+    public static function clean($string) {
+        $string = str_replace(' ', '_', $string); // Replaces all spaces with hyphens.
+        $string = preg_replace('/[^A-Za-z0-9\-_]/', '', $string); // Removes special chars.
+
+        return preg_replace('/-+/', '-', $string); // Replaces multiple hyphens with single one.
+    }
+
+    public static function getAllConfig(){
+        return array_diff(scandir(dirname(__FILE__) . '/../../resources/devices/'), array('.', '..'));
+    }
+
+    public static function getLog() {
+        return self::$log;
     }
 
     public function getDevices() {

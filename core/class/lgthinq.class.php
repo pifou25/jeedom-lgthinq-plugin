@@ -360,9 +360,18 @@ class lgthinq extends eqLogic {
     }
 
     /**
+     * check for wideq API for monitoring this object
+     */
+    public function Monitoring(){
+            return lgthinq::getApi()->mon($this->getLogicalId());
+    }
+
+    /**
      * Création des commandes de l'objet avec un fichier de configuration au format json
      */
     private function createCommand($_update = false) {
+
+        $this->createDefaultCommands();
 
         if (false === $this->getConfFilePath()) {
             self::addEvent(__('Fichier de configuration absent ', __FILE__) . $this->getConfFilePath());
@@ -381,6 +390,34 @@ class lgthinq extends eqLogic {
         self::addEvent('');
         LgLog::debug('Successfully created commands from config file:' . count($device));
         return true;
+    }
+
+    /**
+     * commande par défaut pour monitorer l'objet
+     */
+    private function createDefaultCommands(){
+        $info = $this->getCmd(null, 'monitor');
+        if (!is_object($info)) {
+                $info = new lgthinq();
+                $info->setName(__('Monitoring', __FILE__));
+        }
+        $info->setLogicalId('monitor');
+        $info->setEqLogic_id($this->getId());
+        $info->setType('info');
+        $info->setSubType('string');
+        $info->save();
+
+        $refresh = $this->getCmd(null, 'refresh');
+        if (!is_object($refresh)) {
+                $refresh = new vdmCmd();
+                $refresh->setName(__('Rafraichir', __FILE__));
+        }
+        $refresh->setEqLogic_id($this->getId());
+        $refresh->setLogicalId('refresh');
+        $refresh->setType('action');
+        $refresh->setSubType('other');
+        $refresh->save();
+
     }
 
     /**
@@ -521,14 +558,19 @@ class lgthinqCmd extends cmd {
      */
 
     public function execute($_options = array()) {
+        LgLog::debug('cmd->execute ' . print_r($_options, true) . "\nfor this = " . print_r($this, true) );
+
         if ($this->getType() != 'action') {
                 return;
         }
 
+        // récupérer l'objet eqLogic de cette commande
+        lgthinq::getApi()->mon($this->getLogicalId());
         switch ($this->getLogicalId()) { //vérifie le logicalid de la commande
-            case 'refresh': // LogicalId de la commande rafraîchir que l’on a créé dans la méthode Postsave de la classe lgthinq
-                // maj la commande ...
-                $this->getEqLogic()->RefreshCommands(); // on met à jour toutes les commandes de l'eqLogic
+            case 'refresh': // LogicalId de la commande rafraîchir
+                // maj la commande 'monitor' avec les infos de monitoring
+                $infos = lgthinq::getApi()->mon($this->getLogicalId());
+                $eqlogic->checkAndUpdateCmd('monitor', $infos);
                 break;
 
             default:

@@ -331,8 +331,8 @@ class lgthinq extends eqLogic {
     private function __construct($_config){
         $this->setEqType_name('lgthinq');
         $this->setIsEnable(1);
-        $this->setLogicalId($_config['id']);
-        $this->setName($_config['name']);
+        $this->setLogicalId($_config['name']);
+        $this->setName($_config['id']);
         $this->setProductModel($_config['model']);
         $this->setProductType($_config['type']);
         $this->setIsVisible(1);

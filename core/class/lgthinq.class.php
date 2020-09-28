@@ -102,17 +102,12 @@ class lgthinq extends eqLogic {
      */
     public static function CreateEqLogic($_config, $_json = null) {
 
-        if (lgthinq::assertArrayContains($_config, ['id', 'type', 'model', 'name'])) {
+        if (!lgthinq::assertArrayContains($_config, ['id', 'type', 'model', 'name'])) {
             return null;
         }
 
         $eqLogic = new lgthinq($_config);
         $eqLogic->save();
-        LgLog::debug('Create LG Object ' . $eqLogic->getLogicalId() . ' - ' .
-                $eqLogic->getName() . ' - ' . $eqLogic->getProductModel() . ' - ' .
-                $eqLogic->getProductType() .
-                ($_json == null ? ' - default config' : ' - ' . $_json));
-
         // nécessaire de recharger le $eqLogic ??
         //$eqLogic = lgthinq::byId($eqLogic->getId());
 
@@ -144,7 +139,7 @@ class lgthinq extends eqLogic {
      */
     private static function refreshData() {
         LgLog::debug('refresh LG data for all devices');
-        foreach (self::byType('lgthinq') as $eqLogic) {//parcours tous les équipements du plugin vdm
+        foreach (self::byType('lgthinq') as $eqLogic) {//parcours tous les équipements du plugin
             $eqLogic->RefreshCommands();
         }
     }
@@ -341,6 +336,9 @@ class lgthinq extends eqLogic {
         $this->setProductModel($_config['model']);
         $this->setProductType($_config['type']);
         $this->setIsVisible(1);
+        LgLog::debug('Create LG Object ' . $this->getLogicalId() . ' - ' .
+                $this->getName() . ' - ' . $this->getProductModel() . ' - ' .
+                $this->getProductType());
         parent::__construct();
     }
 
@@ -417,7 +415,7 @@ class lgthinq extends eqLogic {
     private function createDefaultCommands(){
         $info = $this->getCmd(null, 'monitor');
         if (!is_object($info)) {
-                $info = new lgthinq();
+                $info = new lgthinqCmd();
                 $info->setName(__('Monitoring', __FILE__));
         }
         $info->setLogicalId('monitor');
@@ -428,7 +426,7 @@ class lgthinq extends eqLogic {
 
         $refresh = $this->getCmd(null, 'refresh');
         if (!is_object($refresh)) {
-                $refresh = new vdmCmd();
+                $refresh = new lgthinqCmd();
                 $refresh->setName(__('Rafraichir', __FILE__));
         }
         $refresh->setEqLogic_id($this->getId());

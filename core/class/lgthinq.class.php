@@ -108,8 +108,6 @@ class lgthinq extends eqLogic {
 
         $eqLogic = new lgthinq($_config);
         $eqLogic->save();
-        // nécessaire de recharger le $eqLogic ??
-        //$eqLogic = lgthinq::byId($eqLogic->getId());
 
         if ($eqLogic->configureFilepath( $_json) === false) {
             // recuperer conf LG
@@ -331,8 +329,8 @@ class lgthinq extends eqLogic {
     private function __construct($_config){
         $this->setEqType_name('lgthinq');
         $this->setIsEnable(1);
-        $this->setLogicalId($_config['name']);
-        $this->setName($_config['id']);
+        $this->setLogicalId($_config['id']);
+        $this->setName($_config['name']);
         $this->setProductModel($_config['model']);
         $this->setProductType($_config['type']);
         $this->setIsVisible(1);
@@ -377,13 +375,6 @@ class lgthinq extends eqLogic {
     }
 
     /**
-     * check for wideq API for monitoring this object
-     */
-    public function Monitoring(){
-            return lgthinq::getApi()->mon($this->getLogicalId());
-    }
-    
-    /**
      * Création des commandes de l'objet avec un fichier de configuration au format json
      */
     private function createCommand($_update = false) {
@@ -399,9 +390,9 @@ class lgthinq extends eqLogic {
             LgLog::debug('Config file empty or not a json format');
             return false;
         }
-        if (isset($device['name']) && !$_update) {
-            $this->setName('[' . $this->getLogicalId() . ']' . $device['name']);
-        }
+//        if (isset($device['name']) && !$_update) {
+//            $this->setName('[' . $this->getLogicalId() . ']' . $device['name']);
+//        }
         $this->import($device);
         sleep(1);
         self::addEvent('');

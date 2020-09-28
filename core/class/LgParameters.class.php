@@ -8,7 +8,7 @@
 class LgParameters {
 
     private static $log = '';
-    private $devices = null;
+    private $devices = [];
     private $authUrl = null;
     
     public function __construct($json) {

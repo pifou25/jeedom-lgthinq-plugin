@@ -339,7 +339,7 @@ class lgthinq extends eqLogic {
         LgLog::debug('Create LG Object ' . $this->getLogicalId() . ' - ' .
                 $this->getName() . ' - ' . $this->getProductModel() . ' - ' .
                 $this->getProductType());
-        parent::__construct();
+        //parent::__construct();
     }
 
     public function __destruct() {

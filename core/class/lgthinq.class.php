@@ -360,14 +360,14 @@ class lgthinq extends eqLogic {
 
             // interroger l'API cloud LG pour rafraichir l'information:
             $infos = lgthinq::getApi()->mon($this->getLogicalId());
-            LgLog::debug("monitoring {$this->getName()}" . print_r($infos));
+            LgLog::debug("monitoring {$this->getName()}" . print_r($infos, true));
 
             foreach ($cmds as $cmd) {
                 if (isset($infos[$cmd->getLogicalId()])) {
                     // maj la commande ...
                     $this->checkAndUpdateCmd($cmd, $infos[$cmd->getLogicalId()]);
-                } else {
-                    LgLog::debug("Pas d'info pour {$cmd->getLogicalId()}");
+//                } else {
+//                    LgLog::debug("Pas d'info pour {$cmd->getLogicalId()}");
                 }
             }
 

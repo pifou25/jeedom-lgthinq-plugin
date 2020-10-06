@@ -267,7 +267,7 @@ def monitor(device_id):
         # client = wideq.Client.load(state)
         device = client.get_device(device_id)
         model = client.model_info(device)
-    except NotLoggedInError:
+    except wideq.NotLoggedInError:
         print('mon {} NotLoggedInError: refresh session and try again'.format(devide_id))
         client.refresh();
         device = client.get_device(device_id)

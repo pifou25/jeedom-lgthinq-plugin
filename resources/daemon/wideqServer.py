@@ -270,13 +270,13 @@ def monitor(device_id):
         device = client.get_device(backup_id)
         model = client.model_info(device)
     except wideq.NotLoggedInError as err:
-        logging.error('mon {} NotLoggedInError: refresh session and try again. ({})'.format(devide_id, err))
+        logging.error('mon {} NotLoggedInError: refresh session and try again. ({})'.format(backup_id, err))
         client.refresh();
         device = client.get_device(backup_id)
         model = client.model_info(device)
     except wideq.APIError as err:
         if err.code == 9003:
-            logging.error('mon {} APIError: refresh session and try again. ({})'.format(devide_id, err))
+            logging.error('mon {} APIError: refresh session and try again. ({})'.format(backup_id, err))
             client.refresh();
             device = client.get_device(backup_id)
             model = client.model_info(device)

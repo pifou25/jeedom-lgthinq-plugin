@@ -249,10 +249,6 @@ def get_ls():
             logging.info('Session expired.')
             client.refresh()
 
-        except UserError as exc:
-            logging.error(exc.msg)
-            raise InvalidUsage(exc.msg, 401)
-
     raise InvalidUsage('Error, no response from LG cloud', 401)
 
 @api.route('/mon/<device_id>', methods=['GET'])
@@ -404,12 +400,6 @@ def ac_mon(device_id):
     finally:
         ac.monitor_stop()
 
-
-class UserError(Exception):
-    """A user-visible command-line error.
-    """
-    def __init__(self, msg):
-        self.msg = msg
 
 
 def _force_device(device_id):

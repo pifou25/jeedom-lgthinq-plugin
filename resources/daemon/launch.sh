@@ -4,5 +4,5 @@
 BASEDIR=$(dirname "$BASH_SOURCE")
 cd ${BASEDIR}
 source env/bin/activate
-echo "call $BASEDIR wideqServer.py $*"
-$(cat python.cmd) wideqServer.py "$@"
+echo "call $BASEDIR srv.py $*"
+$(cat python.cmd) srv.py "$@"

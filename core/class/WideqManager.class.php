@@ -26,7 +26,7 @@
 class WideqManager {
 
     const WIDEQ_LAUNCHER = 'launch.sh';
-    const WIDEQ_SCRIPT = 'wideqServer.py';
+    const WIDEQ_SCRIPT = 'srv.py';
 
     /**
      * object WideqAPI.class.php
@@ -34,7 +34,7 @@ class WideqManager {
     private static $wideqApi = null;
 
     /**
-     * répertoire du démon wideqServer.py
+     * répertoire du démon srv.py
      */
     private static $resourcesDir = null;
 

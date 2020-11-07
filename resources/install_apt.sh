@@ -93,6 +93,12 @@ ${PYTHON_BASH} -m pip install -r requirements.txt >> ${LOG_FILE}
 # sortie de l'env virtuel
 deactivate
 
+echo 95 > ${PROGRESS_FILE}
+log "clone wideq lib from github in ${BASEDIR}/daemon"
+wget https://github.com/pifou25/wideq/archive/jeedom.zip wideq.zip
+unzip -q wideq.zip -d .
+mv wideq-jeedom wideq
+
 echo 100 > ${PROGRESS_FILE}
 log "Everything is successfully installed!"
 

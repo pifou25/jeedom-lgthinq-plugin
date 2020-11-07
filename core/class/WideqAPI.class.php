@@ -85,8 +85,7 @@ class WideqAPI {
                 return $len;
             $headersResponse[strtolower(trim($header[0]))][] = trim($header[1]);
             return $len;
-        }
-        );
+        });
 
         // for debug mode:
         if ($this->debug)
@@ -106,9 +105,9 @@ class WideqAPI {
         $err = curl_errno($ch); // technical error
         if ($err) {
             $curl_error = curl_error($ch);
-        } else if (isset($return['state']) && $return['state'] == 'error') { // check functionnal error
-            $err = isset($return['code']) ? $return['code'] : 500;
-            $curl_error = isset($return['result']) ? json_encode($return['result']) : 'Functionnal Error 500';
+        } else if (isset($return['code']) && isset($return['message'])) { // check functionnal error
+            $err = $return['code'];
+            $curl_error = json_encode($return['message']);
         }
 
         curl_close($ch);
@@ -168,16 +167,7 @@ class WideqAPI {
      */
     public function token($url) {
         $url = urlencode($url);
-        $result = $this->callRestApi("token/$url");
-        if (isset($result[self::TOKEN_KEY])) {
-            $this->headers = [
-                self::TOKEN_KEY . ': ' . $result[self::TOKEN_KEY]
-            ];
-        } else {
-            $result['message'] = sprint_f('No %s ! (%s)', self::TOKEN_KEY, $url);
-        }
-
-        return $result;
+        return $this->callRestApi("token/$url");
     }
 
     /**

@@ -84,15 +84,7 @@ class lgthinq extends eqLogic {
             if ($_auth === false) {
                 $_auth = config::byKey('LgAuthUrl', 'lgthinq');
             }
-            $json = $lgApi->token($_auth);
-            if (isset($json[WideqAPI::TOKEN_KEY])) {
-                config::save('LgJeedomToken', $json[WideqAPI::TOKEN_KEY], 'lgthinq');
-                return true;
-            } else {
-                $msg = 'aucun jeedom token : ' . json_encode($json);
-                LgLog::error($msg);
-                return $msg;
-            }
+            return $lgApi->token($_auth);
         }
     }
 

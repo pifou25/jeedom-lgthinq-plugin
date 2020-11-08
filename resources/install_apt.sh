@@ -95,7 +95,7 @@ deactivate
 
 echo 95 > ${PROGRESS_FILE}
 log "clone wideq lib from github in ${BASEDIR}/daemon"
-wget https://github.com/pifou25/wideq/archive/jeedom.zip wideq.zip
+wget https://github.com/pifou25/wideq/archive/jeedom.zip -O wideq.zip
 unzip -q wideq.zip -d .
 mv wideq-jeedom wideq
 

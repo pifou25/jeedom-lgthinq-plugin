@@ -69,12 +69,6 @@ if (!isConnect()) {
             </div>
         </div>
         <div class="form-group">
-            <label class="col-lg-3 control-label">{{Jeedom Token}}</label>
-            <div class="col-lg-6">
-                <input class="configKey form-control" data-l1key="LgJeedomToken" id="LgJeedomToken" disabled />
-            </div>
-        </div>
-        <div class="form-group">
             <label class="col-lg-3 control-label">{{Ping du serveur plugin :}}</label>
             <div class="col-lg-2">
                 <a class="btn btn-success btn-xs" id="bt_pingLgthinq"><i class="far fa-check-circle icon-white"></i> {{Ping ?}}</a>

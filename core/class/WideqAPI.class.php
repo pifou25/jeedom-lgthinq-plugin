@@ -10,8 +10,6 @@ class LgApiException extends \Exception {
 
 class WideqAPI {
 
-    const TOKEN_KEY = 'jeedom_token';
-
     /**
      * headers are the jeedom_token for authentication with python server
      */

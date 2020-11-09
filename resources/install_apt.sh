@@ -85,6 +85,10 @@ cd ${BASEDIR}/daemon
 # for jeedom to know the command for python3.7
 echo ${PYTHON_BASH} > python.cmd
 
+echo 85 > ${PROGRESS_FILE}
+log "upgrade pip3"
+${PYTHON_BASH} -m pip install --upgrade pip >> ${LOG_FILE}
+
 echo 90 > ${PROGRESS_FILE}
 log "install python dependencies in ${BASEDIR}/daemon"
 # ${PYTHON_BASH} -m venv env >> ${LOG_FILE}

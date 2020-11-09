@@ -25,7 +25,6 @@
  */
 class WideqManager {
 
-    const WIDEQ_LAUNCHER = 'launch.sh';
     const WIDEQ_SCRIPT = 'srv.py';
 
     /**
@@ -68,7 +67,6 @@ class WideqManager {
                 if ($pythonVersion === false || $pythonVersion < 36) {
                     // default python3 version too old
                     LgLog::debug('no file (' . self::getWideqDir() . 'python.cmd) found, default too old : ' . $pythonVersion);
-                    self::$pythonBash = false;
                 } else {
                     self::$pythonBash = '/usr/bin/python3';
                 }
@@ -118,9 +116,10 @@ class WideqManager {
             throw new Exception(__('Veuillez vérifier la configuration', __FILE__));
         }
 
-        $file = self::getWideqDir() . self::WIDEQ_LAUNCHER;
+        $file = self::getWideqDir() . 'wideq/'. self::WIDEQ_SCRIPT;
         // (add +x at install.php) flag and run the server:
-        $cmd = system::getCmdSudo() . " $file --port {$daemon_info['port']}";
+        $cmd = system::getCmdSudo() . " $file --port {$daemon_info['port']} "
+            . "--key {$daemon_info['key']} --ip {$daemon_info['ip']}";
         if (isset($daemon_info['debug']) && $daemon_info['debug']) {
             $cmd .= ' -v ';
         }

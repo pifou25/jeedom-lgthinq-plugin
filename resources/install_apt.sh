@@ -87,11 +87,11 @@ echo ${PYTHON_BASH} > python.cmd
 
 echo 90 > ${PROGRESS_FILE}
 log "install python dependencies in ${BASEDIR}/daemon"
-${PYTHON_BASH} -m venv env >> ${LOG_FILE}
-source env/bin/activate
+# ${PYTHON_BASH} -m venv env >> ${LOG_FILE}
+# source env/bin/activate
 ${PYTHON_BASH} -m pip install -r requirements.txt >> ${LOG_FILE}
 # sortie de l'env virtuel
-deactivate
+# deactivate
 
 echo 95 > ${PROGRESS_FILE}
 log "clone wideq lib from github in ${BASEDIR}/daemon"

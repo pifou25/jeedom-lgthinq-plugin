@@ -21,6 +21,10 @@ if (!isConnect('admin')) {
 
 try {
 
+    /**
+     * script pour l'inclusion / synchronisation des objets LGThinq
+     */
+    
     // include /plugins/lgthinq/core/WideqAPI.class.php
     include_file('core', 'lgthinq', 'class', 'lgthinq');
 

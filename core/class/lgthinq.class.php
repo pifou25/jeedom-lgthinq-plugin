@@ -251,7 +251,7 @@ class lgthinq extends eqLogic {
     public static function deamon_info() {
         $return = WideqManager::daemon_info();
         $return['pid'] = config::byKey('PidLg', 'lgthinq');
-        // $return['port'] = config::byKey('PortServerLg', 'lgthinq', 5025);
+        $return['port'] = config::byKey('PortServerLg', 'lgthinq', 5025);
         // $return['url'] = config::byKey('UrlServerLg', 'lgthinq', 'http://127.0.0.1');
         $return['key'] = jeedom::getApiKey();
         $return['ip'] = config::byKey('internalAddr');

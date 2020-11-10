@@ -34,8 +34,8 @@ function initLgthinqParameters() {
             config::save($key, $value, 'lgthinq');
         }
     }
-    $file = WideqManager::getWideqDir() . WideqManager::WIDEQ_LAUNCHER
-            . ' ' . WideqManager::getWideqDir() . 'check.sh ';
+    $file = WideqManager::getWideqDir() 
+            . WideqManager::getWideqDir() . 'check.sh ';
     exec(system::getCmdSudo() . " chmod +x $file");
 }
 

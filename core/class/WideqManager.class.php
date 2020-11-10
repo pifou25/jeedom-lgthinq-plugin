@@ -118,7 +118,8 @@ class WideqManager {
 
         $file = self::getWideqDir() . 'wideq/'. self::WIDEQ_SCRIPT;
         // (add +x at install.php) flag and run the server:
-        $cmd = system::getCmdSudo() . " $file --port {$daemon_info['port']} "
+        $cmd = system::getCmdSudo() . ' ' . self::getPython()
+            . " $file --port {$daemon_info['port']} "
             . "--key {$daemon_info['key']} --ip {$daemon_info['ip']}";
         if (isset($daemon_info['debug']) && $daemon_info['debug']) {
             $cmd .= ' -v ';

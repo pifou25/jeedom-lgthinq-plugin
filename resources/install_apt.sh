@@ -103,6 +103,7 @@ rm -r wideq
 wget https://github.com/pifou25/wideq/archive/jeedom.zip -O wideq.zip
 unzip -q wideq.zip -d .
 mv wideq-jeedom wideq
+chown -R www-data:www-data wideq
 rm wideq.zip
 
 chmod +x check.sh

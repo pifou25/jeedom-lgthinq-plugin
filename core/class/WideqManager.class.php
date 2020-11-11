@@ -62,7 +62,7 @@ class WideqManager {
 
             if (self::$pythonBash === false) {
                 // no python.cmd, check the default python version:
-                $pythonVersion = $result = shell_exec(system::getCmdSudo()
+                $pythonVersion = $result = shell_exec(lgthinq::getCmdSudo()
                         . '/usr/bin/python3 -c \'import sys; version=sys.version_info[:3]; print("{0}{1}".format(*version))\'');
                 if ($pythonVersion === false || $pythonVersion < 36) {
                     // default python3 version too old
@@ -118,7 +118,7 @@ class WideqManager {
 
         $file = self::getWideqDir() . 'wideq/'. self::WIDEQ_SCRIPT;
         // (add +x at install.php) flag and run the server:
-        $cmd = system::getCmdSudo() . ' ' . self::getPython()
+        $cmd = lgthinq::getCmdSudo() . ' ' . self::getPython()
             . " $file --port {$daemon_info['port']} "
             . "--key {$daemon_info['key']} --ip {$daemon_info['ip']}";
         if (isset($daemon_info['debug']) && $daemon_info['debug']) {

@@ -52,7 +52,7 @@ class lgthinq extends eqLogic {
             if (!jeedom::isCapable('sudo')) {
                     return $cmd;
             }
-            return empty($cmd) ? 'sudo ' : sprintf("sudo sh -c'%s'", addslashes($cmd));
+            return empty($cmd) ? 'sudo ' : sprintf("sudo sh -c '%s'", addslashes($cmd));
     }
 
     /**

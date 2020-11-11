@@ -124,7 +124,7 @@ class WideqManager {
         if (isset($daemon_info['debug']) && $daemon_info['debug']) {
             $cmd .= ' -v ';
         }
-        $cmd .= ' >> ' . log::getPathToLog('lgthinq_srv') . ' 2>&1 & echo $!; ';
+        $cmd .= ' >> ' . log::getPathToLog('lgthinq_srv') . ' 2>&1; ';
         $cmd = lgthinq::getCmdSudo($cmd);
         $pid = exec($cmd);
         LgLog::info("Lancement démon LgThinq : $cmd => pid= {$pid}");

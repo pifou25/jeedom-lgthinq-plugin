@@ -239,7 +239,7 @@ class lgthinq extends eqLogic {
                 // check dependencies
                 $daemonDir = WideqManager::getWideqDir(); // '/../../resources/daemon/';
                 $deps = shell_exec("${daemonDir}check.sh");
-                if ($deps < 5) {
+                if ($deps < 4) {
                     LgLog::debug("missing pip dependancies ($deps) (${daemonDir}check.sh)");
                     $return['state'] = 'nok';
                 } else {

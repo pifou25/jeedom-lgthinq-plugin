@@ -100,8 +100,8 @@ ${PYTHON_BASH} -m pip install -r requirements.txt >> ${LOG_FILE}
 echo 95 > ${PROGRESS_FILE}
 log "clone wideq lib from github in ${BASEDIR}/daemon"
 rm -r wideq
-wget https://github.com/pifou25/wideq/archive/jeedom.zip -O wideq.zip
-unzip -q wideq.zip -d .
+wget https://github.com/pifou25/wideq/archive/jeedom.zip -O wideq.zip >> ${LOG_FILE}
+unzip -q wideq.zip -d . >> ${LOG_FILE}
 mv wideq-jeedom wideq
 chown -R www-data:www-data wideq
 rm wideq.zip

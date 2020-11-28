@@ -116,7 +116,7 @@ class WideqManager {
             throw new Exception(__('Veuillez vérifier la configuration', __FILE__));
         }
 
-        $file = self::getWideqDir() . 'wideq/'. self::WIDEQ_SCRIPT;
+        $file = self::getWideqDir() . 'wideq/launch.sh'; // . self::WIDEQ_SCRIPT;
         // (add +x at install.php) flag and run the server:
         $cmd = self::getPython()
             . " $file --port {$daemon_info['port']} "
@@ -125,8 +125,8 @@ class WideqManager {
             $cmd .= ' -v ';
         }
         $cmd .= ' >> ' . log::getPathToLog('lgthinq_srv') . ' 2>&1';
-        $cmd = lgthinq::getCmdSudo($cmd);
-        $pid = exec($cmd);
+        // $cmd = lgthinq::getCmdSudo($cmd);
+        $pid = exec(system::getCmdSudo() . " $cmd");
         LgLog::info("Lancement démon LgThinq : $cmd => pid= {$pid}");
 
         sleep(5);

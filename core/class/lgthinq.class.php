@@ -32,6 +32,7 @@ include_file('core', 'WideqAPI', 'class', 'lgthinq');
 include_file('core', 'LgParameters', 'class', 'lgthinq');
 
 class lgthinq extends eqLogic {
+    
     /*     * *************************Attributs****************************** */
 
     /**
@@ -47,13 +48,6 @@ class lgthinq extends eqLogic {
 
     /*     * ***********************Methode static*************************** */
 
-    
-    public static function getCmdSudo( $cmd = '') {
-            if (!jeedom::isCapable('sudo')) {
-                    return $cmd;
-            }
-            return empty($cmd) ? 'sudo ' : sprintf("sudo sh -c '%s'", addslashes($cmd));
-    }
 
     /**
      * generate WideqAPI with jeedom configuration

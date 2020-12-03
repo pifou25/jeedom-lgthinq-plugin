@@ -9,8 +9,8 @@
     "hasDependency" : true,
     "hasOwnDeamon" : true,
     "maxDependancyInstallTime" : 0,
-    "changelog" : "https://jeedom.github.io/plugin-template/#language#/changelog",
-    "documentation" : "https://github.com/pifou25/jeedom-lgthinq-plugin/wiki",
+    "changelog" : "https://pifou25.github.io/jeedom-lgthinq-plugin/#language#/changelog",
+    "documentation" : "https://pifou25.github.io/jeedom-lgthinq-plugin/#language#/",
 	"link" : {
 		"forum":"https://community.jeedom.com/t/recherche-dev-pour-un-nouveau-plugin-lg-smart/2932",
 		"video" : "Lien vers une video"

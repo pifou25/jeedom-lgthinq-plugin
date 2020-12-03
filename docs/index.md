@@ -1,4 +1,4 @@
-[French doc](/fr_FR)
+https://pifou25.github.io/jeedom-lgthinq-plugin/ [French doc](https://pifou25.github.io/jeedom-lgthinq-plugin/fr_FR)
 
 # Plugin LGThinq
 

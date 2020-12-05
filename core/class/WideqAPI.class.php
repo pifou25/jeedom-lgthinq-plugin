@@ -176,8 +176,8 @@ class WideqAPI {
         $return = [];
         if (is_array($arr)) {
             foreach ($arr as $key => $obj) {
-                if (isset($obj['id']))
-                    $return[$obj['id']] = $obj;
+                if (isset($obj['data']['deviceId']))
+                    $return[$obj['data']['deviceId']] = $obj['data'];
                 else
                     $return[] = $obj; // missing id ?
             }

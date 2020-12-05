@@ -219,27 +219,10 @@ class lgthinq extends eqLogic {
         $return['progress_file'] = jeedom::getTmpFolder(__CLASS__) . '/dependency';
         if (file_exists(jeedom::getTmpFolder(__CLASS__) . '/dependency')) {
             $return['state'] = 'in_progress';
+        } else if (empty(WideqManager::getPython())) {
+            $return['state'] = 'nok';
         } else {
-            // run into docker container ?
-            // if(exec(system::getCmdSudo() . 'cat /proc/1/cgroup | grep -c "/docker/"') > 0)
-
-            $return['state'] = 'ok';
-            $pythonVersion = WideqManager::getPython();
-            if ($pythonVersion === false) {
-                $return['state'] = 'nok';
-            }
-
-            if ($return['state'] == 'ok') {
-                // check dependencies
-                $daemonDir = WideqManager::getWideqDir(); // '/../../resources/daemon/';
-                $deps = shell_exec("${daemonDir}check.sh");
-                if ($deps < 4) {
-                    LgLog::debug("missing pip dependancies ($deps) (${daemonDir}check.sh)");
-                    $return['state'] = 'nok';
-                } else {
-                    $return['state'] = 'ok';
-                }
-            }
+            $return['state'] = WideqManager::check_dependancy();
         }
         return $return;
     }

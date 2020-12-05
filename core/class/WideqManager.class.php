@@ -125,7 +125,7 @@ class WideqManager {
             throw new Exception(__('Veuillez vérifier la configuration', __FILE__));
         }
 
-        $file = self::getWideqDir() . 'wideq/launch.sh'; // . self::WIDEQ_SCRIPT;
+        $file = self::getWideqDir() . 'wideq/' . self::WIDEQ_SCRIPT;
         // (add +x at install.php) flag and run the server:
         $cmd = self::getPython()
             . " $file --port {$daemon_info['port']} "

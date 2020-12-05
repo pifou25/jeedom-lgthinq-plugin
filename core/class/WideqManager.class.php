@@ -25,7 +25,11 @@
  */
 class WideqManager {
 
+    // script daemon python
     const WIDEQ_SCRIPT = 'srv.py';
+
+    // regex version de python
+    const PYTHON_VERS = '/python (\d+)\.(\d+)\.(\d+)/i';
 
     /**
      * object WideqAPI.class.php
@@ -37,8 +41,6 @@ class WideqManager {
      */
     private static $resourcesDir = null;
 
-    const PYTHON_VERS = '/python (\d+)\.(\d+)\.(\d+)/i';
-    
     public static function getWideqDir() {
         return self::getResourcesDir().'daemon/';
     }
@@ -84,6 +86,18 @@ class WideqManager {
         return self::$pythonBash;
     }
 
+    public static function check_dependancy(){
+        // check dependencies
+        // $daemonDir = self::getWideqDir(); // '/../../resources/daemon/';
+        // $deps = shell_exec("${daemonDir}check.sh");
+        $deps = shell_exec('pip3 list | grep -Ec "Flask|requests"');
+        if ($deps < 4) {
+            LgLog::debug("missing pip dependancies ($deps) (${daemonDir}check.sh)");
+            return 'nok';
+        } else {
+            return 'ok';
+        }
+    }
     /**
      * infos about the python daemon
      * check state (nok/ok) if running i.e. when the process exists

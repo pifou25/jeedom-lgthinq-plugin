@@ -86,10 +86,11 @@ class WideqManager {
         return self::$pythonBash;
     }
 
+    /**
+     * check python dependancies for Wideq Lib & Flask server
+     * @return string 'ok' or 'nok'
+     */
     public static function check_dependancy(){
-        // check dependencies
-        // $daemonDir = self::getWideqDir(); // '/../../resources/daemon/';
-        // $deps = shell_exec("${daemonDir}check.sh");
         $deps = shell_exec('pip3 list | grep -Ec "Flask|requests"');
         if ($deps < 4) {
             LgLog::debug("missing pip dependancies ($deps) (${daemonDir}check.sh)");

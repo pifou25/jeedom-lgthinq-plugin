@@ -8,6 +8,9 @@ class LgApiException extends \Exception {
     
 }
 
+/**
+ * WideqAPI class is the php class for requesting Wideq REST API.
+ */
 class WideqAPI {
 
     /**

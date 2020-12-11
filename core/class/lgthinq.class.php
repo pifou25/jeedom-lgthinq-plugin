@@ -54,27 +54,21 @@ class lgthinq extends eqLogic {
      */
     public static function getApi() {
         if (self::$_lgApi == null) {
-            $token = config::byKey('LgJeedomToken', 'lgthinq');
-            if (!empty($token)) {
-                $headers = [WideqAPI::TOKEN_KEY . ': ' . $token];
-            } else {
-                $headers = [];
-            }
             $port = config::byKey('PortServerLg', 'lgthinq', 5025);
             $url = config::byKey('UrlServerLg', 'lgthinq', 'http://127.0.0.1');
-            $arr = ['port' => $port, 'url' => $url, 'debug' => self::isDebug(), 'headers' => $headers];
+            $arr = ['port' => $port, 'url' => $url, 'debug' => self::isDebug()];
             self::$_lgApi = new WideqAPI($arr);
         }
         return self::$_lgApi;
     }
 
     /**
-     * renew the token with wideq lib server
+     * renew the session with wideq lib server
      */
     public static function initToken($_auth = false) {
 
         $lgApi = self::getApi();
-        // first init gateway, then token
+        // first init gateway, then session
         $lang = config::byKey('LgLanguage', 'lgthinq');
         $country = config::byKey('LgCountry', 'lgthinq');
         $url = $lgApi->gateway($country, $lang);

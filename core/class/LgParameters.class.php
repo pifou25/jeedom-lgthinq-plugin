@@ -10,6 +10,8 @@ class LgParameters {
     private static $log = '';
     private $devices = [];
     private $authUrl = null;
+    public $language = null;
+    public $country = null;
     
     public function __construct($json) {
 
@@ -36,6 +38,8 @@ class LgParameters {
         if (self::isIndexArray($json, 'gateway')) {
             $authBase = $json['gateway']['auth_base'];
             $oauthRoot = $json['gateway']['oauth_root'];
+            $this->language = $json['gateway']['language'];
+            $this->country = $json['gateway']['country'];
         }
         if (self::isIndexArray($json, 'auth')) {
             $refresh = $json['auth']['refresh_token'];

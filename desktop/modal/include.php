@@ -79,7 +79,7 @@ try {
     }
     ?>
 
-    <h4>{{Synchroniser}}</h4>
+<h2>{{Synchroniser}}</h2>
 
     <form class="form-horizontal" id="LgSynchronize">
         <fieldset>
@@ -89,26 +89,30 @@ try {
     foreach ($lgObjects as $obj) {
         $checked = (isset($obj['eqLogic'])) ? '' :' checked="checked"';
         ?>
-            <div class="col-lg-3">
+            <div class="col-lg-5">
             <?php 
             // LG device checked if not defined on jeedom
             echo <<<EOT
-                <img src="{$obj['imageUrl']}" />
+                <label for="{$obj['devideId']}">
+                <img src="{$obj['imageUrl']}" /><br/>
                 <input type="checkbox" name="selected[]" id="{$obj['devideId']}" value="{$obj['devideId']}" $checked />
-                <label for="{$obj['devideId']}"> {$obj['alias']} ( {$obj['modelNm']} ) </label>
-                <h5>Propriétés</h5>
+                {$obj['alias']} ( {$obj['modelNm']} ) </label>
+                <h3>Propriétés</h3>
                 <p>
 EOT;
                 foreach($obj as $key => $value){
-                    echo "<b>$key</b> : $value\n";
+                    if(substr( $value, 0, 4 ) === "http"){
+                        $value = "<a href=\"$value\">[download]</a>";
+                    }
+                    echo "<b>$key</b> : $value<br/>\n";
                 }
-                echo "</p>\n";
+                echo "</p><hr/>\n";
                 
                 // if not defined: list of all available LG config
                 if(!empty($checked)){
             ?>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-2">
                 <label for="lg<?= $obj['id'] ?>">Select item :</label>
                 <select id="lg<?= $obj['id'] ?>" name="lg<?= $obj['id'] ?>">
                     <option value="">ignore</option>

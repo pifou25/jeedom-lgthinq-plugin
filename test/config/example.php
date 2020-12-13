@@ -57,12 +57,8 @@ print " *** log debug **** \n" . $param->getLog();
 
 print json_encode(LgParameters::getAllConfig(), JSON_PRETTY_PRINT);
 
-// granben:
-//https://fr.m.lgaccount.com/login/iabClose?access_token=2159128a7c2418d9636033b35daaf58133597bceafe1ea1ee5eee7289d3956a9966f249ee089381edd20cfb3ae10d723&refresh_token=325746c3f40dbd65d65594702b7d4767e65771de3103bf7a9b2bd6c33b94b30e6a141d6b3f720d27c54aa3c38df02493&oauth2_backend_url=https://fr.lgeapi.com
-
 $branches = WideqManager::getGithubBranches('https://api.github.com/repos/pifou25/wideq/branches');
 print_r($branches);
-die('fin temporaire');
 
 /**
  * check python version
@@ -80,11 +76,11 @@ $cmd = sprintf(WideqManager::getPython()
 	. " $file --port %s --key %s --ip %s",
 	JEEDOM_PORT, JEEDOM_KEY, JEEDOM_IP);
 $cmd .= ' -v >> srv.log 2>&1';
+print $cmd;
 
 /**
  * launch wideq server
  */
-print $cmd;
 $handle = popen($cmd, 'r');
 
 sleep(5);

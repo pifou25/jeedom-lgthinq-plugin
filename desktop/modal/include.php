@@ -67,7 +67,7 @@ try {
 
     <form class="form-horizontal" id="LgSynchronize">
         <fieldset>
-            <legend>{{Liste des objets détectés}}</legend>
+            <legend>{{Liste des objets LG détectés}}</legend>
             <div class="form-group">
     <?php
     foreach ($lgObjects as $obj) {
@@ -98,8 +98,8 @@ EOT;
             ?>
             </div>
             <div class="col-lg-2">
-                <label for="lg<?= $obj['id'] ?>">Select item :</label>
-                <select id="lg<?= $obj['id'] ?>" name="lg<?= $obj['id'] ?>">
+                <label for="lg<?= $obj['devideId'] ?>">Selectionner Configuration :</label>
+                <select id="lg<?= $obj['devideId'] ?>" name="lg<?= $obj['devideId'] ?>">
                     <option value="">ignore</option>
             <?php 
                 foreach(LgParameters::getAllConfig() as $device){

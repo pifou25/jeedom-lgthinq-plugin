@@ -19,7 +19,8 @@
 // include /plugins/lgthinq/core/LgLog.class.php
 
 /*
- * Lg Smart Thinq manager for the python server
+ * Lg Smart Thinq manager for the python Flask server
+ * This server require wideq lib.
  * REST API on local http://127.0.0.1:port
  *
  */
@@ -87,6 +88,31 @@ class WideqManager {
             }
         }
         return self::$pythonBash;
+    }
+
+    /**
+     * list wideq branches on github
+     * @param string $url
+     * @return array
+     */
+    public static function getGithubBranches($url){
+            $ch = curl_init();
+            curl_setopt($ch,CURLOPT_URL,$url);
+            curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+            curl_setopt($ch,CURLOPT_CONNECTTIMEOUT, 4);
+            $json = curl_exec($ch);
+            $branches = [];
+            if(!$json) {
+                    $branches['error'] = curl_error($ch);
+            }else{
+                    if(!empty($json)){
+                            foreach($json as $data){
+                                    $branches[] = $data['name'];
+                            }
+                    }
+            }
+            curl_close($ch);
+            return $branches;
     }
 
     /**

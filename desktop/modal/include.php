@@ -93,9 +93,17 @@ try {
             <?php 
             // LG device checked if not defined on jeedom
             echo <<<EOT
-                <input type="checkbox" name="selected[]" id="{$obj['id']}" value="{$obj['id']}" $checked />
-                <label for="{$obj['id']}"> {$obj['name']} ( {$obj['model']} ) </label>
+                <img src="{$obj['imageUrl']}" />
+                <input type="checkbox" name="selected[]" id="{$obj['devideId']}" value="{$obj['devideId']}" $checked />
+                <label for="{$obj['devideId']}"> {$obj['alias']} ( {$obj['modelNm']} ) </label>
+                <h5>Propriétés</h5>
+                <p>
 EOT;
+                foreach($obj as $key => $value){
+                    echo "<b>$key</b> : $value\n";
+                }
+                echo "</p>\n";
+                
                 // if not defined: list of all available LG config
                 if(!empty($checked)){
             ?>

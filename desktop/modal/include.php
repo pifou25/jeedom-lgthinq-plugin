@@ -45,10 +45,6 @@ try {
     if (empty($lgObjects)) {
         $msg .= 'Aucun objet détecté... authentification requise.';
     } else {
-        if(lgthinq::isDebug()){
-            $msg .= "Appareils détectés\n" . json_encode($lgObjects, JSON_PRETTY_PRINT)."\n";
-        }
-
         // objets deja créés dans jeedom
         $jeedomObjects = lgthinq::byType('lgthinq');
         $msg .= sprintf('Synchroniser les objets LG (%s LG) et Jeedom (%s jeedom)', count($lgObjects), count($jeedomObjects));
@@ -63,23 +59,11 @@ try {
                         $eqLogic->getProductModel() . '-' . $eqLogic->getProductType() . '-' . $eqLogic->getLogicalId());
             }
         }
-        
-        $save = $lgApi->save();
-        $param = new LgParameters($save);
-        $devices = array_keys($param->getDevices());
-        if(lgthinq::isDebug()){
-            $msg .= json_encode($devices, JSON_PRETTY_PRINT) ."\n";
-            $msg .= $param->getLog() ."\n";
-            $msg .= json_encode($save, JSON_PRETTY_PRINT) ."\n";
-            $msg .= json_encode(WideqAPI::getRequests(), JSON_PRETTY_PRINT) ."\n";
-        }
 
-        // $msg .= json_encode($lgObjects, JSON_PRETTY_PRINT);
-        // $msg .= "\n".json_encode(WideqAPI::$requests, JSON_PRETTY_PRINT);
     }
     ?>
 
-<h2>{{Synchroniser}}</h2>
+<h2><?php printf('Synchroniser les objets LG (%s LG) et Jeedom (%s jeedom)', count($lgObjects), count($jeedomObjects)) ?></h2>
 
     <form class="form-horizontal" id="LgSynchronize">
         <fieldset>
@@ -94,9 +78,10 @@ try {
             // LG device checked if not defined on jeedom
             echo <<<EOT
                 <label for="{$obj['devideId']}">
-                <img src="{$obj['imageUrl']}" /><br/>
+                <img src="{$obj['smallImageUrl']}" /><br/>
                 <input type="checkbox" name="selected[]" id="{$obj['devideId']}" value="{$obj['devideId']}" $checked />
                 {$obj['alias']} ( {$obj['modelNm']} ) </label>
+                <div>
                 <h3>Propriétés</h3>
                 <p>
 EOT;
@@ -106,7 +91,7 @@ EOT;
                     }
                     echo "<b>$key</b> : $value<br/>\n";
                 }
-                echo "</p><hr/>\n";
+                echo "</p></div>\n";
                 
                 // if not defined: list of all available LG config
                 if(!empty($checked)){

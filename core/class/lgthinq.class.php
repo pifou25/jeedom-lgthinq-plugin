@@ -90,8 +90,13 @@ class lgthinq extends eqLogic {
      */
     public static function CreateEqLogic($_config, $_json = null) {
 
-        if (!lgthinq::assertArrayContains($_config, ['id', 'type', 'model', 'name'])) {
-            return null;
+        if (!LgParameters::assertArrayContains($_config, ['id', 'type', 'model', 'name'])) {
+            if (!LgParameters::assertArrayContains($_config, ['deviceId', 'deviceType', 'modelNm', 'alias'])) {
+                $_config = LgParameters::mapperArray($_config,
+                        ['deviceId'=>'id', 'deviceType' => 'type', 'modelNm' => 'model', 'alias' => 'name']);
+            }else{
+                return null;
+            }
         }
 
         $eqLogic = new lgthinq($_config);
@@ -269,23 +274,6 @@ class lgthinq extends eqLogic {
         ]);
     }
 
-    /**
-     * check that every key of 'example' exists into 'config'
-     * @param array $_config
-     * @param array $_example
-     * @return boolean
-     */
-    public static function assertArrayContains($_config, $_example){
-       $valid = true;
-        foreach ($_example as $key) {
-            if (!array_key_exists($key, $_config)) {
-                LgLog::error("Missing $key in LG response:" . json_encode($_config));
-                $valid = false;
-            }
-        }
-        return $valid;
-    }
-    
     public static function isDebug() {
         if (self::$__debug == null) {
             self::$__debug = ( log::convertLogLevel(log::getLogLevel('lgthinq')) == 'debug' );

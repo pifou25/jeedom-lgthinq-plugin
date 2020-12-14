@@ -150,6 +150,40 @@ class LgParameters {
     }
 
     /**
+     * check that every key of 'example' exists into 'config'
+     * @param array $_config
+     * @param array $_example
+     * @return boolean
+     */
+    public static function assertArrayContains($_config, $_example){
+       $valid = true;
+        foreach ($_example as $key) {
+            if (!array_key_exists($key, $_config)) {
+                LgLog::error("Missing $key in LG response:" . json_encode($_config));
+                $valid = false;
+            }
+        }
+        return $valid;
+    }
+    
+    /**
+     * add some new keys
+     * @param type $_config
+     * @param type $_mapper
+     * @return type
+     */
+    public static function mapperArray($_config, $_mapper){
+    
+        if (!LgParameters::assertArrayContains($_config, array_keys($_mapper))) {
+            return null;
+        }
+        foreach ($_mapper as $key => $value) {
+            $_config[$value] = $_config[$key];
+        }
+        return $_config;
+    }
+    
+    /**
      * list of every config files into ./resources/devices
      * @return array of json file names
      */

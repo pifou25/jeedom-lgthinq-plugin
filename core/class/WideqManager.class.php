@@ -139,7 +139,6 @@ class WideqManager {
     public static function daemon_info() {
         $return = [];
         $state = system::ps(self::WIDEQ_SCRIPT);
-        LgLog::debug('etat server wideq:' . json_encode($state));
         $return['state'] = empty($state) ? 'nok' : 'ok';
         if (!empty($state)) {
             $return['log'] = 'nb of processes=' . count($state);
@@ -153,12 +152,11 @@ class WideqManager {
                 LgLog::error("ping (err {$e->getCode()}): {$e->getMessage()}");
                 $return['state'] = 'nok';
             }
+            return array_merge($state[0], $return);
+        }else{
+            LgLog::debug('etat server wideq KO:' . json_encode($state));
+            return ['state' => 'nok'];
         }
-
-        if (count($state) > 0) {
-            $return = array_merge($state[0], $return);
-        }
-        return $return;
     }
 
     /**
@@ -173,7 +171,6 @@ class WideqManager {
         }
 
         $file = self::getWideqDir() . 'wideq/' . self::WIDEQ_SCRIPT;
-        // (add +x at install.php) flag and run the server:
         $cmd = self::getPython()
             . " $file --port {$daemon_info['port']} "
             . "--key {$daemon_info['key']} --ip {$daemon_info['ip']}";
@@ -185,9 +182,9 @@ class WideqManager {
         $pid = exec(system::getCmdSudo() . " $cmd");
         LgLog::info("Lancement démon LgThinq : $cmd => pid= {$pid}");
 
-        sleep(5);
+        sleep(3);
         $i = 0;
-        while ($i < 10) {
+        while ($i < 3) {
             try {
                 $daemon_info = self::daemon_info();
                 if ($daemon_info['state'] == 'ok') {
@@ -198,10 +195,10 @@ class WideqManager {
             }
             LgLog::debug("Waiting for daemon starting ($i)...");
 
-            sleep(1);
+            sleep(2);
             $i++;
         }
-        if ($i >= 10) {
+        if ($i >= 3) {
             LgLog::error('Impossible de lancer le démon LgThinq, relancer le démon en debug et vérifiez la log', 'unableStartdaemon');
             return false;
         }

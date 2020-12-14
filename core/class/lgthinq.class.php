@@ -90,13 +90,10 @@ class lgthinq extends eqLogic {
      */
     public static function CreateEqLogic($_config, $_json = null) {
 
+        $_config = LgParameters::mapperArray($_config,
+                ['deviceId'=>'id', 'deviceType' => 'type', 'modelNm' => 'model', 'alias' => 'name']);
         if (!LgParameters::assertArrayContains($_config, ['id', 'type', 'model', 'name'])) {
-            if (!LgParameters::assertArrayContains($_config, ['deviceId', 'deviceType', 'modelNm', 'alias'])) {
-                $_config = LgParameters::mapperArray($_config,
-                        ['deviceId'=>'id', 'deviceType' => 'type', 'modelNm' => 'model', 'alias' => 'name']);
-            }else{
-                return null;
-            }
+            return null;
         }
 
         $eqLogic = new lgthinq($_config);
@@ -138,7 +135,6 @@ class lgthinq extends eqLogic {
     /*
      * Fonction exécutée automatiquement toutes les minutes par Jeedom
      */
-
     public static function cron() {
         self::refreshData();
     }
@@ -176,7 +172,6 @@ class lgthinq extends eqLogic {
     /*
      * Fonction exécutée automatiquement toutes les heures par Jeedom
      */
-
     public static function cronHourly() {
         if (config::byKey('functionality::cron::enable', 'lgthinq', 1) == 0 ||
                 config::byKey('functionality::cron5::enable', 'lgthinq', 1) == 0 ||
@@ -190,7 +185,6 @@ class lgthinq extends eqLogic {
     /*
      * Fonction exécutée automatiquement tous les jours par Jeedom
      */
-
     public static function cronDaily() {
         if (config::byKey('functionality::cron::enable', 'lgthinq', 1) == 0 ||
                 config::byKey('functionality::cron5::enable', 'lgthinq', 1) == 0 ||

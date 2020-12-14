@@ -174,11 +174,10 @@ class LgParameters {
      */
     public static function mapperArray($_config, $_mapper){
     
-        if (!LgParameters::assertArrayContains($_config, array_keys($_mapper))) {
-            return null;
-        }
-        foreach ($_mapper as $key => $value) {
-            $_config[$value] = $_config[$key];
+        if (LgParameters::assertArrayContains($_config, array_keys($_mapper))) {
+            foreach ($_mapper as $key => $value) {
+                $_config[$value] = $_config[$key];
+            }
         }
         return $_config;
     }

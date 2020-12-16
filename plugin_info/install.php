@@ -34,19 +34,23 @@ function initLgthinqParameters() {
             config::save($key, $value, 'lgthinq');
         }
     }
-    $file = WideqManager::getWideqDir() 
-            . WideqManager::getWideqDir() . 'check.sh ';
+    if(is_dir(lgthinq::RESOURCES_PATH)){
+        if (!mkdir(lgthinq::RESOURCES_PATH, 0777, true))
+            LgLog::error('unable to create dir ' . lgthinq::RESOURCES_PATH);
+        else
+            LgLog::debug('create dir ' . lgthinq::RESOURCES_PATH);
+    }
+    $file = WideqManager::getWideqDir() . 'check.sh ';
     exec(system::getCmdSudo() . " chmod +x $file");
+    LgLog::info('update lgThinq plugin - set +x flag ok');
 }
 
 function lgthinq_install() {
     initLgthinqParameters();
-    LgLog::info('install lgThinq plugin - set +x flag ok');
 }
 
 function lgthinq_update() {
     initLgthinqParameters();
-    LgLog::info('update lgThinq plugin - set +x flag ok');
 }
 
 function lgthinq_remove() {

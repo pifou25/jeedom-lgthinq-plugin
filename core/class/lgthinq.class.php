@@ -37,14 +37,20 @@ class lgthinq extends eqLogic {
 
     /**
      * les attributs précédés de $_ ne sont pas sauvegardé en base
+     * 
+     * /!\ $_debug existe déjà dans EqLogic. 
+     * ici on utilise $__debug pour éviter toute confusion.
      */
-    // private static $_keysConfig = [];
-
     private static $_lgApi = null;
     private static $__debug = null;
     private static $_destruct = false;
 
-    const RESOURCES_PATH = '/../../resources/devices/';
+    /**
+     * contains img, smallImg, lang, lg (for LG json config) and 
+     * jeedom (for Jeedom json config)
+     */
+    const DATA_PATH = '/../../data/';
+    const RESOURCES_PATH = '/../../data/jeedom/';
 
     /*     * ***********************Methode static*************************** */
 
@@ -88,34 +94,11 @@ class lgthinq extends eqLogic {
      * create the new object:
      * $_config has 4 mandatory keys: 'id' 'type' 'model' 'name'
      */
-    public static function CreateEqLogic($_config, $_json = null) {
-
-        $_config = LgParameters::mapperArray($_config,
-                ['deviceId'=>'id', 'deviceType' => 'type', 'modelNm' => 'model', 'alias' => 'name']);
-        if (!LgParameters::assertArrayContains($_config, ['id', 'type', 'model', 'name'])) {
-            return null;
-        }
+    public static function CreateEqLogic($_config) {
 
         $eqLogic = new lgthinq($_config);
         $eqLogic->save();
 
-        if ($eqLogic->configureFilepath( $_json) === false) {
-            // recuperer conf LG
-            $param = new LgParameters(self::getApi()->save());
-            if (!isset($param->getDevices()[$eqLogic->getProductModel()])) {
-                LgLog::warning("No device model {$eqLogic->getProductModel()}");
-                return null;
-            }
-            $eqLogicConf = $param->getDevices()[$eqLogic->getProductModel()];
-            // générer le fichier de conf par défaut
-            $file = dirname(__FILE__) . self::RESOURCES_PATH . $eqLogic->getProductType()
-                    . '.' . $eqLogic->getProductModel() . '.json';
-            file_put_contents($file, json_encode($eqLogicConf, JSON_PRETTY_PRINT));
-            LgLog::info("Création du fichier de conf $file");
-            if (self::isDebug()) {
-                LgLog::debug("LgParam config:\n" . $param->getLog());
-            }
-        }
         // générer les commandes
         $eqLogic->createCommand();
 
@@ -282,6 +265,13 @@ class lgthinq extends eqLogic {
      * @param array $_config
      */
     private function __construct($_config){
+        // re-map missing keys
+        $_config = LgParameters::mapperArray($_config,
+                ['deviceId'=>'id', 'deviceType' => 'type', 'modelNm' => 'model', 'alias' => 'name']);
+        if (!LgParameters::assertArrayContains($_config, ['id', 'type', 'model', 'name'])) {
+            return null;
+        }
+
         $this->setEqType_name('lgthinq');
         $this->setIsEnable(1);
         $this->setLogicalId($_config['id']);
@@ -292,7 +282,23 @@ class lgthinq extends eqLogic {
         LgLog::debug('Create LG Object ' . $this->getLogicalId() . ' - ' .
                 $this->getName() . ' - ' . $this->getProductModel() . ' - ' .
                 $this->getProductType());
-        //parent::__construct();
+
+        // copy data and images
+        $msg[] = LgParameters::copyData($_config['smallImageUrl'], $_config['id'].'.png', self::DATA_PATH. 'smallImg/');
+        $msg[] = LgParameters::copyData($_config['imageUrl'], $_config['id'].'.png', self::DATA_PATH.'img/');
+        $msg[] = LgParameters::copyData($_config['modelJsonUrl'], $_config['id'].'.json', self::DATA_PATH.'lg/');
+        $msg[] = LgParameters::copyData($_config['langPackProductTypeUri'], $_config['id'].'.json', self::DATA_PATH.'lang/');
+        LgLog::debug("copy img and json datas. " . print_r(array_filter($msg, function($v){return $v!==true;}), true));
+
+        // transform LG json config into Jeedom json
+        $file = self::DATA_PATH.'lg/'.$_config['id'];
+        $lg = json_decode( file_get_contents($file), true, 512, JSON_BIGINT_AS_STRING);
+        $conf = LgParameters::convertLgToJeedom($lg);
+        file_put_contents(self::RESOURCES_PATH, json_encode($conf, JSON_PRETTY_PRINT));
+
+        // générer les commandes
+        $this->createCommand();
+
     }
 
     public function __destruct() {
@@ -337,18 +343,15 @@ class lgthinq extends eqLogic {
 
         $this->createDefaultCommands();
 
-        if (false === $this->getFileconf()) {
+        if (!file_exists( $this->getFileconf())) {
             self::addEvent(__('Fichier de configuration absent ', __FILE__) . $this->getFileconf());
             return false;
         }
-        $device = is_json(file_get_contents(dirname(__FILE__) . self::RESOURCES_PATH . $this->getFileconf()), []);
-        if (!is_array($device) || !isset($device['commands'])) {
-            LgLog::debug('Config file empty or not a json format');
+        $device = is_json(file_get_contents( $this->getFileconf()), []);
+        if (!is_array($device) || empty($device)) {
+            LgLog::debug('Json Config fichier vide ou pas au format json: ' . $this->getFileconf());
             return false;
         }
-//        if (isset($device['name']) && !$_update) {
-//            $this->setName('[' . $this->getLogicalId() . ']' . $device['name']);
-//        }
         $this->import($device);
         sleep(1);
         self::addEvent('');
@@ -356,90 +359,14 @@ class lgthinq extends eqLogic {
         return true;
     }
 
-    /**
-     * commande par défaut pour monitorer l'objet
-     */
-    private function createDefaultCommands(){
-        $info = $this->getCmd(null, 'monitor');
-        if (!is_object($info)) {
-                $info = new lgthinqCmd();
-                $info->setName(__('Monitoring', __FILE__));
-        }
-        $info->setLogicalId('monitor');
-        $info->setEqLogic_id($this->getId());
-        $info->setType('info');
-        $info->setSubType('string');
-        $info->save();
-
-        $refresh = $this->getCmd(null, 'refresh');
-        if (!is_object($refresh)) {
-                $refresh = new lgthinqCmd();
-                $refresh->setName(__('Rafraichir', __FILE__));
-        }
-        $refresh->setEqLogic_id($this->getId());
-        $refresh->setLogicalId('refresh');
-        $refresh->setType('action');
-        $refresh->setSubType('other');
-        $refresh->save();
-
-    }
-
-    /**
-     * le fichier de config est au format json
-     * il est dans /config/devices/[product_type].[product_model].json
-     * par défaut on peut utiliser [product_type].json si celui spécifique au model n'est pas disponible
-     */
-    private function configureFilepath($_json = null) {
-        if ($_json !== null && $this->setFileconf($_json)) {
-            LgLog::debug('get confFilePath from configuration ' . $_json);
-            return true;
-        }
-        $model = LgParameters::clean($this->getProductModel());
-        $id = $this->getProductType() . '.' . $model . '.json';
-        if ($this->setFileconf( $id)) {
-            LgLog::debug('get confFilePath with specific model ' . $id);
-            return true;
-        }
-        $id = $this->getProductType() . '.json';
-        if ($this->setFileconf( $id)) {
-            LgLog::debug('get generic confFilePath for product type ' . $id);
-            return true;
-        }
-
-        LgLog::info('No json config file for device ' . $this->getProductType() . ' nor ' . $this->getProductModel());
-        return false;
-    }
-
-//    public function preInsert() {
-//        LgLog::debug("preInsert LgThinq");
-//    }
-//
-//    public function postInsert() {
-//        LgLog::debug("postInsert LgThinq");
-//    }
-//
-//    public function preSave() {
-//        LgLog::debug("preSave LgThinq");
-//    }
-//
-//    public function postSave() {
-//        LgLog::debug("postSave LgThinq");
-//    }
-//    public function preUpdate() {
-//
-//    }
-//
-//    public function postUpdate() {
-//
-//    }
-//
-//    public function preRemove() {
-//
-//    }
-//
-//    public function postRemove() {
-//
-//    }
+//    public function preInsert() {}
+//    public function postInsert() {}
+//    public function preSave() {}
+//    public function postSave() {}
+//    public function preUpdate() {}
+//    public function postUpdate() {}
+//    public function preRemove() {}
+//    public function postRemove() {}
 
     /*
      * Non obligatoire mais permet de modifier l'affichage du widget si vous en avez besoin
@@ -451,7 +378,6 @@ class lgthinq extends eqLogic {
     /*
      * déclencher une action après modification de variable de configuration
      */
-
     // public static function postConfig_LgAuthUrl( $_value) {}
 
     /*
@@ -468,13 +394,6 @@ class lgthinq extends eqLogic {
         } else {
             LgLog::debug('LgAuthUrl non modifié=' . $_newValue);
         }
-
-        // try{
-        // self::refreshListObjects();
-        // }catch(\Throwable | \Exception $e){
-        // LgLog::error(displayException($e));
-        // }
-
         return $_newValue;
     }
 
@@ -497,20 +416,16 @@ class lgthinq extends eqLogic {
     }
     
     public function getFileconf(){
-        return $this->getConfiguration('fileconf');
+        return self::RESOURCES_PATH . $this->getLogicalId() . '.json';
     }
     
-    /**
-     * this setter returns true if $_fileconf is a correct filename into RESOURCES_PATH
-     * @param string $_fileconf
-     * @return boolean
-     */
-    public function setFileconf($_fileconf){
-        if(is_file(dirname(__FILE__) . self::RESOURCES_PATH . $_fileconf)){
-            $this->setConfiguration('fileconf', $_fileconf);
-            return true;
+    public function getImage(){
+        $result = self::DATA_PATH.'smalImg/'. $this->getLogicalId().'.png';
+        if(!file_exists($result)){
+            $plugin = plugin::byId($this->getEqType_name());
+            return $plugin->getPathImgIcon();
         }else{
-            return false;
+            return $result;
         }
     }
 

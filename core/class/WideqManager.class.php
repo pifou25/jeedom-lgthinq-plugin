@@ -177,8 +177,8 @@ class WideqManager {
         if (isset($daemon_info['debug']) && $daemon_info['debug']) {
             $cmd .= ' -v ';
         }
-        $cmd .= ' >> ' . log::getPathToLog('lgthinq_srv') . ' 2>&1';
-        // $cmd = lgthinq::getCmdSudo($cmd);
+        // echo $! pour récupérer le pid process-id
+        $cmd .= ' >> ' . log::getPathToLog('lgthinq_srv') . ' 2>&1 & echo $!;';
         $pid = exec(system::getCmdSudo() . " $cmd");
         LgLog::info("Lancement démon LgThinq : $cmd => pid= {$pid}");
 

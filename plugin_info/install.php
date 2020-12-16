@@ -34,8 +34,8 @@ function initLgthinqParameters() {
             config::save($key, $value, 'lgthinq');
         }
     }
-    if(is_dir(lgthinq::RESOURCES_PATH)){
-        if (!mkdir(lgthinq::RESOURCES_PATH, 0777, true))
+    if(is_dir(dirname(__FILE__) . lgthinq::RESOURCES_PATH)){
+        if (!mkdir(dirname(__FILE__) . lgthinq::RESOURCES_PATH, 0777, true))
             LgLog::error('unable to create dir ' . lgthinq::RESOURCES_PATH);
         else
             LgLog::debug('create dir ' . lgthinq::RESOURCES_PATH);

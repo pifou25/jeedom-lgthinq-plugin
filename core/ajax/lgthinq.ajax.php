@@ -82,14 +82,14 @@ try {
         } else {
             $counter = 0;
             foreach ($selected as $id) {
-                $obj = init('lg' . $id);
-                if (empty($obj)) {
-                    ajax::error("Aucun objet $obj" . json_encode($_POST), 401);
+                $logicalId = init('lg' . $id);
+                if (empty($logicalId)) {
+                    ajax::error("Aucun objet $logicalId" . json_encode($_POST), 401);
                 } else if (!isset($objects[$id])) {
                     ajax::error("Objet id=$id introuvable..." . json_encode($_POST), 401);
                 } else {
-                    LgLog::debug("map $id sur $obj");
-                    $eq = lgthinq::CreateEqLogic($objects[$id], $obj);
+                    LgLog::debug("map $id sur $logicalId");
+                    $eq = lgthinq::CreateEqLogic($objects[$id], $logicalId);
                     $counter++;
                 }
             }

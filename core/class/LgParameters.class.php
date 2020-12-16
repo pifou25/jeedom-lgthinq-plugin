@@ -326,8 +326,11 @@ class LgParameters {
         if (!is_dir(dirname(__FILE__) . $dest))
             if (!mkdir(dirname(__FILE__) . $dest, 0777, true))
                 return "unable to create dir $dest";
-        if (file_put_contents($dest . $name, file_get_contents($url)) === false)
-            return "Erreur lors de la copie de $url vers $dest $name";
+        $data = file_get_contents($url);
+        if($data === false)
+            return "Erreur lors de la lecture du fichier $url";
+        if (file_put_contents($dest . $name, $data) === false)
+            return "Erreur lors de l'écriture vers $dest$name";
         return true;
     }
 

@@ -28,7 +28,8 @@ try {
     }
 
     if (init('action') == 'download') {
-        $msg = LgParameters::zipConfig(['lg/', 'jeedom/', 'lang/']);
+        $msg = LgParameters::zipConfig(['lg/', 'jeedom/', 'lang/'], 
+                dirname(__FILE__) . lgthinq::DATA_PATH . '/lgthinq.zip');
         ajax::success($msg);
     }
 

@@ -99,7 +99,7 @@ try {
     /*     * *********Catch exeption*************** */
 } catch (Exception $e) {
     $message = 'Ajax fatal error:' . displayException($e);
-    if (DEBUG || lgthinq::isDebug()) {
+    if (!DEBUG && lgthinq::isDebug()) {
             $message .= '<a class="pull-right bt_errorShowTrace cursor">Show traces</a>';
             $message .= '<br/><pre class="pre_errorTrace" style="display : none;">' . print_r($e->getTrace(), true) . '</pre>';
     }

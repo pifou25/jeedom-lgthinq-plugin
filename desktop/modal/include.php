@@ -82,8 +82,8 @@ try {
                 <input type="checkbox" name="selected[]" id="{$obj['deviceId']}" value="{$obj['deviceId']}" $checked />
                 {$obj['alias']} ( {$obj['modelNm']} ) </label>
                 <div>
-                <h3>Propriétés</h3>
-                <p>
+                <h3 class="toggleTouch" id="toggle{$obj['deviceId']}">Propriétés</h3>
+                <p style="display: none;" id="ztoggle{$obj['deviceId']}">
 EOT;
                 foreach($obj as $key => $value){
                     if(substr( $value, 0, 4 ) === "http"){
@@ -131,6 +131,13 @@ EOT;
 
 <script>
 $( function(){
+    //Hide/show properties list
+    $('.toggleTouch').on('click', function() {
+        var id = $(this).attr('id');
+        console.log('apply toggle to z' + id);
+        $('#z' . id).toggle();
+    };
+
     $('#bt_synchro').on('click',function(){
         $.ajax({
             type: 'POST',

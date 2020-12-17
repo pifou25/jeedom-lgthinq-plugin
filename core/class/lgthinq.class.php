@@ -199,6 +199,7 @@ class lgthinq extends eqLogic {
             $return['state'] = 'nok';
         } else {
             $return['state'] = WideqManager::check_dependancy();
+            config::save('PythonLg', WideqManager::getPython());
         }
         return $return;
     }

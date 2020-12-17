@@ -323,8 +323,8 @@ class LgParameters {
      * @return boolean
      */
     public static function copyData($url, $name, $dest) {
-        if (!is_dir(dirname(__FILE__) . $dest))
-            if (!mkdir(dirname(__FILE__) . $dest, 0777, true))
+        if (!is_dir($dest))
+            if (!mkdir($dest, 0777, true))
                 return "unable to create dir $dest";
         $data = file_get_contents($url);
         if($data === false)

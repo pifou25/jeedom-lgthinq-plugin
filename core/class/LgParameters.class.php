@@ -301,6 +301,34 @@ class LgParameters {
     }
 
     /**
+     * list wideq branches on github
+     * @param string $url: https://api.github.com/repos/[user]/[repo]/branches
+     * @return array
+     */
+    public static function getGithubBranches($url){
+        $ch = curl_init();
+        curl_setopt($ch,CURLOPT_URL,$url);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+        curl_setopt($ch,CURLOPT_CONNECTTIMEOUT, 4);
+        curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
+
+        $json = curl_exec($ch);
+        $branches = [];
+        if(!$json) {
+            $branches['error'] = curl_error($ch);
+        } else if(empty($json)){
+            $branches['error'] = 'empty response';
+        }else{
+            $json = json_decode($json, true, 512, JSON_BIGINT_AS_STRING);
+              foreach($json as $data){
+                      $branches[] = $data['name'];
+            }
+        }
+        curl_close($ch);
+        return $branches;
+    }
+
+    /**
      * search file name into $url with the $regex, then copy $url at $dest with $name
      * @param string $url source to copy
      * @param string $regex to capture the name
@@ -317,12 +345,15 @@ class LgParameters {
 
     /**
      * copy $url file into $dest/$name. create $dest directory if it doesn't exists.
+     * doesn't overwrite if file exists.
      * @param string $url source to copy
      * @param string $name 
-     * @param type $dest
-     * @return boolean
+     * @param string $dest : directory destination
+     * @return boolean or error message
      */
     public static function copyData($url, $name, $dest) {
+        if(file_exists($dest . $name))
+            return true;
         if (!is_dir($dest))
             if (!mkdir($dest, 0777, true))
                 return "unable to create dir $dest";
@@ -334,4 +365,31 @@ class LgParameters {
         return true;
     }
 
+    /**
+     * scan and zip every files, and download it.
+     * @param array $dirs = ['lg/', 'jeedom/', 'lang/']
+     */
+    public static function zipConfig($dirs, $tmp_file = '/tmp/lgthinq.zip'){
+        $i = 0; $nb = 0; $err = 0;
+        $zip = new ZipArchive;
+        if ($zip->open($tmp_file,  ZipArchive::CREATE)) {
+            foreach($dirs as $dir){
+                foreach(scandir($dir) as $file){
+                    $nb++;
+                    if ($zip->addFile("$dir/$file"))
+                        $i++;
+                    else
+                        $err++;
+                }
+            }
+            $zip->close();
+            header('Content-disposition: attachment; filename=lgthinq.zip');
+            header('Content-type: application/zip');
+            readfile($tmp_file);
+            return "Archive created! $nb files, $i added, $err errors";
+       } else {
+           return "Failed to open $tmp_file!";
+       }
+    }
+    
 }

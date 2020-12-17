@@ -25,7 +25,7 @@ if (!isConnect()) {
 ?>
 <form class="form-horizontal" id="LgThinqForm">
     <fieldset>
-		<legend>{{Authentification}} Step 1: Sélectionner la langue et le code pays</legend>
+	<legend>{{Authentification}} Step 1: Sélectionner la langue et le code pays</legend>
         <div class="form-group">
             <label class="col-lg-3 control-label">{{Country}}</label>
             <div class="col-lg-2">
@@ -34,7 +34,7 @@ if (!isConnect()) {
             <label class="col-lg-3 control-label">{{Language}}</label>
             <div class="col-lg-2">
                 <input type="text" class="configKey form-control" data-l1key="LgLanguage" id="LgLanguage" list="LgLangList">
-				<datalist id="LgLangList">
+                        <datalist id="LgLangList">
                     <option>fr-FR</option>
                     <option>fr-CA</option>
                     <option>en-US</option>
@@ -42,20 +42,13 @@ if (!isConnect()) {
                 </datalist>
             </div>
             <div class="col-lg-2">
-				<a class="btn btn-success btn-xs" id="bt_AuthLgThinq"><i class="far fa-check-circle icon-white"></i> {{Gateway}}</a>
-				<input type="hidden" class="configKey form-control" data-l1key="LgGateway" id="LgGateway" placeholder="url pour login LG" disabled />
+                <a class="btn btn-success btn-xs" id="bt_AuthLgThinq"><i class="far fa-check-circle icon-white"></i> {{LG Account Login}}</a>
+                <input type="hidden" class="configKey form-control" data-l1key="LgGateway" id="LgGateway" placeholder="url pour login LG" disabled />
             </div>
         </div>
   </fieldset>
 
     <fieldset>
-        <div class="form-group">
-		<legend>{{Step 2: Authentification sur le portail LG Account:}}</legend>
-            <label class="col-lg-3 control-label">{{Cliquez ici pour ouvrir LG Account portal}}</label>
-            <div class="col-lg-2">
-                <a class="btn btn-success btn-xs" id="bt_gateway" target="_blank"><i class="far fa-check-circle icon-white"></i> {{LG Account Login}}</a>
-            </div>
-        </div>
         <div class="form-group">
             <label class="col-lg-3 control-label">{{Copiez / collez l'URL de redirection LG ici:}}</label>
             <div class="col-lg-6">
@@ -82,7 +75,7 @@ if (!isConnect()) {
 		
   </fieldset>
     <fieldset>
-		<legend>{{Server Parameters}}</legend>
+        <legend>{{Server Parameters}}</legend>
         <div class="form-group">
             <label class="col-lg-3 control-label">{{Port Server Local}}</label>
             <div class="col-lg-2">
@@ -91,6 +84,22 @@ if (!isConnect()) {
             <label class="col-lg-3 control-label">{{URL Server Local}}</label>
             <div class="col-lg-2">
                 <input class="configKey form-control" data-l1key="UrlServerLg" placeholder="http://127.0.0.1" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-3 control-label">{{Python}}</label>
+            <div class="col-lg-2">
+                <input class="configKey form-control" data-l1key="PythonLg" />
+            </div>
+            <label class="col-lg-3 control-label">{{Wideq Lib version}}</label>
+            <div class="col-lg-2">
+                <select class="configKey form-control" data-l1key="ServerCmdLg" />
+            <?php 
+                foreach(LgParameters::getGithubBranches('https://api.github.com/repos/pifou25/wideq/branches') as $br){
+                    printf("\t\t<option value=\"%s\">%s</option>\n", $br, $br);
+                }
+            ?>
+                </select>
             </div>
         </div>
   </fieldset>

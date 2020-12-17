@@ -28,10 +28,8 @@ try {
     }
 
     if (init('action') == 'download') {
-        header('Content-disposition: attachment; filename=file.json');
-        header('Content-type: application/json');
-        $lgApi = lgthinq::getApi();
-        exit(json_encode($lgApi->save(), JSON_PRETTY_PRINT));
+        $msg = LgParameters::zipConfig(['lg/', 'jeedom/', 'lang/']);
+        ajax::success($msg);
     }
 
     if (!headers_sent()) {
@@ -41,7 +39,7 @@ try {
     if (init('action') == 'log') {
         $log = init('log');
         LgLog::info("ajax log:$log");
-        ajax::success(['result' => true]);
+        ajax::success($log);
     }
 
     if (init('action') == 'ping') {

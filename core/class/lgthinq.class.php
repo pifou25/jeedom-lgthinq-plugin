@@ -343,8 +343,6 @@ class lgthinq extends eqLogic {
      */
     private function createCommand($_update = false) {
 
-        $this->createDefaultCommands();
-
         if (!file_exists( $this->getFileconf())) {
             self::addEvent(__('Fichier de configuration absent ', __FILE__) . $this->getFileconf());
             return false;

@@ -100,6 +100,12 @@ try {
     throw new Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
     /*     * *********Catch exeption*************** */
 } catch (Exception $e) {
-    ajax::error(displayException($e), $e->getCode());
+    $message = 'Ajax fatal error:' . displayException($e);
+    if (DEBUG || lgthinq::isDebug()) {
+            $message .= '<a class="pull-right bt_errorShowTrace cursor">Show traces</a>';
+            $message .= '<br/><pre class="pre_errorTrace" style="display : none;">' . print_r($e->getTrace(), true) . '</pre>';
+    }
+
+    ajax::error($message, $e->getCode());
 }
 

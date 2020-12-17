@@ -96,7 +96,7 @@ include_file('core', 'LgParameters', 'class', 'lgthinq');
             </div>
             <label class="col-lg-3 control-label">{{Wideq Lib version}}</label>
             <div class="col-lg-2">
-                <select class="configKey form-control" data-l1key="WideqLibLg" />
+                <select class="configKey form-control" data-l1key="WideqLibLg">
             <?php 
                 foreach(LgParameters::getGithubBranches('https://api.github.com/repos/pifou25/wideq/branches') as $br){
                     printf("\t\t<option value=\"%s\">%s</option>\n", $br, $br);

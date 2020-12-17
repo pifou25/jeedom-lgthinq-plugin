@@ -21,8 +21,6 @@ require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 // include /plugins/lgthinq/core/LgLog.class.php
 include_file('core', 'LgLog', 'class', 'lgthinq');
 
-LgLog::info('inclusion du fichier install.php');
-
 function initLgthinqParameters() {
 
     // initialiser le plugin avec ces valeurs

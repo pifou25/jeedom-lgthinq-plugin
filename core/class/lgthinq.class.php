@@ -292,10 +292,10 @@ class lgthinq extends eqLogic {
         LgLog::debug("copy img and json datas. " . print_r(array_filter($msg, function($v){return $v!==true;}), true));
 
         // transform LG json config into Jeedom json
-        $file = dirname(__FILE__) . self::DATA_PATH.'lg/'.$_config['id'];
+        $file = dirname(__FILE__) . self::DATA_PATH.'lg/'.$_config['id'] . '.json';
         $lg = json_decode( file_get_contents($file), true, 512, JSON_BIGINT_AS_STRING);
         $conf = LgParameters::convertLgToJeedom($lg);
-        $file = dirname(__FILE__) . self::RESOURCES_PATH . $_config['id'];
+        $file = dirname(__FILE__) . getFileconf();
         if(file_put_contents( $file, json_encode($conf, JSON_PRETTY_PRINT)) === false)
             LgLog::warning("copy $file error...");
 

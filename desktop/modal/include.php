@@ -135,7 +135,7 @@ $( function(){
     $('.toggleTouch').on('click', function() {
         var id = $(this).attr('id');
         console.log('apply toggle to z' + id);
-        $('#z' . id).toggle();
+        $('#z' + id).toggle();
     };
 
     $('#bt_synchro').on('click',function(){

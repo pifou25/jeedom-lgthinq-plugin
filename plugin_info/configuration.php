@@ -22,6 +22,9 @@ if (!isConnect()) {
     include_file('desktop', '404', 'php');
     die();
 }
+
+include_file('core', 'LgParameters', 'class', 'lgthinq');
+
 ?>
 <form class="form-horizontal" id="LgThinqForm">
     <fieldset>
@@ -93,7 +96,7 @@ if (!isConnect()) {
             </div>
             <label class="col-lg-3 control-label">{{Wideq Lib version}}</label>
             <div class="col-lg-2">
-                <select class="configKey form-control" data-l1key="ServerCmdLg" />
+                <select class="configKey form-control" data-l1key="WideqLibLg" />
             <?php 
                 foreach(LgParameters::getGithubBranches('https://api.github.com/repos/pifou25/wideq/branches') as $br){
                     printf("\t\t<option value=\"%s\">%s</option>\n", $br, $br);

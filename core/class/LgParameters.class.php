@@ -374,19 +374,32 @@ class LgParameters {
         $zip = new ZipArchive;
         if ($zip->open($tmp_file,  ZipArchive::CREATE)) {
             foreach($dirs as $dir){
-                foreach(scandir(dirname(__FILE__) . lgthinq::DATA_PATH . $dir) as $file){
-                    $nb++;
-                    if ($zip->addFile(dirname(__FILE__) . "$dir/$file"))
-                        $i++;
-                    else
-                        $err++;
+                if(!in_array($dir, [".",".."])){
+                    foreach(scandir(dirname(__FILE__) . lgthinq::DATA_PATH . $dir) as $file){
+                        $nb++;
+                        if ($zip->addFile(dirname(__FILE__) . "$dir/$file"))
+                            $i++;
+                        else
+                            $err++;
+                    }
                 }
             }
             $zip->close();
-            header('Content-disposition: attachment; filename=lgthinq.zip');
-            header('Content-type: application/zip');
+
+            // http headers for zip downloads
+            header("Pragma: public");
+            header("Expires: 0");
+            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+            header("Cache-Control: public");
+            header("Content-Description: File Transfer");
+            header("Content-type: application/octet-stream");
+            // header('Content-type: application/zip');
+            header("Content-Disposition: attachment; filename=\"lgthinq.zip\"");
+            header("Content-Transfer-Encoding: binary");
+            header("Content-Length: ".filesize($tmp_file));
             readfile($tmp_file);
-            return "Archive created! $nb files, $i added, $err errors";
+
+            return "Archive created! $nb files, $i added, $err errors to $tmp_file";
        } else {
            return "Failed to open $tmp_file!";
        }

@@ -74,7 +74,8 @@ try {
     }
 
     if (init('action') == 'synchro') {
-        //ajax::error(json_encode($_POST), 401);
+        
+        LgLog::debug('synchro lgthinq ajax request:' . json_encode($_POST));
         $api = lgthinq::getApi();
         $objects = $api->ls();
         $selected = init('selected');

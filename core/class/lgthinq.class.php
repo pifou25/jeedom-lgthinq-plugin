@@ -295,14 +295,11 @@ class lgthinq extends eqLogic {
         $file = dirname(__FILE__) . self::DATA_PATH.'lg/'.$_config['id'] . '.json';
         $lg = json_decode( file_get_contents($file), true, 512, JSON_BIGINT_AS_STRING);
         $conf = LgParameters::convertLgToJeedom($lg);
-        $file = dirname(__FILE__) . getFileconf();
+        $file = dirname(__FILE__) . $this->getFileconf();
         if(file_put_contents( $file, json_encode($conf, JSON_PRETTY_PRINT)) === false)
             LgLog::warning("copy $file error...");
         else
             LgLog::debug ("copy $file ok.");
-
-        // générer les commandes
-        $this->createCommand();
 
     }
 

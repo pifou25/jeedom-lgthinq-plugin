@@ -30,7 +30,9 @@ try {
     if (init('action') == 'download') {
         $msg = LgParameters::zipConfig(['lg/', 'jeedom/', 'lang/'], 
                 dirname(__FILE__) . lgthinq::DATA_PATH . '/lgthinq.zip');
-        ajax::success($msg);
+        LgLog::info($msg);
+        // ajax::success($msg);
+        die();
     }
 
     if (!headers_sent()) {
@@ -76,6 +78,7 @@ try {
         $api = lgthinq::getApi();
         $objects = $api->ls();
         $selected = init('selected');
+        $msg = '';
         if (empty($objects) || empty($selected)) {
             ajax::error("Aucun objet LG connecté, ou aucun sélectionné.", 401);
         } else {
@@ -85,14 +88,14 @@ try {
                 if (empty($logicalId)) {
                     ajax::error("Aucun objet $logicalId" . json_encode($_POST), 401);
                 } else if (!isset($objects[$id])) {
-                    ajax::error("Objet id=$id introuvable..." . json_encode($_POST), 401);
+                    $msg .= "Objet id=$id ignoré.\n";
                 } else {
                     LgLog::debug("map $id sur $logicalId");
                     $eq = lgthinq::CreateEqLogic($objects[$id], $logicalId);
                     $counter++;
                 }
             }
-            ajax::success("$counter objets configurés ! Rechargez la page (F5) pour voir les nouveaux objets.");
+            ajax::success("$counter objets configurés ! Rechargez la page (F5) pour voir les nouveaux objets.\n $msg");
         }
     }
 

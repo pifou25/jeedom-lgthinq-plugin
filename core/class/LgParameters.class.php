@@ -293,7 +293,7 @@ class LgParameters {
      * @return array of json file names
      */
     public static function getAllConfig() {
-        return array_diff(scandir(dirname(__FILE__) . '/../../resources/devices/'), array('.', '..'));
+        return array_diff(scandir(__DIR__ . '/../../resources/devices/'), array('.', '..'));
     }
 
     public static function getLog() {
@@ -375,9 +375,9 @@ class LgParameters {
         if ($zip->open($tmp_file,  ZipArchive::CREATE)) {
             foreach($dirs as $dir){
                 if(!in_array($dir, [".",".."])){
-                    foreach(scandir(dirname(__FILE__) . lgthinq::DATA_PATH . $dir) as $file){
+                    foreach(scandir(__DIR__ . lgthinq::DATA_PATH . $dir) as $file){
                         $nb++;
-                        if ($zip->addFile(dirname(__FILE__) . "$dir/$file"))
+                        if ($zip->addFile(__DIR__ . "$dir/$file"))
                             $i++;
                         else
                             $err++;

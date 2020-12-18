@@ -298,6 +298,8 @@ class lgthinq extends eqLogic {
         $file = dirname(__FILE__) . getFileconf();
         if(file_put_contents( $file, json_encode($conf, JSON_PRETTY_PRINT)) === false)
             LgLog::warning("copy $file error...");
+        else
+            LgLog::debug ("copy $file ok.");
 
         // générer les commandes
         $this->createCommand();
@@ -344,6 +346,7 @@ class lgthinq extends eqLogic {
      */
     private function createCommand($_update = false) {
 
+        LgLog::debug("check createCommand json config... " . $this->getLogicalId());
         if (!file_exists( $this->getFileconf())) {
             self::addEvent(__('Fichier de configuration absent ', __FILE__) . $this->getFileconf());
             return false;
@@ -353,7 +356,9 @@ class lgthinq extends eqLogic {
             LgLog::debug('Json Config fichier vide ou pas au format json: ' . $this->getFileconf());
             return false;
         }
+        LgLog::debug("Start import commands for " . $this->getLogicalId());
         $this->import($device);
+        LgLog::debug("Successfully finish import commands for " . $this->getLogicalId());
         sleep(1);
         self::addEvent('');
         LgLog::debug('Successfully created commands from config file:' . count($device));

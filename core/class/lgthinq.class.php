@@ -53,7 +53,8 @@ class lgthinq extends eqLogic {
     const RESOURCES_PATH = '/../../data/jeedom/';
 
     /*     * ***********************Methode static*************************** */
-
+    public static function getDataPath(){return __DIR__ . self::DATA_PATH;}
+    public static function getResourcesPath(){return __DIR__ . self::RESOURCES_PATH;}
 
     /**
      * generate WideqAPI with jeedom configuration
@@ -285,17 +286,17 @@ class lgthinq extends eqLogic {
                 $this->getProductType());
 
         // copy data and images
-        $msg[] = LgParameters::copyData($_config['smallImageUrl'], $_config['id'].'.png', dirname(__FILE__) . self::DATA_PATH. 'smallImg/');
-        $msg[] = LgParameters::copyData($_config['imageUrl'], $_config['id'].'.png', dirname(__FILE__) . self::DATA_PATH.'img/');
-        $msg[] = LgParameters::copyData($_config['modelJsonUrl'], $_config['id'].'.json', dirname(__FILE__) . self::DATA_PATH.'lg/');
-        $msg[] = LgParameters::copyData($_config['langPackProductTypeUri'], $_config['id'].'.json', dirname(__FILE__) . self::DATA_PATH.'lang/');
+        $msg[] = LgParameters::copyData($_config['smallImageUrl'], $_config['id'].'.png', self::getDataPath(). 'smallImg/');
+        $msg[] = LgParameters::copyData($_config['imageUrl'], $_config['id'].'.png', self::getDataPath().'img/');
+        $msg[] = LgParameters::copyData($_config['modelJsonUrl'], $_config['id'].'.json', self::getDataPath().'lg/');
+        $msg[] = LgParameters::copyData($_config['langPackProductTypeUri'], $_config['id'].'.json', self::getDataPath().'lang/');
         LgLog::debug("copy img and json datas. " . print_r(array_filter($msg, function($v){return $v!==true;}), true));
 
         // transform LG json config into Jeedom json
-        $file = dirname(__FILE__) . self::DATA_PATH.'lg/'.$_config['id'] . '.json';
+        $file = self::getDataPath().'lg/'.$_config['id'] . '.json';
         $lg = json_decode( file_get_contents($file), true, 512, JSON_BIGINT_AS_STRING);
         $conf = LgParameters::convertLgToJeedom($lg);
-        $file = dirname(__FILE__) . $this->getFileconf();
+        $file = $this->getFileconf();
         if(file_put_contents( $file, json_encode($conf, JSON_PRETTY_PRINT)) === false)
             LgLog::warning("copy $file error...");
         else
@@ -419,7 +420,7 @@ class lgthinq extends eqLogic {
     }
     
     public function getFileconf(){
-        return self::RESOURCES_PATH . $this->getLogicalId() . '.json';
+        return __DIR__ . self::RESOURCES_PATH . $this->getLogicalId() . '.json';
     }
     
     public function getImage(){

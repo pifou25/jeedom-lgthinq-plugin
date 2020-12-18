@@ -34,11 +34,11 @@ function initLgthinqParameters() {
             config::save($key, $value, 'lgthinq');
         }
     }
-    if(is_dir(dirname(__FILE__) . lgthinq::RESOURCES_PATH)){
-        if (!mkdir(dirname(__FILE__) . lgthinq::RESOURCES_PATH, 0777, true))
-            LgLog::error('unable to create dir ' . lgthinq::RESOURCES_PATH);
+    if(is_dir(lgthinq::getResourcesPath())){
+        if (!mkdir(lgthinq::getResourcesPath(), 0777, true))
+            LgLog::error('unable to create dir ' . lgthinq::getResourcesPath ());
         else
-            LgLog::debug('create dir ' . lgthinq::RESOURCES_PATH);
+            LgLog::debug('create dir ' . lgthinq::getResourcesPath ());
     }
     $file = WideqManager::getWideqDir() . 'check.sh ';
     exec(system::getCmdSudo() . " chmod +x $file");

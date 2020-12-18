@@ -47,7 +47,7 @@ class WideqManager {
     }
     public static function getResourcesDir(){
         if (self::$resourcesDir == null) {
-            $dir = dirname(__FILE__) . '/../../resources/';
+            $dir = __DIR__ . '/../../resources/';
             self::$resourcesDir = trim(shell_exec("cd \"$dir\"; pwd")) . '/';
         }
         return self::$resourcesDir;        

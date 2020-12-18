@@ -17,7 +17,7 @@
  */
 
 try {
-    require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
+    require_once __DIR__ . '/../../../../core/php/core.inc.php';
     include_file('core', 'authentification', 'php');
 
     // include /plugins/lgthinq/core/lgthinq.class.php
@@ -29,7 +29,7 @@ try {
 
     if (init('action') == 'download') {
         $msg = LgParameters::zipConfig(['lg/', 'jeedom/', 'lang/'], 
-                dirname(__FILE__) . lgthinq::DATA_PATH . '/lgthinq.zip');
+                lgthinq::getDataPath() . 'lgthinq.zip');
         LgLog::info($msg);
         // ajax::success($msg);
         die();

@@ -132,7 +132,7 @@ $( function(){
                 data: {
                     action: 'getGateway',
                     lang: $('#LgLanguage').val(),
-                    country: $('#LgCountry').val(),
+                    country: $('#LgCountry').val()
                 },
                 dataType: 'json',
                 global: false,
@@ -140,7 +140,7 @@ $( function(){
                     handleAjaxError(request, status, error, $('#divAjaxAlert'));
                 },
                 success: function (data, textStatus) {
-                    if(data['state']=='ok'){
+                    if(data['state'] === 'ok'){
                         $('#LgGateway').val( data['result']['url']);
                         $('#bt_gateway').attr('href', data['result']['url']);
                         $('#LgAuthUrl').focus();
@@ -171,7 +171,7 @@ $( function(){
                 handleAjaxError(request, status, error, $('#divAjaxAlert'));
             },
             success: function (data, textStatus) {
-                if(data['state']=='ok'){
+                if(data['state'] === 'ok'){
                     $('#LgJeedomToken').val( data['result']['jeedom_token']);
                     console.log(data['result']);
                 }else{
@@ -193,7 +193,7 @@ $( function(){
                 handleAjaxError(request, status, error, $('#divAjaxAlert'));
             },
             success: function (data, textStatus) {
-                if(data['state']=='ok'){
+                if(data['state'] === 'ok'){
                     var date = new Date(Number.parseFloat(data['result']['starting']) * 1000);
                     bootbox.alert('LgThinq plugin server ok, running since ' + date + ', token config is ' + data['result']['jeedom_token']);
                     console.log(data['result']);

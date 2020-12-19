@@ -187,7 +187,8 @@ class lgthinq extends eqLogic {
     public static function dependancy_install() {
         log::remove(__CLASS__ . '_update');
         return [
-            'script' => WideqManager::getResourcesDir() . 'install_#stype#.sh ' . jeedom::getTmpFolder(__CLASS__) . '/dependency',
+            'script' => WideqManager::getResourcesDir() . 'install_#stype#.sh '
+            . jeedom::getTmpFolder(__CLASS__) . '/dependency',
             'log' => log::getPathToLog(__CLASS__ . '_update')];
     }
 
@@ -293,15 +294,19 @@ class lgthinq extends eqLogic {
         $msg[] = LgParameters::copyData($_config['langPackProductTypeUri'], $_config['id'].'.json', self::getDataPath().'lang/');
         LgLog::debug("copy img and json datas. " . print_r(array_filter($msg, function($v){return $v!==true;}), true));
 
-        // transform LG json config into Jeedom json
-        $file = self::getDataPath().'lg/'.$_config['id'] . '.json';
-        $lg = json_decode( file_get_contents($file), true, 512, JSON_BIGINT_AS_STRING);
-        $conf = LgParameters::convertLgToJeedom($lg);
-        $file = $this->getFileconf();
-        if(file_put_contents( $file, json_encode($conf, JSON_PRETTY_PRINT)) === false)
-            LgLog::warning("copy $file error...");
-        else
-            LgLog::debug ("copy $file ok.");
+        if(!empty($_model) && $_model != self::DEFAULT_VALUE){
+            
+        }else{
+            // transform LG json config into Jeedom json
+            $file = self::getDataPath().'lg/'.$_config['id'] . '.json';
+            $lg = json_decode( file_get_contents($file), true, 512, JSON_BIGINT_AS_STRING);
+            $conf = LgParameters::convertLgToJeedom($lg);
+            $file = $this->getFileconf();
+            if(file_put_contents( $file, json_encode($conf, JSON_PRETTY_PRINT)) === false)
+                LgLog::warning("copy $file error...");
+            else
+                LgLog::debug ("copy $file ok.");
+        }
 
     }
 

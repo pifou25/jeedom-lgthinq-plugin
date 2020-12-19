@@ -293,7 +293,7 @@ class LgParameters {
      * @return array of json file names
      */
     public static function getAllConfig() {
-        return array_diff(scandir(__DIR__ . '/../../resources/devices/'), array('.', '..'));
+        return array_diff(scandir(lgthinq::getResourcesPath()), ['.', '..']);
     }
 
     public static function getLog() {
@@ -302,7 +302,7 @@ class LgParameters {
 
     /**
      * list wideq branches on github
-     * @param string $url: https://api.github.com/repos/[user]/[repo]/branches
+     * @param string $url : https://api.github.com/repos/[user]/[repo]/branches
      * @return array
      */
     public static function getGithubBranches($url){
@@ -372,7 +372,7 @@ class LgParameters {
     public static function zipConfig($dirs, $tmp_file = '/tmp/lgthinq.zip'){
         $i = 0; $nb = 0; $err = 0;
         $zip = new ZipArchive;
-        $path = realpath(__DIR__ . lgthinq::getDataPath());
+        $path = realpath(lgthinq::getDataPath());
         if ($zip->open($tmp_file,  ZipArchive::CREATE)) {
             foreach($dirs as $dir){
                 $list = scandir("$path/$dir");

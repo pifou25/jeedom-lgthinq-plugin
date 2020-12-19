@@ -34,6 +34,7 @@ try {
     // lister les objets connectes et synchroniser
     $lgApi = lgthinq::getApi();
     $msg = '';
+    $def = []; // defined objects
     try {
         $lgObjects = $lgApi->ls();
     } catch (LgApiException $e) {
@@ -53,7 +54,7 @@ try {
             $msg .= "\n'$eqId' ... ";
             // valoriser les objets deja present
             if (isset($lgObjects[$eqId])) {
-                $lgObjects[$eqLogic->getLogicalId()]['eqLogic'] = $eqLogic;
+                $def[$eqLogic->getLogicalId()] = $eqLogic;
             } else {
                 LgLog::info('Objet Jeedom fantôme: ' . $eqLogic->getName() . '-' .
                         $eqLogic->getProductModel() . '-' . $eqLogic->getProductType() . '-' . $eqLogic->getLogicalId());
@@ -71,7 +72,7 @@ try {
             <div class="form-group">
     <?php
     foreach ($lgObjects as $obj) {
-        $checked = (isset($obj['eqLogic'])) ? '' :' checked="checked"';
+        $checked = (isset($def[$eqLogic->getLogicalId()])) ? '' :' checked="checked"';
         ?>
             <div class="col-lg-2">
                 <?php echo "<img src=\"{$obj['smallImageUrl']}\" />"; ?>
@@ -87,7 +88,7 @@ try {
                 <p style="display: none;" id="ztoggle{$obj['deviceId']}">
 EOT;
                 foreach($obj as $key => $value){
-                    if(is_string($value) && substr( $value, 0, 4 ) === "http"){
+                    if(substr( $value, 0, 4 ) === "http"){
                         $value = "<a href=\"$value\">[download]</a>";
                     }
                     echo "<b>$key</b> : $value<br/>\n";

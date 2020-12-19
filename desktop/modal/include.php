@@ -73,12 +73,15 @@ try {
     foreach ($lgObjects as $obj) {
         $checked = (isset($obj['eqLogic'])) ? '' :' checked="checked"';
         ?>
+            <div class="col-lg-2">
+                <?php echo "<img src=\"{$obj['smallImageUrl']}\" />"; ?>
+            </div>
             <div class="col-lg-5">
+
             <?php 
             // LG device checked if not defined on jeedom
             echo <<<EOT
                 <label for="{$obj['deviceId']}">
-                <img src="{$obj['smallImageUrl']}" /><br/>
                 <input type="checkbox" name="selected[]" id="{$obj['deviceId']}" value="{$obj['deviceId']}" $checked />
                 {$obj['alias']} ( {$obj['modelNm']} ) </label>
                 <div>
@@ -96,8 +99,6 @@ EOT;
                 // if not defined: list of all available LG config
                 if(!empty($checked)){
             ?>
-            </div>
-            <div class="col-lg-2">
                 <label for="lg<?= $obj['deviceId'] ?>">Selectionner Configuration :</label>
                 <select id="lg<?= $obj['deviceId'] ?>" name="lg<?= $obj['deviceId'] ?>">
                     <option value="">ignore</option>

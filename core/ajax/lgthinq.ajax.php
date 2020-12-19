@@ -84,15 +84,14 @@ try {
             ajax::error("Aucun objet LG connecté, ou aucun sélectionné.", 401);
         } else {
             $counter = 0;
-            foreach ($selected as $id) {
+            foreach ($selected as $id => $value) {
                 $logicalId = init('lg' . $id);
-                if (empty($logicalId)) {
-                    ajax::error("Aucun objet $logicalId" . json_encode($_POST), 401);
-                } else if (!isset($objects[$id])) {
-                    $msg .= "Objet id=$id ignoré.\n";
+                if (empty($objects[$id]) || empty($value)) {
+                    $msg .= "Objet id=$id ignoré ($value).\n";
                 } else {
-                    LgLog::debug("map $id sur $logicalId");
-                    $eq = lgthinq::CreateEqLogic($objects[$id], $logicalId);
+                    LgLog::debug("map $id sur $value");
+                    // $value est ignoré, toujours la même config appliquée
+                    $eq = lgthinq::CreateEqLogic($objects[$id], $value);
                     $counter++;
                 }
             }

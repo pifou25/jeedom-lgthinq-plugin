@@ -28,14 +28,11 @@ class WideqManager {
 
     // script daemon python
     const WIDEQ_SCRIPT = 'srv.py';
+    // script jeedom monitoring
+    const JEEDOM_SCRIPT = 'jeedom.py';
 
     // regex version de python
     const PYTHON_VERS = '/python (\d+)\.(\d+)\.(\d+)/i';
-
-    /**
-     * object WideqAPI.class.php
-     */
-    private static $wideqApi = null;
 
     /**
      * répertoire du démon srv.py
@@ -113,11 +110,8 @@ class WideqManager {
         $return['state'] = empty($state) ? 'nok' : 'ok';
         if (!empty($state)) {
             $return['log'] = 'nb of processes=' . count($state);
-            if (self::$wideqApi == null) {
-                self::$wideqApi = lgthinq::getApi();
-            }
             try {
-                $ping = self::$wideqApi->ping();
+                $ping = lgthinq::getApi()->ping();
                 $return = array_merge($return, $ping);
             } catch (\Exception $e) {
                 LgLog::error("ping (err {$e->getCode()}): {$e->getMessage()}");
@@ -198,4 +192,20 @@ class WideqManager {
         }
     }
 
+    /**
+     * command to refresh every detected and enabled commands.
+     * jeedom.py use both jeedom RPC json API and wideq LG lib to monitoring devices.
+     * python3 jeedom.py --ip http://192.168.1.25 --key kLbmBWVeQSqbhluECyycGEeGAXXZOahS
+     * @param type $ip
+     * @param type $key
+     */
+    public static function refreshAll($ip, $key, $id = false){
+        $file = self::getWideqDir() . 'wideq/' . self::JEEDOM_SCRIPT;
+        $cmd = self::getPython()
+            . " $file --ip $ip --key $key" . ($id ? " --id $id" : '');
+        // echo $! pour récupérer le pid process-id
+        $cmd .= ' >> ' . log::getPathToLog('lgthinq_cron') . ' 2>&1 & echo $!;';
+        $pid = exec(system::getCmdSudo() . " $cmd");
+        LgLog::info("Refresh every commands => pid= {$pid}");
+    }
 }

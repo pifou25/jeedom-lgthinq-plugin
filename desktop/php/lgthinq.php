@@ -48,7 +48,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 foreach ($eqLogics as $eqLogic) {
 	$opacity = ($eqLogic->getIsEnable()) ? '' : 'disableCard';
 	echo '<div class="eqLogicDisplayCard cursor '.$opacity.'" data-eqLogic_id="' . $eqLogic->getId() . '">';
-	echo '<img src="' . $plugin->getPathImgIcon() . '"/>';
+	echo '<img src="' . $eqLogic->getImage() . '"/>';
 	echo '<br>';
 	echo '<span class="name">' . $eqLogic->getHumanName(true, true) . '</span>';
 	echo '</div>';
@@ -87,7 +87,7 @@ foreach ($eqLogics as $eqLogic) {
                         <option value="">{{Aucun}}</option>
                         <?php
 foreach (jeeObject::all() as $object) {
-	echo '<option value="' . $object->getId() . '">' . $object->getName() . '</option>';
+    echo '<option value="' . $object->getId() . '">' . $object->getName() . '</option>';
 }
 ?>
                    </select>

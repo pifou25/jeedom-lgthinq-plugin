@@ -108,13 +108,18 @@ class lgthinq extends eqLogic {
     }
 
     /**
-     * refresh any object sensors values
+     * refresh all object sensors values.
+     * triggered by cron
      */
     private static function refreshData() {
         LgLog::debug('refresh LG data for all devices');
-        foreach (self::byType('lgthinq') as $eqLogic) {//parcours tous les équipements du plugin
-            $eqLogic->RefreshCommands();
-        }
+        // python3 jeedom.py --ip http://192.168.1.25 --key kLbmBWVeQSqbhluECyycGEeGAXXZOahS
+        $key = jeedom::getApiKey();
+        $ip = config::byKey('internalAddr'); // jeedom internal IP
+        WideqManager::refreshAll($ip, $key);
+//        foreach (self::byType('lgthinq') as $eqLogic) {//parcours tous les équipements du plugin
+//            $eqLogic->RefreshCommands();
+//        }
     }
 
     /*
@@ -218,8 +223,6 @@ class lgthinq extends eqLogic {
         $return['pid'] = config::byKey('PidLg', 'lgthinq');
         $return['port'] = config::byKey('PortServerLg', 'lgthinq', 5025);
         // $return['url'] = config::byKey('UrlServerLg', 'lgthinq', 'http://127.0.0.1');
-        $return['key'] = jeedom::getApiKey();
-        $return['ip'] = config::byKey('internalAddr');
         $return['launchable'] = empty($return['port']) ? 'nok' : 'ok';
         return $return;
     }
@@ -430,7 +433,7 @@ class lgthinq extends eqLogic {
     }
     
     public function getImage(){
-        $result = self::DATA_PATH.'smalImg/'. $this->getLogicalId().'.png';
+        $result = self::DATA_PATH.'smallImg/'. $this->getLogicalId().'.png';
         if(!file_exists($result)){
             $plugin = plugin::byId($this->getEqType_name());
             return $plugin->getPathImgIcon();
@@ -463,12 +466,10 @@ class lgthinqCmd extends cmd {
      */
 
     public function execute($_options = array()) {
-        LgLog::debug('cmd->execute ' . print_r($_options, true) . "\nfor this = " . print_r($this, true) );
-
+        LgLog::debug('cmd->execute ' . print_r($_options, true) );
         if ($this->getType() != 'action') {
-                return;
+            return;
         }
-
         // récupérer l'objet eqLogic de cette commande
         $eqLogic = $this->getEqLogic();
         switch ($this->getLogicalId()) { //vérifie le logicalid de la commande

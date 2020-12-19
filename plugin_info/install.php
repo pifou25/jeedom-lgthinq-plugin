@@ -42,8 +42,6 @@ function initLgthinqParameters() {
         else
             LgLog::debug('create dir ' . $dir);
     }
-    $file = realpath( WideqManager::getWideqDir()) . 'check.sh ';
-    exec(system::getCmdSudo() . " chmod +x $file");
 }
 
 function lgthinq_install() {

@@ -29,7 +29,7 @@ try {
 
     if (init('action') == 'download') {
         $msg = LgParameters::zipConfig(['lg/', 'jeedom/', 'lang/'], 
-                lgthinq::getDataPath() . 'lgthinq.zip');
+        realpath(lgthinq::getDataPath()) . 'lgthinq.zip');
         LgLog::info($msg);
         // ajax::success($msg);
         die();

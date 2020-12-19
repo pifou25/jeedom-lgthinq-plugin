@@ -375,7 +375,7 @@ class LgParameters {
         $path = realpath(__DIR__ . lgthinq::getDataPath());
         if ($zip->open($tmp_file,  ZipArchive::CREATE)) {
             foreach($dirs as $dir){
-                foreach(scandir($path . $dir) as $file){
+                foreach(scandir("$path/$dir") as $file){
                     if(!in_array($file, [".",".."])){
                         $nb++;
                         if ($zip->addFile("$path/$dir/$file"))

@@ -81,11 +81,9 @@ try {
             <?php 
             // LG device checked if not defined on jeedom
             echo <<<EOT
-                <label for="{$obj['deviceId']}">
-                <input type="checkbox" name="selected[]" id="{$obj['deviceId']}" value="{$obj['deviceId']}" $checked />
-                {$obj['alias']} ( {$obj['modelNm']} ) </label>
+                <h3>{$obj['alias']} ( {$obj['modelNm']} )</h3>
                 <div>
-                <h3 class="toggleTouch" id="toggle{$obj['deviceId']}">Propriétés</h3>
+                <h4 class="toggleTouch" id="toggle{$obj['deviceId']}">Propriétés</h4>
                 <p style="display: none;" id="ztoggle{$obj['deviceId']}">
 EOT;
                 foreach($obj as $key => $value){
@@ -100,7 +98,7 @@ EOT;
                 if(!empty($checked)){
             ?>
                 <label for="lg<?= $obj['deviceId'] ?>">Selectionner Configuration :</label>
-                <select id="lg<?= $obj['deviceId'] ?>" name="lg<?= $obj['deviceId'] ?>">
+                <select id="lg<?= $obj['deviceId'] ?>" name="selected[<?= $obj['deviceId'] ?>]">
                     <option value="">ignore</option>
             <?php 
                 foreach(LgParameters::getAllConfig() as $device){

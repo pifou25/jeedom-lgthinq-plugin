@@ -372,15 +372,18 @@ class LgParameters {
     public static function zipConfig($dirs, $tmp_file = '/tmp/lgthinq.zip'){
         $i = 0; $nb = 0; $err = 0;
         $zip = new ZipArchive;
+        $path = realpath(__DIR__ . lgthinq::getDataPath());
         if ($zip->open($tmp_file,  ZipArchive::CREATE)) {
             foreach($dirs as $dir){
-                if(!in_array($dir, [".",".."])){
-                    foreach(scandir(__DIR__ . lgthinq::DATA_PATH . $dir) as $file){
+                foreach(scandir($path . $dir) as $file){
+                    if(!in_array($file, [".",".."])){
                         $nb++;
-                        if ($zip->addFile(__DIR__ . "$dir/$file"))
+                        if ($zip->addFile("$path/$dir/$file"))
                             $i++;
-                        else
+                        else{
+                            LgLog::error("zip file error $path/$dir/$file");
                             $err++;
+                        }
                     }
                 }
             }

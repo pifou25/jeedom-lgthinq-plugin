@@ -83,11 +83,11 @@ try {
             echo <<<EOT
                 <h3>{$obj['alias']} ( {$obj['modelNm']} )</h3>
                 <div>
-                <h4 class="toggleTouch" id="toggle{$obj['deviceId']}">Propriétés</h4>
+                <h4 class="toggleTouch" id="toggle{$obj['deviceId']}">Propriétés [ouvrir]</h4>
                 <p style="display: none;" id="ztoggle{$obj['deviceId']}">
 EOT;
                 foreach($obj as $key => $value){
-                    if(substr( $value, 0, 4 ) === "http"){
+                    if(is_string($value) && substr( $value, 0, 4 ) === "http"){
                         $value = "<a href=\"$value\">[download]</a>";
                     }
                     echo "<b>$key</b> : $value<br/>\n";
@@ -99,7 +99,8 @@ EOT;
             ?>
                 <label for="lg<?= $obj['deviceId'] ?>">Selectionner Configuration :</label>
                 <select id="lg<?= $obj['deviceId'] ?>" name="selected[<?= $obj['deviceId'] ?>]">
-                    <option value="">ignore</option>
+                    <option value="">Ignorer</option>
+                    <option value="<?= lgthinq::DEFAULT_VALUE ?>">Automatique</option>
             <?php 
                 foreach(LgParameters::getAllConfig() as $device){
                     printf("\t\t<option value=\"%s\">%s</option>\n", $device, $device);
@@ -111,7 +112,7 @@ EOT;
             <?php } // foreach $obj ?>
             </div>
             <div class="col-lg-2">
-                <a class="btn btn-success btn-xs" id="bt_synchro" target="_blank"><i class="far fa-check-circle icon-white"></i> {{Enregistrer}}</a>
+                <a class="btn btn-success btn-xs" id="bt_synchro"><i class="far fa-check-circle icon-white"></i> {{Synchroniser}}</a>
             </div>
 
         </fieldset>
@@ -133,7 +134,6 @@ $( function(){
     //Hide/show properties list
     $('.toggleTouch').on('click', function() {
         var id = $(this).attr('id');
-        console.log('apply toggle to z' + id);
         $('#z' + id).toggle();
     });
 

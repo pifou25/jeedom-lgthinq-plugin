@@ -51,6 +51,7 @@ class lgthinq extends eqLogic {
      */
     const DATA_PATH = '/../../data/';
     const RESOURCES_PATH = '/../../data/jeedom/';
+    const DEFAULT_VALUE = 'Default';
 
     /*     * ***********************Methode static*************************** */
     public static function getDataPath(){return __DIR__ . self::DATA_PATH;}
@@ -95,9 +96,9 @@ class lgthinq extends eqLogic {
      * create the new object:
      * $_config has 4 mandatory keys: 'id' 'type' 'model' 'name'
      */
-    public static function CreateEqLogic($_config) {
+    public static function CreateEqLogic($_config, $_model = self::DEFAULT_VALUE) {
 
-        $eqLogic = new lgthinq($_config);
+        $eqLogic = new lgthinq($_config, $_model);
         $eqLogic->save();
 
         // générer les commandes
@@ -266,7 +267,7 @@ class lgthinq extends eqLogic {
      * create default object with id, name, model and type
      * @param array $_config
      */
-    private function __construct($_config){
+    private function __construct($_config, $_model){
         // re-map missing keys
         $_config = LgParameters::mapperArray($_config,
                 ['deviceId'=>'id', 'deviceType' => 'type', 'modelNm' => 'model', 'alias' => 'name']);

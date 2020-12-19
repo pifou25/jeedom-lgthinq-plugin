@@ -27,7 +27,8 @@ function initLgthinqParameters() {
     $defaultParams = ['PortServerLg' => '5025',
         'UrlServerLg' => 'http://127.0.0.1',
         'LgLanguage' => 'fr_FR',
-        'LgCountry' => 'FR'];
+        'LgCountry' => 'FR',
+        'WideqLibLg' => 'master'];
 
     foreach ($defaultParams as $key => $value) {
         if (config::byKey($key, 'lgthinq', '') == '') {

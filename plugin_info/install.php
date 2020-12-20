@@ -36,7 +36,7 @@ function initLgthinqParameters() {
         }
     }
     $dir = realpath(lgthinq::getResourcesPath());
-    if(!is_dir($dir)){
+    if(!empty($dir) && !is_dir($dir)){
         if (!mkdir($dir, 0777, true))
             LgLog::error('unable to create dir ' . $dir);
         else

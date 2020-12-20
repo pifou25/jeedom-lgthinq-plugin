@@ -28,8 +28,12 @@ try {
     }
 
     if (init('action') == 'download') {
+        $dataPath = realpath(lgthinq::getDataPath());
+        // save json config file
+        lgthinq::getApi()->save($dataPath . "jeedom/state.json");
+        // and zip all config
         $msg = LgParameters::zipConfig(['lg/', 'jeedom/', 'lang/'], 
-        realpath(lgthinq::getDataPath()) . '/lgthinq.zip');
+        $dataPath . '/lgthinq.zip');
         LgLog::info($msg);
         // ajax::success($msg);
         die();

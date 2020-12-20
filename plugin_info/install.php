@@ -26,7 +26,7 @@ function initLgthinqParameters() {
     // initialiser le plugin avec ces valeurs
     $defaultParams = ['PortServerLg' => '5025',
         'UrlServerLg' => 'http://127.0.0.1',
-        'LgLanguage' => 'fr_FR',
+        'LgLanguage' => 'fr-FR',
         'LgCountry' => 'FR',
         'WideqLibLg' => 'master'];
 

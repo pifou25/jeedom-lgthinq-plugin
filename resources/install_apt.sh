@@ -81,7 +81,7 @@ else
 fi
 
 # dans le rep du daemon python:
-# cd ${BASEDIR}/daemon
+cd ${BASEDIR}
 # for jeedom to know the command for python3.7
 echo ${PYTHON_BASH} > python.cmd
 
@@ -91,7 +91,7 @@ ${PYTHON_BASH} -m pip install --upgrade pip >> ${LOG_FILE}
 
 echo 90 > ${PROGRESS_FILE}
 log "install python dependencies in ${BASEDIR}"
-# ${PYTHON_BASH} -m venv env >> ${LOG_FILE}
+# ${PYTHON_BASH} -m venv env >> ${LOG_FILE} 
 # source env/bin/activate
 ${PYTHON_BASH} -m pip install -r requirements.txt >> ${LOG_FILE}
 # sortie de l'env virtuel

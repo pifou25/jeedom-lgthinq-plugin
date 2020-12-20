@@ -29,7 +29,7 @@ try {
 
     if (init('action') == 'download') {
         $msg = LgParameters::zipConfig(['lg/', 'jeedom/', 'lang/'], 
-        realpath(lgthinq::getDataPath()) . 'lgthinq.zip');
+        realpath(lgthinq::getDataPath()) . '/lgthinq.zip');
         LgLog::info($msg);
         // ajax::success($msg);
         die();
@@ -57,7 +57,7 @@ try {
         if (empty($lang)) {
             ajax::error('Erreur, vous devez renseigner la langue (ex: FR)', 401);
         } else if (empty($country)) {
-            ajax::error('Erreur, vous devez renseigner le pays (ex: fr_FR)', 401);
+            ajax::error('Erreur, vous devez renseigner le pays (ex: fr-FR)', 401);
         } else {
 
             $lgApi = lgthinq::getApi();
@@ -66,7 +66,7 @@ try {
             LgLog::debug("call gateway $lang $country with result (" . json_encode($url) . ')');
             if (!isset($url['url'])) {
                 LgLog::error("call LgThinq gateway $lang $country fails!");
-                ajax::error('getGateway error: ' + $url['message'], 401);
+                ajax::error('getGateway error: ' . $url['message'], 401);
             } else {
                 ajax::success($url);
             }

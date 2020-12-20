@@ -370,6 +370,9 @@ class LgParameters {
      * @param array $dirs = ['lg/', 'jeedom/', 'lang/']
      */
     public static function zipConfig($dirs, $tmp_file = '/tmp/lgthinq.zip'){
+        if(file_exists($tmp_file)){
+            unlink($tmp_file);
+        }
         $i = 0; $nb = 0; $err = 0;
         $zip = new ZipArchive;
         $path = realpath(lgthinq::getDataPath());
@@ -390,6 +393,7 @@ class LgParameters {
                 }
             }
             $zip->close();
+            chmod( $tmp_file, 0755);
 
             // http headers for zip downloads
             header("Pragma: public");

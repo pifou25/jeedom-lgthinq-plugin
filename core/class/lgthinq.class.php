@@ -81,7 +81,7 @@ class lgthinq extends eqLogic {
         $country = config::byKey('LgCountry', 'lgthinq');
         $url = $lgApi->gateway($country, $lang);
         if (!isset($url['url'])) {
-            $msg = "call LgThinq gateway $lang $country fails! " + $url['message'];
+            $msg = "call LgThinq gateway $lang $country fails! " . $url['message'];
             LgLog::error($msg);
             return $msg;
         } else {

@@ -40,7 +40,7 @@ class WideqManager {
     private static $resourcesDir = null;
 
     public static function getWideqDir() {
-        return self::getResourcesDir().'daemon/';
+        return self::getResourcesDir().'wideq/';
     }
     public static function getResourcesDir(){
         if (self::$resourcesDir == null) {
@@ -135,7 +135,7 @@ class WideqManager {
             throw new Exception(__('Veuillez vérifier la configuration', __FILE__));
         }
 
-        $file = self::getWideqDir() . 'wideq/' . self::WIDEQ_SCRIPT;
+        $file = self::getWideqDir() . self::WIDEQ_SCRIPT;
         $cmd = self::getPython()
             . " $file --port {$daemon_info['port']} "
             . "--key {$daemon_info['key']} --ip {$daemon_info['ip']}";
@@ -200,7 +200,7 @@ class WideqManager {
      * @param type $key
      */
     public static function refreshAll($ip, $key, $id = false){
-        $file = self::getWideqDir() . 'wideq/' . self::JEEDOM_SCRIPT;
+        $file = self::getWideqDir() . self::JEEDOM_SCRIPT;
         $cmd = self::getPython()
             . " $file --ip $ip --key $key" . ($id ? " --id $id" : '');
         // echo $! pour récupérer le pid process-id

@@ -81,7 +81,7 @@ else
 fi
 
 # dans le rep du daemon python:
-cd ${BASEDIR}/daemon
+# cd ${BASEDIR}/daemon
 # for jeedom to know the command for python3.7
 echo ${PYTHON_BASH} > python.cmd
 
@@ -90,7 +90,7 @@ log "upgrade pip3"
 ${PYTHON_BASH} -m pip install --upgrade pip >> ${LOG_FILE}
 
 echo 90 > ${PROGRESS_FILE}
-log "install python dependencies in ${BASEDIR}/daemon"
+log "install python dependencies in ${BASEDIR}"
 # ${PYTHON_BASH} -m venv env >> ${LOG_FILE}
 # source env/bin/activate
 ${PYTHON_BASH} -m pip install -r requirements.txt >> ${LOG_FILE}
@@ -98,15 +98,16 @@ ${PYTHON_BASH} -m pip install -r requirements.txt >> ${LOG_FILE}
 # deactivate
 
 echo 95 > ${PROGRESS_FILE}
-log "clone wideq lib from github in ${BASEDIR}/daemon"
+log "clone wideq lib from github in ${BASEDIR}"
 rm -r wideq
-wget https://github.com/pifou25/wideq/archive/jeedom.zip -O wideq.zip >> ${LOG_FILE}
-unzip -q wideq.zip -d . >> ${LOG_FILE}
-mv wideq-jeedom wideq
+git clone https://github.com/pifou25/wideq.git -b jeedom >> ${LOG_FILE}
+# wget https://github.com/pifou25/wideq/archive/jeedom.zip -O wideq.zip >> ${LOG_FILE}
+# unzip -q wideq.zip -d . >> ${LOG_FILE}
+# mv wideq-jeedom wideq
 chown -R www-data:www-data wideq
-rm wideq.zip
+# rm wideq.zip
 
-chmod +x check.sh
+# chmod +x check.sh
 
 echo 100 > ${PROGRESS_FILE}
 log "Everything is successfully installed!"

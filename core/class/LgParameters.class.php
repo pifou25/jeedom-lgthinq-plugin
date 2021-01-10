@@ -273,9 +273,9 @@ class LgParameters {
     }
 
     /**
-     * add some new keys
+     * add some new keys into array: duplicate keys with new keys values
      * @param type $_config
-     * @param type $_mapper
+     * @param type $_mapper = ['existing key' => 'new key to create']
      * @return type
      */
     public static function mapperArray($_config, $_mapper) {
@@ -395,23 +395,27 @@ class LgParameters {
             $zip->close();
             chmod( $tmp_file, 0755);
 
-            // http headers for zip downloads
-            header("Pragma: public");
-            header("Expires: 0");
-            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-            header("Cache-Control: public");
-            header("Content-Description: File Transfer");
-            header("Content-type: application/octet-stream");
-            // header('Content-type: application/zip');
-            header("Content-Disposition: attachment; filename=\"lgthinq.zip\"");
-            header("Content-Transfer-Encoding: binary");
-            header("Content-Length: ".filesize($tmp_file));
-            readfile($tmp_file);
-
+            self::download($tmp_file);
             return "Archive created! $nb files, $i added, $err errors to $tmp_file";
        } else {
            return "Failed to open $tmp_file!";
        }
     }
     
+    public static function download($file){
+
+        // http headers for zip downloads
+        header("Pragma: public");
+        header("Expires: 0");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header("Cache-Control: public");
+        header("Content-Description: File Transfer");
+        header("Content-type: application/octet-stream");
+        // header('Content-type: application/zip');
+        header("Content-Disposition: attachment; filename=\"lgthinq.zip\"");
+        header("Content-Transfer-Encoding: binary");
+        header("Content-Length: ".filesize($file));
+        readfile($file);
+        
+    }
 }

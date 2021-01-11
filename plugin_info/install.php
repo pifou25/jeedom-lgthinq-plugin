@@ -42,6 +42,9 @@ function initLgthinqParameters() {
         else
             LgLog::debug('create dir ' . $dir);
     }
+    if(!mkdir(__DIR__.'../data')){
+            LgLog::error('unable to create dir /data');
+    }
 }
 
 function lgthinq_install() {

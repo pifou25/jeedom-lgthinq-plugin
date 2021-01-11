@@ -133,7 +133,7 @@ $( function(){
                 error: function (request, status, error) {
                     handleAjaxError(request, status, error, $('#divAjaxAlert'));
                 },
-                success: function (data, textStatus) {
+                success: function (data) {
                     if(data['state'] === 'ok'){
                         $('#LgGateway').val( data['result']['url']);
                         $('#bt_gateway').attr('href', data['result']['url']);
@@ -164,11 +164,10 @@ $( function(){
             error: function (request, status, error) {
                 handleAjaxError(request, status, error, $('#divAjaxAlert'));
             },
-            success: function (data, textStatus) {
+            success: function (data) {
                 if(data['state'] === 'ok'){
-                    var date = new Date(Number.parseFloat(data['result']['starting']) * 1000);
-                    bootbox.alert('LgThinq plugin server ok, running since ' + date + ', token config is ' + data['result']['jeedom_token']);
-                    console.log(data['result']);
+                    bootbox.alert('LgThinq plugin server ok, running since ' + 
+                            data['result']['starting']);
                 }else{
                     $('#divAjaxAlert').showAlert({message: data['state'] + ' : ' + data['result'], level: 'danger'});;
                 }

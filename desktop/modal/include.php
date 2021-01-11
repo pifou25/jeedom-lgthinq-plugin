@@ -71,8 +71,7 @@ try {
             <legend>{{Liste des objets LG détectés}}</legend>
             <div class="form-group">
     <?php
-    foreach ($lgObjects as $obj) {
-        $checked = (isset($def[$eqLogic->getLogicalId()])) ? '' :' checked="checked"';
+    foreach ($def as $obj => $id) {
         ?>
             <div class="col-lg-2">
                 <?php echo "<img src=\"{$obj['smallImageUrl']}\" />"; ?>

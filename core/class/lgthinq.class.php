@@ -240,9 +240,7 @@ class lgthinq extends eqLogic {
         if ($result !== false) {
             // sauver le PID du daemon
             config::save('PidLg', $result, 'lgthinq');
-            // after restart, reinit the token
-            self::initToken();
-            LgLog::debug('Restart daemon and reinit token');
+            LgLog::debug('Restart daemon');
         }
 
         return $result;
@@ -399,18 +397,9 @@ class lgthinq extends eqLogic {
      * action avant modification de variable de configuration LgAuthUrl:
      * envoyer le nouveau token LgAuthUrl au serveur
      */
-    public static function preConfig_LgAuthUrl($_newValue) {
-
-        $_oldValue = config::byKey('LgAuthUrl', 'lgthinq');
-        if ($_newValue != $_oldValue) {
-            // maj jeedom token
-            $json = self::initToken($_newValue);
-            LgLog::debug('initToken=' . $json);
-        } else {
-            LgLog::debug('LgAuthUrl non modifié=' . $_newValue);
-        }
-        return $_newValue;
-    }
+//    public static function preConfig_LgAuthUrl($_newValue) {
+//        return $_newValue;
+//    }
 
     /*     * ********************** Getter Setter *************************** */
 

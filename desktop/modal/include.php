@@ -67,10 +67,8 @@ try {
     <?php
     foreach ($lgObjects as $id => $obj) {
         $checked = (isset($obj['jeedom'])) ? '' :' checked="checked"';
+        $msg .= json_encode($obj, JSON_PRETTY_PRINT) ."\n";
         ?>
-            <div class="col-lg-2">
-                <?php echo "<img src=\"{$obj['smallImageUrl']}\" />"; ?>
-            </div>
             <div class="col-lg-5">
             <?php 
             // LG device checked if not defined on jeedom
@@ -80,10 +78,10 @@ try {
 EOT;
             // LG device checked if not defined on jeedom
             echo <<<EOT
-                <h3>{$obj['alias']} ( {$obj['modelNm']} )</h3>
+                <h3>{$obj['name']} ( {$obj['model']} )</h3>
                 <div>
-                <h4 class="toggleTouch" id="toggle{$obj['deviceId']}">Propriétés [ouvrir]</h4>
-                <p style="display: none;" id="ztoggle{$obj['deviceId']}">
+                <h4 class="toggleTouch" id="toggle{$obj['id']}">Propriétés [ouvrir]</h4>
+                <p style="display: none;" id="ztoggle{$obj['id']}">
 EOT;
                 foreach($obj as $key => $value){
                     if(substr( $value, 0, 4 ) === "http"){
@@ -96,8 +94,8 @@ EOT;
                 // if not defined: list of all available LG config
                 if(!empty($checked)){
             ?>
-                <label for="lg<?= $obj['deviceId'] ?>">Selectionner Configuration :</label>
-                <select id="lg<?= $obj['deviceId'] ?>" name="selected[<?= $obj['deviceId'] ?>]">
+                <label for="lg<?= $obj['id'] ?>">Selectionner Configuration :</label>
+                <select id="lg<?= $obj['id'] ?>" name="selected[<?= $obj['id'] ?>]">
                     <option value="">Ignorer</option>
                     <option value="<?= lgthinq::DEFAULT_VALUE ?>">Automatique</option>
             <?php 
@@ -106,7 +104,7 @@ EOT;
                 }
             ?>
                 </select>
-            <?php } // foreach $device ?>
+            <?php } // empty($checked) ?>
             </div>
             <?php } // foreach $obj ?>
             </div>

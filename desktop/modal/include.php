@@ -34,14 +34,8 @@ try {
     // lister les objets connectes et synchroniser
     $lgApi = lgthinq::getApi();
     $msg = '';
-    $def = []; // defined objects
-    try {
-        $lgObjects = $lgApi->ls();
-    } catch (LgApiException $e) {
-        $msg .= $e->getMessage() . ' reinit token...';
-        lgthinq::initToken();
-        $lgObjects = $lgApi->ls();
-    }
+    $lgObjects = $lgApi->ls();
+    // $param = new LgParameters($lgApi->save());
 
     if (empty($lgObjects)) {
         $msg .= 'Aucun objet détecté... authentification requise.';
@@ -50,11 +44,11 @@ try {
         $jeedomObjects = lgthinq::byType('lgthinq');
         $msg .= sprintf('Synchroniser les objets LG (%s LG) et Jeedom (%s jeedom)', count($lgObjects), count($jeedomObjects));
         foreach ($jeedomObjects as $eqLogic) {
-            $eqId = $eqLogic->getLogicalId();
+            $id = $eqLogic->getLogicalId();
             $msg .= "\n'$eqId' ... ";
             // valoriser les objets deja present
-            if (isset($lgObjects[$eqId])) {
-                $def[$eqLogic->getLogicalId()] = $eqLogic;
+            if (isset($lgObjects[$id])) {
+                $lgObjects[$id]['jeedom'] = $eqLogic;
             } else {
                 LgLog::info('Objet Jeedom fantôme: ' . $eqLogic->getName() . '-' .
                         $eqLogic->getProductModel() . '-' . $eqLogic->getProductType() . '-' . $eqLogic->getLogicalId());
@@ -71,7 +65,8 @@ try {
             <legend>{{Liste des objets LG détectés}}</legend>
             <div class="form-group">
     <?php
-    foreach ($def as $obj => $id) {
+    foreach ($lgObjects as $id => $obj) {
+        $checked = (isset($obj['jeedom'])) ? '' :' checked="checked"';
         ?>
             <div class="col-lg-2">
                 <?php echo "<img src=\"{$obj['smallImageUrl']}\" />"; ?>
@@ -80,7 +75,7 @@ try {
             <?php 
             // LG device checked if not defined on jeedom
             echo <<<EOT
-                <input type="checkbox" name="selected[]" id="{$obj['id']}" value="{$obj['id']}" checked="checked" />
+                <input type="checkbox" name="selected[]" id="{$obj['id']}" value="{$obj['id']}" $checked />
                 <label for="{$obj['id']}"> {$obj['name']} ( {$obj['model']} ) </label>
 EOT;
             // LG device checked if not defined on jeedom

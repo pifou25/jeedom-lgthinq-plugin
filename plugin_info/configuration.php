@@ -166,7 +166,7 @@ $( function(){
             },
             success: function (data) {
                 if(data['state'] === 'ok'){
-                    bootbox.alert('LgThinq plugin server ok, running since ' + 
+                    bootbox.alert(data['result']['message'] + ' ' + 
                             data['result']['starting']);
                 }else{
                     $('#divAjaxAlert').showAlert({message: data['state'] + ' : ' + data['result'], level: 'danger'});;

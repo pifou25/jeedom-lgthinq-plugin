@@ -77,8 +77,12 @@ try {
                 <?php echo "<img src=\"{$obj['smallImageUrl']}\" />"; ?>
             </div>
             <div class="col-lg-5">
-
             <?php 
+            // LG device checked if not defined on jeedom
+            echo <<<EOT
+                <input type="checkbox" name="selected[]" id="{$obj['id']}" value="{$obj['id']}" checked="checked" />
+                <label for="{$obj['id']}"> {$obj['name']} ( {$obj['model']} ) </label>
+EOT;
             // LG device checked if not defined on jeedom
             echo <<<EOT
                 <h3>{$obj['alias']} ( {$obj['modelNm']} )</h3>

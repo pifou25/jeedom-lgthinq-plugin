@@ -71,28 +71,6 @@ class lgthinq extends eqLogic {
     }
 
     /**
-     * renew the session with wideq lib server
-     */
-    public static function initToken($_auth = false) {
-
-        $lgApi = self::getApi();
-        // first init gateway, then session
-        $lang = config::byKey('LgLanguage', 'lgthinq');
-        $country = config::byKey('LgCountry', 'lgthinq');
-        $url = $lgApi->gateway($country, $lang);
-        if (!isset($url['url'])) {
-            $msg = "call LgThinq gateway $lang $country fails! " . $url['message'];
-            LgLog::error($msg);
-            return $msg;
-        } else {
-            if ($_auth === false) {
-                $_auth = config::byKey('LgAuthUrl', 'lgthinq');
-            }
-            return $lgApi->token($_auth);
-        }
-    }
-
-    /**
      * create the new object:
      * $_config has 4 mandatory keys: 'id' 'type' 'model' 'name'
      */
@@ -273,8 +251,8 @@ class lgthinq extends eqLogic {
      */
     private function __construct($_config, $_model){
         // re-map missing keys
-        $_config = LgParameters::mapperArray($_config,
-                ['deviceId'=>'id', 'deviceType' => 'type', 'modelNm' => 'model', 'alias' => 'name']);
+//        $_config = LgParameters::mapperArray($_config,
+//                ['deviceId'=>'id', 'deviceType' => 'type', 'modelNm' => 'model', 'alias' => 'name']);
         if (!LgParameters::assertArrayContains($_config, ['id', 'type', 'model', 'name'])) {
             return null;
         }

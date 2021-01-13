@@ -45,7 +45,7 @@ try {
         $msg .= sprintf('Synchroniser les objets LG (%s LG) et Jeedom (%s jeedom)', count($lgObjects), count($jeedomObjects));
         foreach ($jeedomObjects as $eqLogic) {
             $id = $eqLogic->getLogicalId();
-            $msg .= "\n'$eqId' ... ";
+            $msg .= "\n'$id' ... ";
             // valoriser les objets deja present
             if (isset($lgObjects[$id])) {
                 $lgObjects[$id]['jeedom'] = $eqLogic;
@@ -78,13 +78,12 @@ try {
 EOT;
             // LG device checked if not defined on jeedom
             echo <<<EOT
-                <h3>{$obj['name']} ( {$obj['model']} )</h3>
                 <div>
                 <h4 class="toggleTouch" id="toggle{$obj['id']}">Propriétés [ouvrir]</h4>
                 <p style="display: none;" id="ztoggle{$obj['id']}">
 EOT;
                 foreach($obj as $key => $value){
-                    if(substr( $value, 0, 4 ) === "http"){
+                    if(is_string($value) && substr( $value, 0, 4 ) === "http"){
                         $value = "<a href=\"$value\">[download]</a>";
                     }
                     echo "<b>$key</b> : $value<br/>\n";

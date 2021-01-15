@@ -80,22 +80,33 @@ try {
     if (init('action') == 'synchro') {
         
         LgLog::debug('synchro lgthinq ajax request:' . json_encode($_POST));
+        $configs = init('configs');
         $api = lgthinq::getApi();
         $objects = $api->ls();
         $selected = init('selected');
         $msg = '';
+        $_save = $api->save();
+        $_params = new LgParameters($_save);
         if (empty($objects) || empty($selected)) {
             ajax::error("Aucun objet LG connecté, ou aucun sélectionné.", 401);
         } else {
             $counter = 0;
             foreach ($selected as $id => $value) {
-                $logicalId = init('lg' . $id);
+                $config = empty($config[$id]) ? false: $config[$id];
+
+                foreach($_params->getDevices() as $id => $dev){
+                    file_put_contents( "copy.dev.$id.log", print_r(LgParameters::getConfigInfos($dev), true));
+                }
+                
                 if (empty($objects[$id]) || empty($value)) {
-                    $msg .= "Objet id=$id ignoré ($value).\n";
+                    $msg .= "Objet id=$id ignoré ($config).\n";
                 } else {
+                    if($value == lgthinq::DEFAULT_VALUE){
+                        $config = $_api->info($id);
+                    }
                     LgLog::debug("map $id sur $value");
                     // $value est ignoré, toujours la même config appliquée
-                    $eq = lgthinq::CreateEqLogic($objects[$id], $value);
+                    $eq = lgthinq::CreateEqLogic($objects[$id], $config);
                     $counter++;
                 }
             }

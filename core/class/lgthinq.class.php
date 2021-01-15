@@ -268,16 +268,16 @@ class lgthinq extends eqLogic {
                 $this->getName() . ' - ' . $this->getProductModel() . ' - ' .
                 $this->getProductType());
 
-        // copy data and images
-        $msg[] = LgParameters::copyData($_config['smallImageUrl'], $_config['id'].'.png', self::getDataPath(). 'smallImg/');
-        $msg[] = LgParameters::copyData($_config['imageUrl'], $_config['id'].'.png', self::getDataPath().'img/');
-        $msg[] = LgParameters::copyData($_config['modelJsonUrl'], $_config['id'].'.json', self::getDataPath().'lg/');
-        $msg[] = LgParameters::copyData($_config['langPackProductTypeUri'], $_config['id'].'.json', self::getDataPath().'lang/');
-        LgLog::debug("copy img and json datas. " . print_r(array_filter($msg, function($v){return $v!==true;}), true));
+        if(!empty($_model)){
+            // download images and json config from LG cloud
+            $msg[] = LgParameters::copyData($_model['smallImageUrl'], $_config['id'].'.png', self::getDataPath(). 'smallImg/');
+            $msg[] = LgParameters::copyData($_model['imageUrl'], $_config['id'].'.png', self::getDataPath().'img/');
+            $msg[] = LgParameters::copyData($_model['modelJsonUrl'], $_config['id'].'.json', self::getDataPath().'lg/');
+            $msg[] = LgParameters::copyData($_model['langPackProductTypeUri'], $_config['id'].'.json', self::getDataPath().'lang/');
+            LgLog::debug("copy img and json datas. " . print_r(array_filter($msg, function($v){return $v!==true;}), true));
+        }
 
-        if(!empty($_model) && $_model != self::DEFAULT_VALUE){
-            
-        }else{
+        if(!empty($_model)){
             // transform LG json config into Jeedom json
             $file = self::getDataPath().'lg/'.$_config['id'] . '.json';
             $lg = json_decode( file_get_contents($file), true, 512, JSON_BIGINT_AS_STRING);

@@ -30,7 +30,7 @@ try {
     if (init('action') == 'download') {
         $dataPath = realpath(lgthinq::getDataPath());
         // save json config file
-        lgthinq::getApi()->save($dataPath . "jeedom/state.json");
+        file_put_contents($dataPath."/jeedom/state.json", lgthinq::getApi()->save());
         // and zip all config
         $msg = LgParameters::zipConfig(['lg/', 'jeedom/', 'lang/'], 
         $dataPath . '/lgthinq.zip');

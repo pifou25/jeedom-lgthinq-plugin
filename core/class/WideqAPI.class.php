@@ -178,7 +178,7 @@ class WideqAPI {
         $arr = $this->callRestApi('ls');
         $return = [];
         if (is_array($arr)) {
-            foreach ($arr as $key => $obj) {
+            foreach ($arr as $obj) {
                 if (isset($obj['id']))
                     $return[$obj['id']] = $obj;
                 else

@@ -196,6 +196,13 @@ class WideqAPI {
     }
 
     /**
+     * get model configuration informations about device by id
+     */
+    public function info($device) {
+        return $this->callRestApi("info/$device");
+    }
+
+    /**
      * set a command / value for one device by id
      */
     public function set($device, $command, $value) {

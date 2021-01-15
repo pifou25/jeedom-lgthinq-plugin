@@ -100,10 +100,19 @@ class LgParameters {
             } else if (!isset($value['Info']['modelName'])) {
                 self::$log .= "no modelName for device ();\n";
             } else {
-                $result[$value['Info']['modelName']] = $value;
+                $result[self::getDeviceKey($value)] = $value;
             }
         }
         return $result;
+    }
+    
+    /**
+     * build unique key for the json model
+     * @param type $json
+     * @return type
+     */
+    private static function getDeviceKey($json){
+        return self::clean($json['Info']['modelType'].'-'.$json['Info']['productType']);
     }
 
     /**

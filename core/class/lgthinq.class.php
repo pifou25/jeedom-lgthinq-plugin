@@ -70,15 +70,27 @@ class lgthinq extends eqLogic {
             // check auth
             $ping = self::$_lgApi->ping();
             if(isset($ping['auth']) && $ping['auth'] == false){
-                $auth = config::byKey('LgAuthUrl', 'lgthinq');
-                LgLog::debug("refresh LG token with $auth");
-                $ret = self::$_lgApi->token($auth);
-                if(isset($ret['auth']) && $ret['auth'] == false){
-                    LgLog::error("refresh LG token fails!");
-                }
+                self::renewApi(self::$_lgApi);
             }
         }
         return self::$_lgApi;
+    }
+
+    public static function renewApi($api = null){
+        if($api == null){
+            $api = self::getApi();
+        }
+        // renew LG gateway and auth
+        $country = config::byKey('LgCountry', 'lgthinq');
+        $lang = config::byKey('LgLanguage', 'lgthinq');
+        $api->gateway($country, $lang);
+        $auth = config::byKey('LgAuthUrl', 'lgthinq');
+        LgLog::debug("refresh LG token with $auth");
+        $ret = $api->token($auth);
+        if(isset($ret['auth']) && $ret['auth'] == false){
+            LgLog::error("refresh LG token fails!");
+        }
+        return $api;
     }
 
     /**

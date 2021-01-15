@@ -54,6 +54,18 @@ try {
         ajax::success($lgApi->ping());
     }
 
+    if(init('action') == 'renew'){
+        $api = lgthinq::renewApi();
+        if(!isset($api['auto'])){
+            ajax::error('Erreur, serveur local non disponible, '.
+                    'vérifiez les paramètres et relancez en debug.', 401);
+        }else if($api['auto'] == false){
+            ajax::error('Erreur, authentification LG incorrecte.', 401);
+        }else{
+            ajax::success('Serveur up et authentification LG OK.');
+        }
+    }
+    
     if (init('action') == 'getGateway') {
         $lang = init('lang');
         $country = init('country');

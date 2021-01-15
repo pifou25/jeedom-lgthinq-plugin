@@ -54,8 +54,11 @@ include_file('core', 'LgParameters', 'class', 'lgthinq');
     <fieldset>
         <div class="form-group">
             <label class="col-lg-3 control-label">{{Copiez / collez l'URL de redirection LG ici:}}</label>
-            <div class="col-lg-6">
+            <div class="col-lg-7">
                 <input class="configKey form-control" data-l1key="LgAuthUrl" id="LgAuthUrl" placeholder="url avec un token ..." />
+            </div>
+            <div class="col-lg-2">
+                <a class="btn btn-success btn-xs" id="bt_RenewLgThinq"><i class="far fa-check-circle icon-white"></i> {{Renew Auth}}</a>
             </div>
         </div>
         <div class="form-group">
@@ -169,7 +172,27 @@ $( function(){
                     bootbox.alert(data['result']['message'] + ' ' + 
                             data['result']['starting']);
                 }else{
-                    $('#divAjaxAlert').showAlert({message: data['state'] + ' : ' + data['result'], level: 'danger'});;
+                    $('#divAjaxAlert').showAlert({message: data['state'] + ' : ' + data['result'], level: 'danger'});
+                }
+            }
+        });
+    });
+
+    $('#bt_RenewLgThinq').on('click',function(){
+        $('#divAjaxAlert').hide();
+        $.post({
+            url: 'plugins/lgthinq/core/ajax/lgthinq.ajax.php',
+            data: {'action': 'renew'},
+            dataType: 'json',
+            global: false,
+            error: function (request, status, error) {
+                handleAjaxError(request, status, error, $('#divAjaxAlert'));
+            },
+            success: function (data) {
+                if(data['state'] === 'ok'){
+                    bootbox.alert(data['result']['message']);
+                }else{
+                    $('#divAjaxAlert').showAlert({message: data['state'] + ' : ' + data['result'], level: 'danger'});
                 }
             }
         });

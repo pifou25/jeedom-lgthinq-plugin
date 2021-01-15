@@ -56,6 +56,9 @@ try {
         }
 
     }
+    if(lgthinq::isDebug()){
+        $msg .= json_encode(WideqAPI::getRequests(), JSON_PRETTY_PRINT);
+    }
     ?>
 
 <h2><?php printf('Synchroniser les objets LG (%s LG) et Jeedom (%s jeedom)', count($lgObjects), count($jeedomObjects)) ?></h2>

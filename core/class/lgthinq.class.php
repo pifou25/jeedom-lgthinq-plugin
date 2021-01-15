@@ -59,6 +59,7 @@ class lgthinq extends eqLogic {
 
     /**
      * generate WideqAPI with jeedom configuration
+     * refresh token if needed.
      */
     public static function getApi() {
         if (self::$_lgApi == null) {
@@ -66,6 +67,16 @@ class lgthinq extends eqLogic {
             $url = config::byKey('UrlServerLg', 'lgthinq', 'http://127.0.0.1');
             $arr = ['port' => $port, 'url' => $url, 'debug' => self::isDebug()];
             self::$_lgApi = new WideqAPI($arr);
+            // check auth
+            $ping = self::$_lgApi->ping();
+            if(isset($ping['auth']) && $ping['auth'] == false){
+                $auth = config::byKey('LgAuthUrl', 'lgthinq');
+                LgLog::debug("refresh LG token with $auth");
+                $ret = self::$_lgApi->token($auth);
+                if(isset($ret['auth']) && $ret['auth'] == false){
+                    LgLog::error("refresh LG token fails!");
+                }
+            }
         }
         return self::$_lgApi;
     }

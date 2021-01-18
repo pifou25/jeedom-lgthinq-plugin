@@ -101,7 +101,7 @@ EOT;
                 if(!empty($checked)){
             ?>
                 <label for="lg<?= $obj['id'] ?>">Selectionner Configuration :</label>
-                <select id="lg<?= $obj['id'] ?>" name="configs[<?= $obj['id'] ?>]">
+                <select id="lg<?= $obj['id'] ?>" name="lg<?= $obj['id'] ?>">
                     <option value="<?= lgthinq::DEFAULT_VALUE ?>">Automatique</option>
                     <option value="">Ignorer</option>
             <?php 

@@ -102,8 +102,8 @@ EOT;
             ?>
                 <label for="lg<?= $obj['id'] ?>">Selectionner Configuration :</label>
                 <select id="lg<?= $obj['id'] ?>" name="configs[<?= $obj['id'] ?>]">
-                    <option value="">Ignorer</option>
                     <option value="<?= lgthinq::DEFAULT_VALUE ?>">Automatique</option>
+                    <option value="">Ignorer</option>
             <?php 
                 foreach(LgParameters::getAllConfig() as $device){
                     printf("\t\t<option value=\"%s\">%s</option>\n", $device, $device);

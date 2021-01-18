@@ -104,19 +104,18 @@ try {
         } else {
             $counter = 0;
             foreach ($selected as $id => $value) {
-                $config = empty($config[$id]) ? false: $config[$id];
-
+                $config = init('lg' + $id);
                 foreach($_params->getDevices() as $id => $dev){
                     file_put_contents( "copy.dev.$id.log", print_r(LgParameters::getConfigInfos($dev), true));
                 }
                 
-                if (empty($objects[$id]) || empty($value)) {
+                if (empty($objects[$id]) || empty($config)) {
                     $msg .= "Objet id=$id ignoré ($config).\n";
                 } else {
-                    if($value == lgthinq::DEFAULT_VALUE){
+                    if($config == lgthinq::DEFAULT_VALUE){
                         $config = $api->info($id);
                     }
-                    LgLog::debug("map $id sur $value, nb of ingos = " . count($config));
+                    LgLog::debug("map $id sur $value, nb of infos = " . count($config));
                     // $value est ignoré, toujours la même config appliquée
                     $eq = lgthinq::CreateEqLogic($objects[$id], $config);
                     $counter++;

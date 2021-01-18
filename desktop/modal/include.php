@@ -76,16 +76,16 @@ try {
             <?php 
             // LG device checked if not defined on jeedom
             echo <<<EOT
-                <input type="checkbox" name="selected[{$obj['id']}]" id="{$obj['id']}" value="{$obj['id']}" $checked />
-                <label for="{$obj['id']}"> {$obj['name']} ( {$obj['model']} ) </label>
+                <input type="checkbox" name="selected[$id]" id="$id" value="$id" $checked />
+                <label for="$id"> {$obj['name']} ( {$obj['model']} ) </label>
 EOT;
             // LG device checked if not defined on jeedom
             echo <<<EOT
                 <div>
-                <h4 class="toggleTouch" id="toggle{$obj['id']}">Propriétés [ouvrir]</h4>
-                <p style="display: none;" id="ztoggle{$obj['id']}">
+                <h4 class="toggleTouch" id="toggle$id">Propriétés [ouvrir]</h4>
+                <p style="display: none;" id="ztoggle$id">
 EOT;
-                foreach($obj as $key => $value){
+                foreach($lgApi->info($id) as $key => $value){
                     if(is_string($value)){
                         if(substr( $value, 0, 4 ) === "http"){
                             $value = "<a href=\"$value\">[download]</a>";
@@ -100,8 +100,8 @@ EOT;
                 // if not defined: list of all available LG config
                 if(!empty($checked)){
             ?>
-                <label for="lg<?= $obj['id'] ?>">Selectionner Configuration :</label>
-                <select id="lg<?= $obj['id'] ?>" name="lg<?= $obj['id'] ?>">
+                <label for="lg<?= $id ?>">Selectionner Configuration :</label>
+                <select id="lg<?= $id ?>" name="lg<?= $id ?>">
                     <option value="<?= lgthinq::DEFAULT_VALUE ?>">Automatique</option>
                     <option value="">Ignorer</option>
             <?php 

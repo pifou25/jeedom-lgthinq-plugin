@@ -114,9 +114,9 @@ try {
                     $msg .= "Objet id=$id ignoré ($config).\n";
                 } else {
                     if($value == lgthinq::DEFAULT_VALUE){
-                        $config = $_api->info($id);
+                        $config = $api->info($id);
                     }
-                    LgLog::debug("map $id sur $value");
+                    LgLog::debug("map $id sur $value, nb of ingos = " . count($config));
                     // $value est ignoré, toujours la même config appliquée
                     $eq = lgthinq::CreateEqLogic($objects[$id], $config);
                     $counter++;
@@ -134,7 +134,7 @@ try {
             $message .= '<a class="pull-right bt_errorShowTrace cursor">Show traces</a>';
             $message .= '<br/><pre class="pre_errorTrace" style="display : none;">' . print_r($e->getTrace(), true) . '</pre>';
     }
-
+    LgLog::error($message);
     ajax::error($message, $e->getCode());
 }
 

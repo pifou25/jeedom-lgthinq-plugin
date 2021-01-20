@@ -195,7 +195,7 @@ class WideqManager {
     /**
      * command to refresh every detected and enabled commands.
      * jeedom.py use both jeedom RPC json API and wideq LG lib to monitoring devices.
-     * python3 jeedom.py --ip http://192.168.1.25 --key kLbmBWVeQSqbhluECyycGEeGAXXZOahS
+     * -- ne marche pas --
      * @param type $ip
      * @param type $key
      */

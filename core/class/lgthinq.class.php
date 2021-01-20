@@ -114,13 +114,9 @@ class lgthinq extends eqLogic {
      */
     private static function refreshData() {
         LgLog::debug('refresh LG data for all devices');
-        // python3 jeedom.py --ip http://192.168.1.25 --key kLbmBWVeQSqbhluECyycGEeGAXXZOahS
-        $key = jeedom::getApiKey();
-        $ip = config::byKey('internalAddr'); // jeedom internal IP
-        WideqManager::refreshAll($ip, $key);
-//        foreach (self::byType('lgthinq') as $eqLogic) {//parcours tous les équipements du plugin
-//            $eqLogic->RefreshCommands();
-//        }
+        foreach (self::byType('lgthinq') as $eqLogic) {
+            $eqLogic->RefreshCommands();
+        }
     }
 
     /*
@@ -319,7 +315,7 @@ class lgthinq extends eqLogic {
             self::$_destruct = true;
             if (self::$__debug === true) {
                 $lgApi = self::getApi();
-                LgLog::debug(json_encode($lgApi::getRequests()));
+                // LgLog::debug(json_encode($lgApi::getRequests()));
             }
         }
     }
@@ -336,16 +332,20 @@ class lgthinq extends eqLogic {
             $infos = lgthinq::getApi()->mon($this->getLogicalId());
             LgLog::debug("monitoring {$this->getName()}" . print_r($infos, true));
 
+            $nb = 0;
             foreach ($cmds as $cmd) {
-                if (isset($infos[$cmd->getLogicalId()])) {
-                    // maj la commande ...
-                    $this->checkAndUpdateCmd($cmd, $infos[$cmd->getLogicalId()]);
-//                } else {
-//                    LgLog::debug("Pas d'info pour {$cmd->getLogicalId()}");
+                if ($cmd->getType() != 'action'){
+                    if(isset($infos[$cmd->getLogicalId()])) {
+                        // maj la commande info ...
+                        $this->checkAndUpdateCmd($cmd, $infos[$cmd->getLogicalId()]);
+                        $nb++;
+                    } else {
+                        LgLog::warning("Pas d'info pour {$cmd->getLogicalId()} {$cmd->getType()}");
+                    }
                 }
             }
-
-            LgLog::debug("Refresh {$this->getLogicalId()} avec " . count($cmds) . " commandes.");
+            LgLog::debug("Refresh {$this->getLogicalId()} avec " . count($cmds)
+                    . " commandes et $nb maj.");
         }
     }
 
@@ -462,7 +462,7 @@ class lgthinqCmd extends cmd {
         // récupérer l'objet eqLogic de cette commande
         $eqLogic = $this->getEqLogic();
         LgLog::debug("cmd->execute {$this->getType()} {$this->getLogicalId()} opt='" .
-                print_r($_options, true) ) . "' {$eqLogic->getLogicalId()}";
+                print_r($_options, true) . "' {$eqLogic->getLogicalId()}");
         if ($this->getType() != 'action') {
             return;
         }

@@ -461,8 +461,8 @@ class lgthinqCmd extends cmd {
     public function execute($_options = array()) {
         // récupérer l'objet eqLogic de cette commande
         $eqLogic = $this->getEqLogic();
-        LgLog::debug("cmd->execute {$this->getType()} {$this->getLogicalId()} " .
-                "{$eqLogic->getLogicalId()}" . print_r($_options, true) );
+        LgLog::debug("cmd->execute {$this->getType()} {$this->getLogicalId()} opt='" .
+                print_r($_options, true) ) . "' {$eqLogic->getLogicalId()}";
         if ($this->getType() != 'action') {
             return;
         }
@@ -471,7 +471,11 @@ class lgthinqCmd extends cmd {
             case 'refresh': // LogicalId de la commande rafraîchir
                 // maj la commande 'monitor' avec les infos de monitoring
                 $infos = lgthinq::getApi()->mon($eqLogic->getLogicalId());
-                $result = $eqLogic->checkAndUpdateCmd('monitor', $infos);
+                if(is_array($infos) && isset($infos[$this->getLogicalId()])){
+                    $result = $eqLogic->checkAndUpdateCmd('monitor', $infos);
+                }else{
+                    $result = $this->getLogicalId() . ' n\'existe pas.';
+                }
                 break;
 
             default:

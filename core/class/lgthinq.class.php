@@ -451,30 +451,35 @@ class lgthinqCmd extends cmd {
     }
 
     /*
-     * Non obligatoire permet de demander de ne pas supprimer les commandes même si elles ne sont pas dans la nouvelle configuration de l'équipement envoyé en JS
-      public function dontRemoveCmd() {
-      return true;
-      }
+     * Non obligatoire permet de demander de ne pas supprimer les commandes
+     *  même si elles ne sont pas dans la nouvelle configuration de l'équipement envoyé en JS
+     *       public function dontRemoveCmd() {
+     *       return true;
+     *       }
      */
 
     public function execute($_options = array()) {
-        LgLog::debug('cmd->execute ' . print_r($_options, true) );
+        // récupérer l'objet eqLogic de cette commande
+        $eqLogic = $this->getEqLogic();
+        LgLog::debug("cmd->execute {$this->getType()} {$this->getLogicalId()} " .
+                "{$eqLogic->getLogicalId()}" . print_r($_options, true) );
         if ($this->getType() != 'action') {
             return;
         }
-        // récupérer l'objet eqLogic de cette commande
-        $eqLogic = $this->getEqLogic();
+        $result = 'ko';
         switch ($this->getLogicalId()) { //vérifie le logicalid de la commande
             case 'refresh': // LogicalId de la commande rafraîchir
                 // maj la commande 'monitor' avec les infos de monitoring
-                $infos = lgthinq::getApi()->mon($this->getLogicalId());
-                $eqLogic->checkAndUpdateCmd('monitor', $infos);
+                $infos = lgthinq::getApi()->mon($eqLogic->getLogicalId());
+                $result = $eqLogic->checkAndUpdateCmd('monitor', $infos);
                 break;
 
             default:
+                // add $api->set($id, $cmd) ou set($id, $cmd, $value)
                 LgLog::info('cmd execute ' . $this->getLogicalId());
                 break;
         }
+        return $result;
     }
 
     /*     * **********************Getteur Setteur*************************** */

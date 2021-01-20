@@ -104,7 +104,7 @@ try {
         } else {
             $counter = 0;
             foreach ($selected as $id => $value) {
-                $config = init('lg' + $id);
+                $config = init('lg' . $id);
                 foreach($_params->getDevices() as $id => $dev){
                     file_put_contents( "copy.dev.$id.log", print_r(LgParameters::getConfigInfos($dev), true));
                 }

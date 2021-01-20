@@ -35,7 +35,7 @@ function initLgthinqParameters() {
             config::save($key, $value, 'lgthinq');
         }
     }
-    $dir = lgthinq::getDataPath();
+    $dir = lgthinq::getResourcesPath();
     if(!is_dir($dir)){
         $dir = realpath($dir);
         if (!mkdir($dir, 0777, true))

@@ -421,7 +421,7 @@ class lgthinq extends eqLogic {
     }
     
     public function getFileconf(){
-        return __DIR__ . self::RESOURCES_PATH . $this->getLogicalId() . '.json';
+        return self::getResourcesPath() . $this->getLogicalId() . '.json';
     }
     
     public function getImage(){

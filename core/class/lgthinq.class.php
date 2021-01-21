@@ -112,11 +112,12 @@ class lgthinq extends eqLogic {
      * refresh all object sensors values.
      * triggered by cron
      */
-    private static function refreshData() {
+    public static function refreshData() {
         LgLog::debug('refresh LG data for all devices');
         foreach (self::byType('lgthinq') as $eqLogic) {
             $eqLogic->RefreshCommands();
         }
+        return true;
     }
 
     /*
@@ -469,13 +470,7 @@ class lgthinqCmd extends cmd {
         $result = 'ko';
         switch ($this->getLogicalId()) { //vérifie le logicalid de la commande
             case 'refresh': // LogicalId de la commande rafraîchir
-                // maj la commande 'monitor' avec les infos de monitoring
-                $infos = lgthinq::getApi()->mon($eqLogic->getLogicalId());
-                if(is_array($infos) && isset($infos[$this->getLogicalId()])){
-                    $result = $eqLogic->checkAndUpdateCmd('monitor', $infos);
-                }else{
-                    $result = $this->getLogicalId() . ' n\'existe pas.';
-                }
+                $return = $eqLogic->refreshData();
                 break;
 
             default:

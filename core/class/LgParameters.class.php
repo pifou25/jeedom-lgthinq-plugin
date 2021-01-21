@@ -401,11 +401,13 @@ class LgParameters {
                     }
                 }
             }
+            $status = $zip->getStatusString();
+            $filename = $zip->filename;
             $zip->close();
             chmod( $tmp_file, 0755);
 
             self::download($tmp_file);
-            return "Archive created! $nb files, $i added, $err errors to $tmp_file";
+            return "Archive created! $nb files, $i added, $err errors to $filename ($status)";
        } else {
            return "Failed to open $tmp_file!";
        }

@@ -93,21 +93,26 @@ class WideqManager {
     public static function check_dependancy(){
         $deps = shell_exec('pip3 list | grep -Ec "Flask|requests"');
         if ($deps < 4) {
-            LgLog::debug("missing pip dependancies ($deps)");
+            LgLog::info("missing pip dependancies ($deps)");
             return 'nok';
         } else {
-            return 'ok';
+            if(is_dir(self::getWideqDir())){
+                return ok;
+            }else{
+                LgLog::info("missing wideq lib dependancy ($deps)");
+                return 'nok';
+            }
         }
     }
+    
     /**
      * infos about the python daemon
      * check state (nok/ok) if running i.e. when the process exists
      * add 'launchable_message' and 'log'
      */
     public static function daemon_info() {
-        $return = [];
         $state = system::ps(self::WIDEQ_SCRIPT);
-        $return['state'] = empty($state) ? 'nok' : 'ok';
+        $return = ['state' => empty($state) ? 'nok' : 'ok'];
         if (!empty($state)) {
             $return['log'] = 'nb of processes=' . count($state);
             try {

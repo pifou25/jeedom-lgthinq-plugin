@@ -43,7 +43,6 @@ class lgthinq extends eqLogic {
      */
     private static $_lgApi = null;
     private static $__debug = null;
-    private static $_destruct = false;
 
     /**
      * contains img, smallImg, lang, lg (for LG json config) and 
@@ -52,6 +51,13 @@ class lgthinq extends eqLogic {
     const DATA_PATH = '/../../data/';
     const RESOURCES_PATH = '/../../data/jeedom/';
     const DEFAULT_VALUE = 'Default';
+
+    /**
+     * Timestamp of last successfull daemon check.
+     * @var type long
+     */
+    private static $lastCheckTime = null;
+    private static $daemonState = null;
 
     /*     * ***********************Methode static*************************** */
     public static function getDataPath(){return __DIR__ . self::DATA_PATH;}
@@ -218,6 +224,11 @@ class lgthinq extends eqLogic {
      * UrlServerLg = l'url - http://127.0.0.1 par défaut
      */
     public static function deamon_info() {
+        if(self::$lastCheckTime !== null && time() - self::$lastCheckTime < 10){
+            // don't check every second
+            LgLog::debug('cache daemon info since ' . (time() - self::$lastCheckTime));
+            return self::$daemonState;
+        }
         $return = WideqManager::daemon_info();
         $return['pid'] = config::byKey('PidLg', 'lgthinq');
         $return['port'] = config::byKey('PortServerLg', 'lgthinq', 5025);
@@ -225,6 +236,11 @@ class lgthinq extends eqLogic {
         $return['key'] = jeedom::getApiKey();
         $return['ip'] = 'http://' . config::byKey('internalAddr'); // jeedom internal IP
         $return['launchable'] = empty($return['port']) ? 'nok' : 'ok';
+        // caching result if state is ok
+        if(isset($return['state']) && $return['state'] == 'ok'){
+            self::$lastCheckTime = time();
+            self::$daemonState = $return;
+        }
         return $return;
     }
 
@@ -239,9 +255,8 @@ class lgthinq extends eqLogic {
         if ($result !== false) {
             // sauver le PID du daemon
             config::save('PidLg', $result, 'lgthinq');
-            LgLog::debug('Restart daemon');
+            LgLog::debug('Restart daemon, id=$result');
         }
-
         return $result;
     }
 
@@ -310,16 +325,6 @@ class lgthinq extends eqLogic {
                 LgLog::debug ("copy $file ok.");
         }
 
-    }
-
-    public function __destruct() {
-        if (!self::$_destruct) {
-            self::$_destruct = true;
-            if (self::$__debug === true) {
-                $lgApi = self::getApi();
-                // LgLog::debug(json_encode($lgApi::getRequests()));
-            }
-        }
     }
 
     public function RefreshCommands() {

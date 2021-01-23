@@ -41,14 +41,13 @@ function initLgthinqParameters() {
 }
 
 function checkDir($dir){
-    $dir = realpath($dir);
+    // $dir = realpath($dir);
     if(!is_dir($dir)){
         if (!mkdir($dir, 0777, true))
             LgLog::error("unable to create dir '$dir'");
         else
-            LgLog::debug('create dir ' . $dir);
+            LgLog::debug("create dir ($dir)");
     }
-    
 }
 
 function lgthinq_install() {

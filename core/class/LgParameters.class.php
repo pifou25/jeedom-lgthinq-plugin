@@ -9,7 +9,16 @@
 class LgParameters {
 
     private static $log = '';
-    
+    /**
+     * contains img, smallImg, lang, lg (for LG json config) and 
+     * jeedom (for Jeedom json config)
+     */
+    const DATA_PATH = '../../data/';
+    const RESOURCES_PATH = '../../data/jeedom/';
+ 
+    public static function getDataPath(){return __DIR__ . self::DATA_PATH;}
+    public static function getResourcesPath(){return __DIR__ . self::RESOURCES_PATH;}
+
     /**
      * json decoded array
      * @var array
@@ -352,6 +361,25 @@ class LgParameters {
         return "Copy error: no matche $regex";
     }
 
+    public static function downloadAndCopyDataModel($id, $_model){
+        // download images and json config from LG cloud
+        $msg[] = LgParameters::copyData($_model['smallImageUrl'], $id.'.png', LgParameters::getDataPath(). 'smallImg/');
+        $msg[] = LgParameters::copyData($_model['imageUrl'], $id.'.png', LgParameters::getDataPath().'img/');
+        $msg[] = LgParameters::copyData($_model['modelJsonUrl'], $id.'.json', LgParameters::getDataPath().'lg/');
+        $msg[] = LgParameters::copyData($_model['langPackProductTypeUri'], $id.'.json', LgParameters::getDataPath().'lang/');
+        LgLog::debug("copy img and json datas. " . print_r(array_filter($msg, function($v){return $v!==true;}), true));
+
+        // transform LG json config into Jeedom json
+        $file = LgParameters::getDataPath().'lg/'.$id . '.json';
+        $lg = json_decode( file_get_contents($file), true, 512, JSON_BIGINT_AS_STRING);
+        $conf = LgParameters::convertLgToJeedom($lg);
+        $file = $this->getFileconf();
+        if(file_put_contents( $file, json_encode($conf, JSON_PRETTY_PRINT)) === false)
+            LgLog::warning("copy $file error...");
+        else
+            LgLog::debug ("copy $file ok.");
+    }
+
     /**
      * copy $url file into $dest/$name. create $dest directory if it doesn't exists.
      * doesn't overwrite if file exists.
@@ -384,7 +412,7 @@ class LgParameters {
         }
         $i = 0; $nb = 0; $err = 0;
         $zip = new ZipArchive;
-        $path = realpath(lgthinq::getDataPath());
+        $path = realpath(self::getDataPath());
         if ($zip->open($tmp_file,  ZipArchive::CREATE)) {
             foreach($dirs as $dir){
                 $list = scandir("$path/$dir");

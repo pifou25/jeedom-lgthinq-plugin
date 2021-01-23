@@ -28,7 +28,7 @@ function initLgthinqParameters() {
         'UrlServerLg' => 'http://127.0.0.1',
         'LgLanguage' => 'fr-FR',
         'LgCountry' => 'FR',
-        'WideqLibLg' => 'master'];
+        'WideqLibLg' => 'jeedom'];
 
     foreach ($defaultParams as $key => $value) {
         if (config::byKey($key, 'lgthinq', '') == '') {
@@ -36,8 +36,8 @@ function initLgthinqParameters() {
         }
     }
 
-    checkDir( lgthinq::getDataPath());
-    checkDir( lgthinq::getResourcesPath());
+    checkDir(LgParameters::getDataPath());
+    checkDir(LgParameters::getResourcesPath());
 }
 
 function checkDir($dir){

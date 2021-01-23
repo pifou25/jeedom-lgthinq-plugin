@@ -36,27 +36,15 @@ function initLgthinqParameters() {
         }
     }
 
-    checkDir(LgParameters::getDataPath());
-    checkDir(LgParameters::getResourcesPath());
-}
-
-function checkDir($dir){
-    // $dir = realpath($dir);
-    if(!is_dir($dir)){
-        if (!mkdir($dir, 0777, true))
-            LgLog::error("unable to create dir '$dir'");
-        else
-            LgLog::debug("create dir ($dir)");
-    }
 }
 
 function lgthinq_install() {
-    LgLog::info('install lgThinq plugin - set +x flag ok');
+    LgLog::info('install lgThinq plugin');
     initLgthinqParameters();
 }
 
 function lgthinq_update() {
-    LgLog::info('update lgThinq plugin - set +x flag ok');
+    LgLog::info('update lgThinq plugin');
     initLgthinqParameters();
 }
 

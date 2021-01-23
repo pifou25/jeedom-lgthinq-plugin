@@ -295,7 +295,7 @@ class lgthinq extends eqLogic {
 
         if(!empty($_model)){
             // download images and json config from LG cloud
-            LgParameters::downloadAndCopyDataModel($_config['id'], $_model);
+            LgParameters::downloadAndCopyDataModel($_config['id'], $_model, $this->getFileconf());
         }
     }
 
@@ -413,7 +413,7 @@ class lgthinq extends eqLogic {
     }
     
     public function getFileconf(){
-        return self::getResourcesPath() . $this->getLogicalId() . '.json';
+        return LgParameters::getResourcesPath() . $this->getLogicalId() . '.json';
     }
     
     public function getImage(){

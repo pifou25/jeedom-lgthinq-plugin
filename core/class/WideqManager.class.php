@@ -95,13 +95,11 @@ class WideqManager {
         if ($deps < 4) {
             LgLog::info("missing pip dependancies ($deps)");
             return 'nok';
-        } else {
-            if(is_dir(self::getWideqDir())){
-                return ok;
-            }else{
-                LgLog::info("missing wideq lib dependancy ($deps)");
-                return 'nok';
-            }
+        } else if(is_dir(self::getWideqDir())){
+            return 'ok';
+        }else{
+            LgLog::info("missing wideq lib dependancy ($deps)");
+            return 'nok';
         }
     }
     

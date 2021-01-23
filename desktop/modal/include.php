@@ -120,10 +120,11 @@ EOT;
 
         </fieldset>
     </form>
-
+<!--
     <p id="lgLog"><pre>
     <?php echo $msg; ?></pre>
     </p>
+-->
     <?php
 } catch (\Exception $e) {
     $msg .= displayException($e);

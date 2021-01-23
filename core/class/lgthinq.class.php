@@ -115,7 +115,8 @@ class lgthinq extends eqLogic {
     public static function refreshData() {
         LgLog::debug('refresh LG data for all devices');
         foreach (self::byType('lgthinq') as $eqLogic) {
-            $eqLogic->RefreshCommands();
+            if($eqLogic->getIsEnabled())
+                $eqLogic->RefreshCommands();
         }
         return true;
     }
@@ -365,6 +366,19 @@ class lgthinq extends eqLogic {
             LgLog::debug('Json Config fichier vide ou pas au format json: ' . $this->getFileconf());
             return false;
         }
+        
+        // add default 'refresh' command
+        $refresh = $this->getCmd(null, 'refresh');
+        if (!is_object($refresh)) {
+                $refresh = new lgthinqCmd();
+                $refresh->setName(__('Rafraichir', __FILE__));
+        }
+        $refresh->setEqLogic_id($this->getId());
+        $refresh->setLogicalId('refresh');
+        $refresh->setType('action');
+        $refresh->setSubType('other');
+        $refresh->save();
+
         LgLog::debug("Start import commands for " . $this->getLogicalId());
         $this->import($device);
         LgLog::debug("Successfully finish import commands for " . $this->getLogicalId());
@@ -470,7 +484,7 @@ class lgthinqCmd extends cmd {
         $result = 'ko';
         switch ($this->getLogicalId()) { //vérifie le logicalid de la commande
             case 'refresh': // LogicalId de la commande rafraîchir
-                $return = $eqLogic->refreshData();
+                $return = $eqLogic->RefreshCommands();
                 break;
 
             default:

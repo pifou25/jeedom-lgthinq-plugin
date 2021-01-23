@@ -21,3 +21,7 @@ class LgLog  {
     }
 
 }
+
+function __($str, $file){
+	return $str;
+}

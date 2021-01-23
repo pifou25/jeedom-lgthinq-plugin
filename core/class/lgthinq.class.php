@@ -44,12 +44,6 @@ class lgthinq extends eqLogic {
     private static $_lgApi = null;
     private static $__debug = null;
 
-    /**
-     * contains img, smallImg, lang, lg (for LG json config) and 
-     * jeedom (for Jeedom json config)
-     */
-    const DATA_PATH = '/../../data/';
-    const RESOURCES_PATH = '/../../data/jeedom/';
     const DEFAULT_VALUE = 'Default';
 
     /**
@@ -60,8 +54,6 @@ class lgthinq extends eqLogic {
     private static $daemonState = null;
 
     /*     * ***********************Methode static*************************** */
-    public static function getDataPath(){return __DIR__ . self::DATA_PATH;}
-    public static function getResourcesPath(){return __DIR__ . self::RESOURCES_PATH;}
 
     /**
      * generate WideqAPI with jeedom configuration
@@ -286,9 +278,6 @@ class lgthinq extends eqLogic {
      * @param array $_config
      */
     private function __construct($_config, $_model){
-        // re-map missing keys
-//        $_config = LgParameters::mapperArray($_config,
-//                ['deviceId'=>'id', 'deviceType' => 'type', 'modelNm' => 'model', 'alias' => 'name']);
         if (!LgParameters::assertArrayContains($_config, ['id', 'type', 'model', 'name'])) {
             return null;
         }
@@ -306,25 +295,8 @@ class lgthinq extends eqLogic {
 
         if(!empty($_model)){
             // download images and json config from LG cloud
-            $msg[] = LgParameters::copyData($_model['smallImageUrl'], $_config['id'].'.png', self::getDataPath(). 'smallImg/');
-            $msg[] = LgParameters::copyData($_model['imageUrl'], $_config['id'].'.png', self::getDataPath().'img/');
-            $msg[] = LgParameters::copyData($_model['modelJsonUrl'], $_config['id'].'.json', self::getDataPath().'lg/');
-            $msg[] = LgParameters::copyData($_model['langPackProductTypeUri'], $_config['id'].'.json', self::getDataPath().'lang/');
-            LgLog::debug("copy img and json datas. " . print_r(array_filter($msg, function($v){return $v!==true;}), true));
+            LgParameters::downloadAndCopyDataModel($_config['id'], $_model);
         }
-
-        if(!empty($_model)){
-            // transform LG json config into Jeedom json
-            $file = self::getDataPath().'lg/'.$_config['id'] . '.json';
-            $lg = json_decode( file_get_contents($file), true, 512, JSON_BIGINT_AS_STRING);
-            $conf = LgParameters::convertLgToJeedom($lg);
-            $file = $this->getFileconf();
-            if(file_put_contents( $file, json_encode($conf, JSON_PRETTY_PRINT)) === false)
-                LgLog::warning("copy $file error...");
-            else
-                LgLog::debug ("copy $file ok.");
-        }
-
     }
 
     public function RefreshCommands() {
@@ -347,7 +319,7 @@ class lgthinq extends eqLogic {
                         $this->checkAndUpdateCmd($cmd, $infos[$cmd->getLogicalId()]);
                         $nb++;
                     } else {
-                        LgLog::warning("Pas d'info pour {$cmd->getLogicalId()} {$cmd->getType()}");
+                        LgLog::warning("Pas d'info pour {$cmd->getLogicalId()} ({$cmd->getType()})");
                     }
                 }
             }

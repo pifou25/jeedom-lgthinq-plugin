@@ -367,13 +367,17 @@ class LgParameters {
         $msg[] = LgParameters::copyData($_model['imageUrl'], $id.'.png', LgParameters::getDataPath().'img/');
         $msg[] = LgParameters::copyData($_model['modelJsonUrl'], $id.'.json', LgParameters::getDataPath().'lg/');
         $msg[] = LgParameters::copyData($_model['langPackProductTypeUri'], $id.'.json', LgParameters::getDataPath().'lang/');
+        $dest = LgParameters::getResourcesPath();
+        if (!is_dir($dest))
+            if (!mkdir($dest, 0777, true))
+                $msg[] = "unable to create dir $dest";
         LgLog::debug("copy img and json datas. " . print_r(array_filter($msg, function($v){return $v!==true;}), true));
 
         // transform LG json config into Jeedom json
         $file = LgParameters::getDataPath().'lg/'.$id . '.json';
         $lg = json_decode( file_get_contents($file), true, 512, JSON_BIGINT_AS_STRING);
         $conf = LgParameters::convertLgToJeedom($lg);
-        $file = $this->getFileconf();
+        $file = $dest . $id . '.json';
         if(file_put_contents( $file, json_encode($conf, JSON_PRETTY_PRINT)) === false)
             LgLog::warning("copy $file error...");
         else

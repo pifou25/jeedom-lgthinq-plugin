@@ -417,8 +417,9 @@ class lgthinq extends eqLogic {
     }
     
     public function getImage(){
-        $result = self::DATA_PATH.'smallImg/'. $this->getLogicalId().'.png';
+        $result = LgParameters::getDataPath().'smallImg/'. $this->getLogicalId().'.png';
         if(!file_exists($result)){
+            LgLog::debug("img not found: $result");
             $plugin = plugin::byId($this->getEqType_name());
             return $plugin->getPathImgIcon();
         }else{

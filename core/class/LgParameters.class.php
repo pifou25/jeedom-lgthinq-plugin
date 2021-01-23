@@ -368,42 +368,45 @@ class LgParameters {
         $msg[] = LgParameters::copyData($_model['modelJsonUrl'], $id.'.json', LgParameters::getDataPath().'lg/');
         $msg[] = LgParameters::copyData($_model['langPackProductTypeUri'], $id.'.json', LgParameters::getDataPath().'lang/');
         $dest = LgParameters::getResourcesPath();
-        if (!is_dir($dest))
-            if (!mkdir($dest, 0777, true))
-                $msg[] = "unable to create dir $dest";
-        LgLog::debug("copy img and json datas. " . print_r(array_filter($msg, function($v){return $v!==true;}), true));
 
         // transform LG json config into Jeedom json
         $file = LgParameters::getDataPath().'lg/'.$id . '.json';
         $lg = json_decode( file_get_contents($file), true, 512, JSON_BIGINT_AS_STRING);
-        $conf = LgParameters::convertLgToJeedom($lg);
-        $file = $dest . $id . '.json';
-        if(file_put_contents( $file, json_encode($conf, JSON_PRETTY_PRINT)) === false)
-            LgLog::warning("copy $file error...");
-        else
-            LgLog::debug ("copy $file ok.");
+        $data = json_encode(LgParameters::convertLgToJeedom($lg), JSON_PRETTY_PRINT);
+        $msg[] = LgParameters::copyData($data, "$id.json", $dest);
+        LgLog::debug("copy img and json datas. " . print_r(array_filter($msg, function($v){return $v!==true;}), true));
     }
 
     /**
-     * copy $url file into $dest/$name. create $dest directory if it doesn't exists.
+     * copy $data content into $dest/$name. create $dest directory if it doesn't exists.
      * doesn't overwrite if file exists.
      * @param string $url source to copy
      * @param string $name 
      * @param string $dest : directory destination
      * @return boolean or error message
      */
-    public static function copyData($url, $name, $dest) {
+    public static function copyData($data, $name, $dest) {
         if(file_exists($dest . $name))
             return true;
         if (!is_dir($dest))
             if (!mkdir($dest, 0777, true))
                 return "unable to create dir $dest";
-        $data = file_get_contents($url);
-        if($data === false)
-            return "Erreur lors de la lecture du fichier $url";
         if (file_put_contents($dest . $name, $data) === false)
             return "Erreur lors de l'écriture vers $dest$name";
         return true;
+    }
+    /**
+     * copy $url file into $dest/$name. create $dest directory if it doesn't exists.
+     * @param type $url source to copy
+     * @param type $name
+     * @param type $dest : directory destination
+     * @return boolean or error message
+     */
+    public static function copyDataFromUrl($url, $name, $dest){
+        $data = file_get_contents($url);
+        if($data === false)
+            return "Erreur lors de la lecture du fichier $url";
+        return self::copyData($data, $name, $dest);
     }
 
     /**
@@ -417,32 +420,32 @@ class LgParameters {
         $i = 0; $nb = 0; $err = 0;
         $zip = new ZipArchive;
         $path = realpath(self::getDataPath());
-        if ($zip->open($tmp_file,  ZipArchive::CREATE)) {
-            foreach($dirs as $dir){
-                $list = scandir("$path/$dir");
-                LgLog::debug(count($list) . " elements into $path/$dir");
-                foreach($list as $file){
-                    if(!in_array($file, [".",".."])){
-                        $nb++;
-                        if ($zip->addFile("$path/$dir/$file"))
-                            $i++;
-                        else{
-                            LgLog::error("zip file error $path/$dir/$file");
-                            $err++;
-                        }
+        if (!$zip->open($tmp_file,  ZipArchive::CREATE)) {
+           return "Failed to open $tmp_file!";
+        }
+
+        foreach($dirs as $dir){
+            $list = scandir("$path/$dir");
+            LgLog::debug(count($list) . " elements into $path/$dir");
+            foreach($list as $file){
+                if(!in_array($file, [".",".."])){
+                    $nb++;
+                    if ($zip->addFile("$path/$dir/$file"))
+                        $i++;
+                    else{
+                        LgLog::error("zip file error $path/$dir/$file");
+                        $err++;
                     }
                 }
             }
-            $status = $zip->getStatusString();
-            $filename = $zip->filename;
-            $zip->close();
-            chmod( $tmp_file, 0755);
+        }
+        $status = $zip->getStatusString();
+        $filename = $zip->filename;
+        $zip->close();
+        chmod( $tmp_file, 0755);
 
-            self::download($tmp_file);
-            return "Archive created! $nb files, $i added, $err errors to $filename ($status)";
-       } else {
-           return "Failed to open $tmp_file!";
-       }
+        self::download($tmp_file);
+        return "Archive created! $nb files, $i added, $err errors to $filename ($status)";
     }
     
     public static function download($file){

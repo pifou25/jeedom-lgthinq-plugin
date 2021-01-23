@@ -124,6 +124,12 @@ foreach (jeeObject::all() as $object) {
 					<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="product_type"/>
 				</div>
 			</div>
+		   <div class="form-group">
+				<label class="col-sm-3 control-label">{{LgThinq ID}}</label>
+				<div class="col-sm-6">
+					<input type="text" class="eqLogicAttr form-control" data-l1key="logicalId" disabled/>
+				</div>
+			</div>
 
 	</fieldset>
 	</form>

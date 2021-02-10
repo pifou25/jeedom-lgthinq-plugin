@@ -13,8 +13,8 @@ class LgParameters {
      * contains img, smallImg, lang, lg (for LG json config) and 
      * jeedom (for Jeedom json config)
      */
-    const DATA_PATH = '../../data/';
-    const RESOURCES_PATH = '../../data/jeedom/';
+    const DATA_PATH = '/../../data/';
+    const RESOURCES_PATH = '/../../data/jeedom/';
  
     public static function getDataPath(){return __DIR__ . self::DATA_PATH;}
     public static function getResourcesPath(){return __DIR__ . self::RESOURCES_PATH;}

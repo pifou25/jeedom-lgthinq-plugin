@@ -50,8 +50,8 @@ class lgthinq extends eqLogic {
      * Timestamp of last successfull daemon check.
      * @var type long
      */
-    private static $lastCheckTime = null;
-    private static $daemonState = null;
+    private static $_lastCheckTime = null;
+    private static $_daemonState = null;
 
     /*     * ***********************Methode static*************************** */
 
@@ -216,10 +216,10 @@ class lgthinq extends eqLogic {
      * UrlServerLg = l'url - http://127.0.0.1 par défaut
      */
     public static function deamon_info() {
-        if(self::$lastCheckTime !== null && time() - self::$lastCheckTime < 10){
+        if(self::$_lastCheckTime !== null && time() - self::$_lastCheckTime < 10){
             // don't check every second
-            LgLog::debug('cache daemon info since ' . (time() - self::$lastCheckTime));
-            return self::$daemonState;
+            LgLog::debug('cache daemon info since ' . (time() - self::$_lastCheckTime));
+            return self::$_daemonState;
         }
         $return = WideqManager::daemon_info();
         $return['pid'] = config::byKey('PidLg', 'lgthinq');
@@ -230,8 +230,8 @@ class lgthinq extends eqLogic {
         $return['launchable'] = empty($return['port']) ? 'nok' : 'ok';
         // caching result if state is ok
         if(isset($return['state']) && $return['state'] == 'ok'){
-            self::$lastCheckTime = time();
-            self::$daemonState = $return;
+            self::$_lastCheckTime = time();
+            self::$_daemonState = $return;
         }
         return $return;
     }

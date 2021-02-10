@@ -13,13 +13,13 @@ class LgParameters {
      * contains img, smallImg, lang, lg (for LG json config) and 
      * jeedom (for Jeedom json config)
      */
-    const DATA_PATH = '/../../data/';
-    const RESOURCES_PATH = '/../../data/jeedom/';
+    const DATA_PATH = '/../../data';
+    const RESOURCES_PATH = '/../../data/jeedom';
  
     public static function getDataPath() {
         static $result = null;
         if($result == null){
-            $result = realpath(__DIR__ . self::DATA_PATH);
+            $result = realpath(__DIR__ . self::DATA_PATH).'/';
         }
         return $result;
     }
@@ -27,7 +27,7 @@ class LgParameters {
     public static function getResourcesPath() {
         static $result = null;
         if($result == null){
-            $result = realpath(__DIR__ . self::RESOURCES_PATH);
+            $result = realpath(__DIR__ . self::RESOURCES_PATH).'/';
         }
         return $result;
     }
@@ -377,16 +377,15 @@ class LgParameters {
 
     public static function downloadAndCopyDataModel($id, $_model){
         // download images and json config from LG cloud
-        $msg[] = self::copyDataFromUrl($_model['smallImageUrl'], $id.'.png', self::getDataPath(). '/smallImg/');
-        $msg[] = self::copyDataFromUrl($_model['modelJsonUrl'], $id.'.json', self::getDataPath().'/lg/');
-        $msg[] = self::copyDataFromUrl($_model['langPackProductTypeUri'], $id.'.json', self::getDataPath().'/lang/');
-        $dest = self::getResourcesPath();
+        $msg[] = self::copyDataFromUrl($_model['smallImageUrl'], $id.'.png', self::getDataPath(). 'smallImg/');
+        $msg[] = self::copyDataFromUrl($_model['modelJsonUrl'], $id.'.json', self::getDataPath().'lg/');
+        $msg[] = self::copyDataFromUrl($_model['langPackProductTypeUri'], $id.'.json', self::getDataPath().'lang/');
 
         // transform LG json config into Jeedom json
         $file = self::getDataPath().'lg/'.$id . '.json';
         $lg = json_decode( file_get_contents($file), true, 512, JSON_BIGINT_AS_STRING);
         $data = json_encode(self::convertLgToJeedom($lg), JSON_PRETTY_PRINT);
-        $msg[] = self::copyData($data, "$id.json", $dest);
+        $msg[] = self::copyData($data, "$id.json", self::getResourcesPath());
         LgLog::debug("copy img and json datas. " . print_r(array_filter($msg, function($v){return $v!==true;}), true));
     }
 

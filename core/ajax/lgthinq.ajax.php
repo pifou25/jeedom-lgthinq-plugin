@@ -32,7 +32,7 @@ try {
         // save json config file
         file_put_contents($dataPath."/jeedom/state.json", lgthinq::getApi()->save());
         // and zip all config
-        $msg = LgParameters::zipConfig(['lg/', 'jeedom/', 'lang/'], 
+        $msg = LgParameters::zipConfig(["$dataPath/lg", "$dataPath/jeedom", "$dataPath/lang"], 
         $dataPath . '/lgthinq.zip');
         LgLog::info($msg);
         // ajax::success($msg);

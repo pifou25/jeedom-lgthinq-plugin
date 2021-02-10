@@ -370,17 +370,16 @@ class LgParameters {
     public static function copyDataRegex($url, $regex, $dest) {
         $found = preg_match($regex, $url, $matches);
         if ($found) {
-            return self::copyData($url, $matches[1], $dest);
+            return self::copyDataFromUrl($url, $matches[1], $dest);
         }
         return "Copy error: no matche $regex";
     }
 
     public static function downloadAndCopyDataModel($id, $_model){
         // download images and json config from LG cloud
-        $msg[] = self::copyData($_model['smallImageUrl'], $id.'.png', self::getDataPath(). 'smallImg/');
-        $msg[] = self::copyData($_model['imageUrl'], $id.'.png', self::getDataPath().'img/');
-        $msg[] = self::copyData($_model['modelJsonUrl'], $id.'.json', self::getDataPath().'lg/');
-        $msg[] = self::copyData($_model['langPackProductTypeUri'], $id.'.json', self::getDataPath().'lang/');
+        $msg[] = self::copyDataFromUrl($_model['smallImageUrl'], $id.'.png', self::getDataPath(). '/smallImg/');
+        $msg[] = self::copyDataFromUrl($_model['modelJsonUrl'], $id.'.json', self::getDataPath().'/lg/');
+        $msg[] = self::copyDataFromUrl($_model['langPackProductTypeUri'], $id.'.json', self::getDataPath().'/lang/');
         $dest = self::getResourcesPath();
 
         // transform LG json config into Jeedom json

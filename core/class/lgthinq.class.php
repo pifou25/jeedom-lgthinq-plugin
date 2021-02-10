@@ -359,10 +359,10 @@ class lgthinq extends eqLogic {
 
         LgLog::debug("Start import commands for " . $this->getLogicalId());
         $this->import($device);
-        LgLog::debug("Successfully finish import commands for " . $this->getLogicalId());
         sleep(1);
         self::addEvent('');
-        LgLog::debug('Successfully created commands from config file:' . count($device));
+        LgLog::debug('Successfull import ID ' . $this->getLogicalId() . 
+                ' nb commands: ' . count($device));
         return true;
     }
 

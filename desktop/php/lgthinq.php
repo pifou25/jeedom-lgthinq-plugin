@@ -105,31 +105,31 @@ foreach (jeeObject::all() as $object) {
                   ?>
                </div>
            </div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label"></label>
-				<div class="col-sm-9">
-					<label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="isEnable" checked/>{{Activer}}</label>
-					<label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="isVisible" checked/>{{Visible}}</label>
-				</div>
-			</div>
-		   <div class="form-group">
-				<label class="col-sm-3 control-label">{{Modèle}}</label>
-				<div class="col-sm-3">
-					<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="product_model"/>
-				</div>
-			</div>
-		   <div class="form-group">
-				<label class="col-sm-3 control-label">{{Type}}</label>
-				<div class="col-sm-3">
-					<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="product_type"/>
-				</div>
-			</div>
-		   <div class="form-group">
-				<label class="col-sm-3 control-label">{{LgThinq ID}}</label>
-				<div class="col-sm-6">
-					<input type="text" class="eqLogicAttr form-control" data-l1key="logicalId" disabled/>
-				</div>
-			</div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label"></label>
+                <div class="col-sm-9">
+                    <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="isEnable" checked/>{{Activer}}</label>
+                    <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="isVisible" checked/>{{Visible}}</label>
+                </div>
+            </div>
+           <div class="form-group">
+                <label class="col-sm-3 control-label">{{Modèle}}</label>
+                <div class="col-sm-3">
+                    <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="product_model" disabled/>
+                </div>
+            </div>
+           <div class="form-group">
+                <label class="col-sm-3 control-label">{{Type}}</label>
+                <div class="col-sm-3">
+                        <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="product_type" disabled/>
+                </div>
+            </div>
+           <div class="form-group">
+                <label class="col-sm-3 control-label">{{LgThinq ID}}</label>
+                <div class="col-sm-6">
+                        <input type="text" class="eqLogicAttr form-control" data-l1key="logicalId" disabled/>
+                </div>
+            </div>
 
 	</fieldset>
 	</form>

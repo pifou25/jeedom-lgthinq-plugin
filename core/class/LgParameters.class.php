@@ -399,7 +399,7 @@ class LgParameters {
      */
     public static function copyData($data, $name, $dest) {
         if(file_exists($dest . $name)){
-            return true;
+            unlink($dest . $name);
         }
         if (!is_dir($dest) && !mkdir($dest, 0777, true)){
             return "unable to create dir $dest";

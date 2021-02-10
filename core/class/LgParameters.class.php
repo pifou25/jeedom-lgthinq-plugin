@@ -16,8 +16,21 @@ class LgParameters {
     const DATA_PATH = '/../../data/';
     const RESOURCES_PATH = '/../../data/jeedom/';
  
-    public static function getDataPath(){return __DIR__ . self::DATA_PATH;}
-    public static function getResourcesPath(){return __DIR__ . self::RESOURCES_PATH;}
+    public static function getDataPath() {
+        static $result = null;
+        if($result == null){
+            $result = realpath(__DIR__ . self::DATA_PATH);
+        }
+        return $result;
+    }
+
+    public static function getResourcesPath() {
+        static $result = null;
+        if($result == null){
+            $result = realpath(__DIR__ . self::RESOURCES_PATH);
+        }
+        return $result;
+    }
 
     /**
      * json decoded array
@@ -245,12 +258,13 @@ class LgParameters {
 
     // return $arr[$result] where $arr[$key] = $value
     public static function getInArray($arr, $key, $value, $result) {
-        if (!empty($arr))
+        if (!empty($arr)){
             foreach ($arr as $arr0) {
                 if (isset($arr0[$key]) && $arr0[$key] == $value && isset($arr0[$result])) {
                     return $arr0[$result];
                 }
             }
+        }
         $count = count($arr);
         self::$log .= "\t $result not found with $key = $value ($count);\n";
         return false;
@@ -386,13 +400,15 @@ class LgParameters {
      * @return boolean or error message
      */
     public static function copyData($data, $name, $dest) {
-        if(file_exists($dest . $name))
+        if(file_exists($dest . $name)){
             return true;
-        if (!is_dir($dest))
-            if (!mkdir($dest, 0777, true))
-                return "unable to create dir $dest";
-        if (file_put_contents($dest . $name, $data) === false)
+        }
+        if (!is_dir($dest) && !mkdir($dest, 0777, true)){
+            return "unable to create dir $dest";
+        }
+        if (file_put_contents($dest . $name, $data) === false){
             return "Erreur lors de l'écriture vers $dest$name";
+        }
         return true;
     }
     /**
@@ -404,8 +420,9 @@ class LgParameters {
      */
     public static function copyDataFromUrl($url, $name, $dest){
         $data = file_get_contents($url);
-        if($data === false)
+        if($data === false){
             return "Erreur lors de la lecture du fichier $url";
+        }
         return self::copyData($data, $name, $dest);
     }
 
@@ -414,40 +431,7 @@ class LgParameters {
      * @param array $dirs = ['lg/', 'jeedom/', 'lang/']
      */
     public static function zipConfig($dirs, $tmp_file = '/tmp/lgthinq.zip'){
-        
-        $file = create_zip($dirs, $tmp_file);
-        
-//        if(file_exists($tmp_file)){
-//            unlink($tmp_file);
-//        }
-//        $i = 0; $nb = 0; $err = 0;
-//        $zip = new ZipArchive;
-//        $path = realpath(self::getDataPath());
-//        if (!$zip->open($tmp_file,  ZipArchive::CREATE)) {
-//           return "Failed to open $tmp_file!";
-//        }
-//
-//        foreach($dirs as $dir){
-//            $list = scandir("$path/$dir");
-//            LgLog::debug(count($list) . " elements into $path/$dir");
-//            foreach($list as $file){
-//                if(!in_array($file, [".",".."])){
-//                    $nb++;
-//                    if ($zip->addFile("$path/$dir/$file"))
-//                        $i++;
-//                    else{
-//                        LgLog::error("zip file error $path/$dir/$file");
-//                        $err++;
-//                    }
-//                }
-//            }
-//        }
-//        $status = $zip->getStatusString();
-//        $filename = $zip->filename;
-//        $zip->close();
-//        chmod( $tmp_file, 0755);
-
-        if($file){
+        if(create_zip($dirs, $tmp_file)){
             self::download($tmp_file);
             return "Archive created! $nb files, $i added, $err errors to $filename ($status)";
         }else{

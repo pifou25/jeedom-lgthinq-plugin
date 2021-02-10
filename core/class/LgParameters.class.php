@@ -414,38 +414,45 @@ class LgParameters {
      * @param array $dirs = ['lg/', 'jeedom/', 'lang/']
      */
     public static function zipConfig($dirs, $tmp_file = '/tmp/lgthinq.zip'){
-        if(file_exists($tmp_file)){
-            unlink($tmp_file);
-        }
-        $i = 0; $nb = 0; $err = 0;
-        $zip = new ZipArchive;
-        $path = realpath(self::getDataPath());
-        if (!$zip->open($tmp_file,  ZipArchive::CREATE)) {
-           return "Failed to open $tmp_file!";
-        }
+        
+        $file = create_zip($dirs, $tmp_file);
+        
+//        if(file_exists($tmp_file)){
+//            unlink($tmp_file);
+//        }
+//        $i = 0; $nb = 0; $err = 0;
+//        $zip = new ZipArchive;
+//        $path = realpath(self::getDataPath());
+//        if (!$zip->open($tmp_file,  ZipArchive::CREATE)) {
+//           return "Failed to open $tmp_file!";
+//        }
+//
+//        foreach($dirs as $dir){
+//            $list = scandir("$path/$dir");
+//            LgLog::debug(count($list) . " elements into $path/$dir");
+//            foreach($list as $file){
+//                if(!in_array($file, [".",".."])){
+//                    $nb++;
+//                    if ($zip->addFile("$path/$dir/$file"))
+//                        $i++;
+//                    else{
+//                        LgLog::error("zip file error $path/$dir/$file");
+//                        $err++;
+//                    }
+//                }
+//            }
+//        }
+//        $status = $zip->getStatusString();
+//        $filename = $zip->filename;
+//        $zip->close();
+//        chmod( $tmp_file, 0755);
 
-        foreach($dirs as $dir){
-            $list = scandir("$path/$dir");
-            LgLog::debug(count($list) . " elements into $path/$dir");
-            foreach($list as $file){
-                if(!in_array($file, [".",".."])){
-                    $nb++;
-                    if ($zip->addFile("$path/$dir/$file"))
-                        $i++;
-                    else{
-                        LgLog::error("zip file error $path/$dir/$file");
-                        $err++;
-                    }
-                }
-            }
+        if($file){
+            self::download($tmp_file);
+            return "Archive created! $nb files, $i added, $err errors to $filename ($status)";
+        }else{
+            return "error preparing zip $tmp_file";
         }
-        $status = $zip->getStatusString();
-        $filename = $zip->filename;
-        $zip->close();
-        chmod( $tmp_file, 0755);
-
-        self::download($tmp_file);
-        return "Archive created! $nb files, $i added, $err errors to $filename ($status)";
     }
     
     public static function download($file){

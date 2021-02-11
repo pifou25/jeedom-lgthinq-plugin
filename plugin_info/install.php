@@ -36,6 +36,15 @@ function initLgthinqParameters() {
         }
     }
 
+    $dest = LgParameters::getDataPath();
+    if (!is_dir($dest) && !mkdir($dest, 0777, true)) {
+        return "unable to create dir $dest";
+    }
+    $dest = LgParameters::getResourcesPath();
+    if (!is_dir($dest) && !mkdir($dest, 0777, true)) {
+        return "unable to create dir $dest";
+    }
+ 
 }
 
 function lgthinq_install() {

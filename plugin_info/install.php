@@ -38,11 +38,15 @@ function initLgthinqParameters() {
 
     $dest = LgParameters::getDataPath();
     if (!is_dir($dest) && !mkdir($dest, 0777, true)) {
-        return "unable to create dir $dest";
+        LgLog::debug("unable to create dir $dest");
+    }else{
+        LgLog::debug("success create dir $dest");
     }
     $dest = LgParameters::getResourcesPath();
     if (!is_dir($dest) && !mkdir($dest, 0777, true)) {
-        return "unable to create dir $dest";
+        LgLog::debug("unable to create dir $dest");
+    }else{
+        LgLog::debug("success create dir $dest");
     }
  
 }

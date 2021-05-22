@@ -36,6 +36,7 @@ function initLgthinqParameters() {
         }
     }
 
+    // créer les répertoires /data/jeedom 
     $dest = LgParameters::getDataPath();
     if (!is_dir($dest) && !mkdir($dest, 0777, true)) {
         LgLog::debug("unable to create dir $dest");

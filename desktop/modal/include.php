@@ -142,6 +142,7 @@ $( function(){
     });
 
     $('#bt_synchro').on('click',function(){
+        $.showLoading();
         $.ajax({
             type: 'POST',
             url: 'plugins/lgthinq/core/ajax/lgthinq.ajax.php?action=synchro',
@@ -158,8 +159,10 @@ $( function(){
                 }else{
                     bootbox.alert({message: data['state'] + ' : ' + data['result'], level: 'danger'});;
                 }
+            },
+            complete: function(){
+               $.hideLoading();
             }
-
         });
     });
 });

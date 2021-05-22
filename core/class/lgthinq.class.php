@@ -424,7 +424,7 @@ class lgthinq extends eqLogic {
             $plugin = plugin::byId($this->getEqType_name());
             return $plugin->getPathImgIcon();
         }else{
-            return $result;
+            return str_replace('/var/www/html/', '', $result);
         }
     }
 

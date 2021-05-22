@@ -14,25 +14,17 @@ class LgParameters {
      * contains img, smallImg, lang, lg (for LG json config) and 
      * jeedom (for Jeedom json config)
      */
-    const DATA_PATH = '/../../data';
-    const RESOURCES_PATH = '/../../data/jeedom';
+    const DATA_PATH = '/var/www/html/plugins/lgthinq/data/';
+    const RESOURCES_PATH = self::DATA_PATH .' jeedom/';
 
     public static function getDataPath() {
-        static $result = null;
-        if ($result == null) {
-            $result = realpath(__DIR__ . self::DATA_PATH) . DIRECTORY_SEPARATOR;
-        }
-        return $result;
+        return self::DATA_PATH;
     }
 
     public static function getResourcesPath() {
-        static $result = null;
-        if ($result == null) {
-            $result = realpath(__DIR__ . self::RESOURCES_PATH) . DIRECTORY_SEPARATOR;
-        }
-        return $result;
+        return self::RESOURCES_PATH;
     }
-
+    
     /**
      * json decoded array
      * @var array

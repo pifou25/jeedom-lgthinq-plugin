@@ -112,10 +112,8 @@ class lgthinq extends eqLogic {
      */
     public static function refreshData() {
         LgLog::debug('refresh LG data for all devices');
-        foreach (self::byType('lgthinq') as $eqLogic) {
-            if($eqLogic->getIsEnabled()){
-                $eqLogic->RefreshCommands();
-            }
+        foreach (self::byType('lgthinq', true) as $eqLogic) {
+            $eqLogic->RefreshCommands();
         }
         return true;
     }

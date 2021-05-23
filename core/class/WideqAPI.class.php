@@ -139,14 +139,18 @@ class WideqAPI {
     }
 
     public function __construct($args = []) {
-        if (!empty($args['headers']))
+        if (!empty($args['headers'])){
             $this->headers = $args['headers'];
-        if (!empty($args['port']))
+        }
+        if (!empty($args['port'])){
             $this->port = $args['port'];
-        if (!empty($args['debug']))
+        }
+        if (!empty($args['debug'])){
             $this->debug = $args['debug'];
-        if (!empty($args['url']))
+        }
+        if (!empty($args['url'])){
             $this->url = $args['url'];
+        }
     }
 
     /**

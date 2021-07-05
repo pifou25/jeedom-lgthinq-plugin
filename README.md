@@ -1,6 +1,7 @@
 # jeedom-lgthinq-plugin
 
 [![CodeFactor](https://www.codefactor.io/repository/github/pifou25/jeedom-lgthinq-plugin/badge)](https://www.codefactor.io/repository/github/pifou25/jeedom-lgthinq-plugin)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=pifou25_jeedom-lgthinq-plugin&metric=alert_status)](https://sonarcloud.io/dashboard?id=pifou25_jeedom-lgthinq-plugin)
 
 ## Jeedom
 

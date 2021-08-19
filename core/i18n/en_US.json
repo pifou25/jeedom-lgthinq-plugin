@@ -1,0 +1,69 @@
+{
+    "plugins\/lgthinq\/core\/ajax\/lgthinq.ajax.php": {
+        "401 - Accès non autorisé": "401 - Unauthorized access",
+        "Aucune méthode correspondante à : ": "No method corresponding to:"
+    },
+    "plugins\/lgthinq\/core\/class\/WideqManager.class.php": {
+        "Veuillez vérifier la configuration": "Veuillez vérifier la configuration"
+    },
+    "plugins\/lgthinq\/core\/class\/lgthinq.class.php": {
+        "Fichier de configuration absent ": "Fichier de configuration absent ",
+        "Rafraichir": "Refresh"
+    },
+    "plugins\/lgthinq\/desktop\/js\/lgthinq.js": {
+        "Affichage": "Display",
+        "Historiser": "Historize",
+        "Nom": "Name",
+        "Tester": "Test"
+    },
+    "plugins\/lgthinq\/desktop\/modal\/include.php": {
+        "401 - Accès non autorisé": "401 - Unauthorized access",
+        "Liste des objets LG détectés": "Liste des objets LG détectés",
+        "Synchroniser": "Synchronize"
+    },
+    "plugins\/lgthinq\/desktop\/php\/lgthinq.php": {
+        "401 - Accès non autorisé": "401 - Unauthorized access",
+        "Action": "Action",
+        "Activer": "Enable",
+        "Aucun": "None",
+        "Catégorie": "Category",
+        "Commandes": "Commands",
+        "Configuration": "Configuration",
+        "Configuration avancée": "Advanced configuration",
+        "Dupliquer": "Duplicate",
+        "Equipement": "Equipment",
+        "Gestion": "Management",
+        "LgThinq ID": "LgThinq ID",
+        "Mes équipements": "Mes équipements",
+        "Modèle": "Modèle",
+        "Nom": "Name",
+        "Nom de l'équipement LGThinq": "Nom de l'équipement LGThinq",
+        "Objet parent": "Parent object",
+        "Rechercher": "Search",
+        "Sauvegarder": "Save",
+        "Supprimer": "Delete",
+        "Synchroniser": "Synchronize",
+        "Type": "Type",
+        "Visible": "Visible"
+    },
+    "plugins\/lgthinq\/plugin_info\/configuration.php": {
+        "Authentification": "Authentification",
+        "Copiez \/ collez l'URL de redirection LG ici:": "Copiez \/ collez l'URL de redirection LG ici:",
+        "Country": "Country",
+        "Download": "Download",
+        "Download Configuration du Démon:": "Download Configuration du Démon:",
+        "LG Account Login": "LG Account Login",
+        "Language": "Language",
+        "Ping ?": "Ping ?",
+        "Ping du serveur plugin :": "Ping du serveur plugin :",
+        "Port Server Local": "Port Server Local",
+        "Python": "Python",
+        "Renew Auth": "Renew Auth",
+        "Server Parameters": "Server Parameters",
+        "URL Server Local": "URL Server Local",
+        "Wideq Lib version": "Wideq Lib version"
+    },
+    "plugins\/lgthinq\/test\/config\/mock.php": {
+        "$str, $file){\n\treturn $str;\n}": "$str, $file){\n\treturn $str;\n}"
+    }
+}

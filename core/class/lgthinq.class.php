@@ -113,7 +113,11 @@ class lgthinq extends eqLogic {
     public static function refreshData() {
         LgLog::debug('refresh LG data for all devices');
         foreach (self::byType('lgthinq', true) as $eqLogic) {
-            $eqLogic->RefreshCommands();
+            try{
+                $eqLogic->RefreshCommands();
+            }catch(LgApiException $e){
+                LgLog::error($e->getMessage());
+            }
         }
         return true;
     }

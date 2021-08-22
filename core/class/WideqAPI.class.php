@@ -82,20 +82,23 @@ class WideqAPI {
             $len = strlen($header);
             $headersLength += $len;
             $header = explode(':', $header, 2);
-            if (count($header) < 2) // ignore invalid headers
+            if (count($header) < 2){ // ignore invalid headers
                 return $len;
+            }
             $headersResponse[strtolower(trim($header[0]))][] = trim($header[1]);
             return $len;
         });
 
         // for debug mode:
-        if ($this->debug)
+        if ($this->debug){
             curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+        }
 
         $result = curl_exec($ch);
         // for debug mode: show the request
-        if ($this->debug)
+        if ($this->debug){
             $information = curl_getinfo($ch);
+        }
 
         $return = json_decode($result, true, 512, JSON_BIGINT_AS_STRING);
         if ($return == null) {
@@ -127,8 +130,9 @@ class WideqAPI {
             'time' => ((microtime(true) - $time) * 1000),
             'result' => $return,
             'headers' => $this->headers];
-        if ($this->debug)
+        if ($this->debug){
             $arr['info'] = $information;
+        }
         self::$requests[] = $arr;
 
         if ($err) {
@@ -139,18 +143,14 @@ class WideqAPI {
     }
 
     public function __construct($args = []) {
-        if (!empty($args['headers'])){
+        if (!empty($args['headers']))
             $this->headers = $args['headers'];
-        }
-        if (!empty($args['port'])){
+        if (!empty($args['port']))
             $this->port = $args['port'];
-        }
-        if (!empty($args['debug'])){
+        if (!empty($args['debug']))
             $this->debug = $args['debug'];
-        }
-        if (!empty($args['url'])){
+        if (!empty($args['url']))
             $this->url = $args['url'];
-        }
     }
 
     /**
@@ -183,10 +183,11 @@ class WideqAPI {
         $return = [];
         if (is_array($arr)) {
             foreach ($arr as $obj) {
-                if (isset($obj['id']))
+                if (isset($obj['id'])){
                     $return[$obj['id']] = $obj;
-                else
+                }else{
                     $return[] = $obj; // missing id ?
+                }
             }
         }
         return $return;
@@ -231,10 +232,11 @@ class WideqAPI {
         static $file0 = null;
         if ($save == null || $file !== $file0) {
             $file0 = $file;
-            if ($file == null)
+            if ($file == null){
                 $save = $this->callRestApi("save");
-            else
+            }else{
                 $save = $this->callRestApi("save/$file");
+            }
         }
         return $save;
     }

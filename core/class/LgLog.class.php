@@ -43,3 +43,17 @@ class LgSystem extends system {
     }
 
 }
+
+class LgTranslate extends translate {
+    /**
+     * translate using sprintf and variable number of arguments
+     */
+    public static function tr($_content, $_name = __FILE__){
+        if(func_num_args() > 2){
+            $args = array_slice(func_get_args(), 2);
+            return translate::sentence( vsprintf($_content, $args), $_name);
+        }else{
+            return translate::sentence($_content, $_name);
+        }
+    }
+}

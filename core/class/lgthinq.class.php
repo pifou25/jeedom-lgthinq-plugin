@@ -86,7 +86,7 @@ class lgthinq extends eqLogic {
         LgLog::debug("refresh LG token with $auth");
         $ret = $api->token($auth);
         if(isset($ret['auth']) && $ret['auth'] == false){
-            LgLog::error("refresh LG token fails!");
+            LgLog::error( __("Erreur de mise à jour tu token LG!", __FILE__));
         }
         return $api;
     }
@@ -111,7 +111,7 @@ class lgthinq extends eqLogic {
      * triggered by cron
      */
     public static function refreshData() {
-        LgLog::debug('refresh LG data for all devices');
+        LgLog::debug(__('Mise à jour des informations de tous les appareils LG', __FILE__));
         foreach (self::byType('lgthinq', true) as $eqLogic) {
             try{
                 $eqLogic->RefreshCommands();
@@ -221,7 +221,7 @@ class lgthinq extends eqLogic {
     public static function deamon_info() {
         if(self::$_lastCheckTime !== null && time() - self::$_lastCheckTime < 10){
             // don't check every second
-            LgLog::debug('cache daemon info since ' . (time() - self::$_lastCheckTime));
+            LgLog::debug(__('infos Demon en cache depuis: ', __FILE__) . (time() - self::$_lastCheckTime));
             return self::$_daemonState;
         }
         $return = WideqManager::daemon_info();
@@ -250,7 +250,7 @@ class lgthinq extends eqLogic {
         if ($result !== false) {
             // sauver le PID du daemon
             config::save('PidLg', $result, 'lgthinq');
-            LgLog::debug('Restart daemon, id=$result');
+            LgLog::debug( __('Redémarrage du démon, id: ', __FILE__) . $result);
         }
         return $result;
     }
@@ -292,9 +292,8 @@ class lgthinq extends eqLogic {
         $this->setProductModel($_config['model']);
         $this->setProductType($_config['type']);
         $this->setIsVisible(1);
-        LgLog::debug('Create LG Object ' . $this->getLogicalId() . ' - ' .
-                $this->getName() . ' - ' . $this->getProductModel() . ' - ' .
-                $this->getProductType());
+        LgLog::debug(sprintf(__('Création des objets LG %s - %s - %s - %s ', __FILE__),
+         $this->getLogicalId(), $this->getName(), $this->getProductModel(), $this->getProductType()));
 
         if(!empty($_model)){
             // download images and json config from LG cloud
@@ -322,7 +321,8 @@ class lgthinq extends eqLogic {
                         $this->checkAndUpdateCmd($cmd, $infos[$cmd->getLogicalId()]);
                         $nb++;
                     } else {
-                        LgLog::warning("Pas d'info pour {$cmd->getLogicalId()} ({$cmd->getType()})");
+                        LgLog::warning(__("Pas d'info pour:", __FILE__)
+                         . $cmd->getLogicalId() . " ({$cmd->getType()})");
                     }
                 }
             }
@@ -336,14 +336,15 @@ class lgthinq extends eqLogic {
      */
     private function createCommand() {
 
-        LgLog::debug("check createCommand json config... " . $this->getLogicalId());
+        LgLog::debug(__("'createCommand' Vérification de la configuration json... ", __FILE__)
+         . $this->getLogicalId());
         if (!file_exists( $this->getFileconf())) {
             self::addEvent(__('Fichier de configuration absent ', __FILE__) . $this->getFileconf());
             return false;
         }
         $device = is_json(file_get_contents( $this->getFileconf()), []);
         if (!is_array($device) || empty($device)) {
-            LgLog::debug('Json Config fichier vide ou pas au format json: ' . $this->getFileconf());
+            LgLog::debug(__('Fichier de config Json vide ou pas au format: ', __FILE__) . $this->getFileconf());
             return false;
         }
 
@@ -359,12 +360,12 @@ class lgthinq extends eqLogic {
         $refresh->setSubType('other');
         $refresh->save();
 
-        LgLog::debug("Start import commands for " . $this->getLogicalId());
+        LgLog::debug(__('Démarrer importation des commandes pour: ', __FILE__) . $this->getLogicalId());
         $this->import($device);
         sleep(1);
         self::addEvent('');
-        LgLog::debug('Successfull import ID ' . $this->getLogicalId() . 
-                ' nb commands: ' . count($device));
+        LgLog::debug(LgTranslate::tr('Successfull import ID %s nb commands: %s', __FILE__,
+             $this->getLogicalId(), count($device)));
         return true;
     }
 
@@ -422,7 +423,7 @@ class lgthinq extends eqLogic {
     public function getImage(){
         $result = LgParameters::getDataPath().'smallImg/'. $this->getLogicalId().'.png';
         if(!file_exists($result)){
-            LgLog::debug("img not found: $result");
+            LgLog::debug(__('Image non trouvée: ', __FILE__) .$result);
             $plugin = plugin::byId($this->getEqType_name());
             return $plugin->getPathImgIcon();
         }else{
@@ -470,7 +471,7 @@ class lgthinqCmd extends cmd {
 
             default:
                 // add $api->set($id, $cmd) ou set($id, $cmd, $value)
-                LgLog::info('cmd execute ' . $this->getLogicalId());
+                LgLog::info(__('Execute Commande ', __FILE__) . $this->getLogicalId());
                 break;
         }
         return $result;

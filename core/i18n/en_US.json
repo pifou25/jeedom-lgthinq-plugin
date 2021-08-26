@@ -1,14 +1,25 @@
 {
     "plugins\/lgthinq\/core\/ajax\/lgthinq.ajax.php": {
-        "401 - Accès non autorisé": "401 - Unauthorized access",
+        "401 - Accès non autorisé": "401 - Unauthorized Access",
         "Aucune méthode correspondante à : ": "No method corresponding to:"
     },
     "plugins\/lgthinq\/core\/class\/WideqManager.class.php": {
-        "Veuillez vérifier la configuration": "Veuillez vérifier la configuration"
+        "Veuillez vérifier la configuration": "Please check configuration"
     },
     "plugins\/lgthinq\/core\/class\/lgthinq.class.php": {
-        "Fichier de configuration absent ": "Fichier de configuration absent ",
-        "Rafraichir": "Refresh"
+        "'createCommand' Vérification de la configuration json... ": "'createCommand' Json configuration checking... ",
+        "Création des objets LG %s - %s - %s - %s ": "LG objects creation: %s - %s - %s - %s ",
+        "Démarrer importation des commandes pour: ": "Start commands importation for: ",
+        "Erreur de mise à jour tu token LG!": "Error LG token update!",
+        "Execute Commande ": "Execute Command ",
+        "Fichier de config Json vide ou pas au format: ": "Json file empty or wrong format: ",
+        "Fichier de configuration absent ": "Missing config file ",
+        "Image non trouvée: ": "Image not found: ",
+        "Mise à jour des informations de tous les appareils LG": "Update every LG devices datas",
+        "Pas d'info pour:": "Missing info for:",
+        "Rafraichir": "Refresh",
+        "Redémarrage du démon, id: ": "Restart daemon, id: ",
+        "infos Demon en cache depuis: ": "Demon data caching since: "
     },
     "plugins\/lgthinq\/desktop\/js\/lgthinq.js": {
         "Affichage": "Display",
@@ -17,12 +28,12 @@
         "Tester": "Test"
     },
     "plugins\/lgthinq\/desktop\/modal\/include.php": {
-        "401 - Accès non autorisé": "401 - Unauthorized access",
-        "Liste des objets LG détectés": "Liste des objets LG détectés",
+        "401 - Accès non autorisé": "401 - Unauthorized Access",
+        "Liste des objets LG détectés": "List of LG objects",
         "Synchroniser": "Synchronize"
     },
     "plugins\/lgthinq\/desktop\/php\/lgthinq.php": {
-        "401 - Accès non autorisé": "401 - Unauthorized access",
+        "401 - Accès non autorisé": "401 - Unauthorized Access",
         "Action": "Action",
         "Activer": "Enable",
         "Aucun": "None",
@@ -34,10 +45,10 @@
         "Equipement": "Equipment",
         "Gestion": "Management",
         "LgThinq ID": "LgThinq ID",
-        "Mes équipements": "Mes équipements",
-        "Modèle": "Modèle",
+        "Mes équipements": "My devices",
+        "Modèle": "Model",
         "Nom": "Name",
-        "Nom de l'équipement LGThinq": "Nom de l'équipement LGThinq",
+        "Nom de l'équipement LGThinq": "LG device name",
         "Objet parent": "Parent object",
         "Rechercher": "Search",
         "Sauvegarder": "Save",
@@ -48,10 +59,10 @@
     },
     "plugins\/lgthinq\/plugin_info\/configuration.php": {
         "Authentification": "Authentification",
-        "Copiez \/ collez l'URL de redirection LG ici:": "Copiez \/ collez l'URL de redirection LG ici:",
+        "Copiez \/ collez l'URL de redirection LG ici:": "Copy \/ paste the LG redirected URL here:",
         "Country": "Country",
         "Download": "Download",
-        "Download Configuration du Démon:": "Download Configuration du Démon:",
+        "Download Configuration du Démon:": "Download Daemon Configuration:",
         "LG Account Login": "LG Account Login",
         "Language": "Language",
         "Ping ?": "Ping ?",

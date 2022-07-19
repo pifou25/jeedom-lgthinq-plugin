@@ -24,9 +24,9 @@ jobs:
         uses: docker/setup-buildx-action@v2
       -
         name: test secret
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
         run: printenv        
+        env:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
       -
         name: Login to DockerHub
         # https://github.com/marketplace/actions/docker-login

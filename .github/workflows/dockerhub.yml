@@ -23,6 +23,11 @@ jobs:
         # set up a multi-platform builder for Docker containers
         uses: docker/setup-buildx-action@v2
       -
+        name: test secret
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+        run: printenv        
+      -
         name: Login to DockerHub
         # https://github.com/marketplace/actions/docker-login
         # login to DockerHub with secrets login & token

@@ -27,6 +27,7 @@ jobs:
         run: printenv        
         env:
           username: ${{ env.DOCKERHUB_USERNAME }}
+          PASSPHRASE: "oui c'est moi"
       -
         name: Login to DockerHub
         # https://github.com/marketplace/actions/docker-login

@@ -1,0 +1,6 @@
+wideq
+Flask
+flask-restx
+requests
+requests-oauthlib
+requests-toolbelt

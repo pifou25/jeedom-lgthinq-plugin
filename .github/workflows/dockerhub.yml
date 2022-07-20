@@ -37,6 +37,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: resources
-          path: resources/Dockerfile
+          file: resources/Dockerfile
           push: true
           tags: pifou25/lgthinq:latest

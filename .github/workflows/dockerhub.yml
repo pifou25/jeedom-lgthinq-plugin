@@ -36,6 +36,6 @@ jobs:
         # this job build the docker image and push into Docker Hub
         uses: docker/build-push-action@v3
         with:
-          context: "{{defaultContext}}:resources"
+          context: "{{defaultContext}}:resources/daemon"
           push: true
           tags: pifou25/lgthinq:latest

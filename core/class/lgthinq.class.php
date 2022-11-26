@@ -311,7 +311,7 @@ class lgthinq extends eqLogic {
             }
 
             // interroger l'API cloud LG pour rafraichir l'information:
-            $infos = lgthinq::getApi()->mon($this->getLogicalId());
+            $infos = self::getApi()->mon($this->getLogicalId());
             LgLog::debug("monitoring {$this->getName()}" . print_r($infos, true));
 
             $nb = 0;

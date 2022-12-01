@@ -280,7 +280,11 @@ class lgthinq extends eqLogic {
      * create default object with id, name, model and type
      * @param array $_config
      */
-    private function __construct($_config, $_model){
+    private function __construct($_config = [], $_model = []){
+        if(empty($_config) || empty($_model)){
+          // args are mandatory, return without action if no args provided
+          return null;
+        }
         if (!LgParameters::assertArrayContains($_config, ['id', 'type', 'model', 'name'])) {
             return null;
         }

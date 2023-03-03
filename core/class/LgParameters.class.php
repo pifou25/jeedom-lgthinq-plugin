@@ -15,7 +15,7 @@ class LgParameters {
      * jeedom (for Jeedom json config)
      */
     const DATA_PATH = '/var/www/html/plugins/lgthinq/data/';
-    const RESOURCES_PATH = self::DATA_PATH .' jeedom/';
+    const RESOURCES_PATH = self::DATA_PATH .'jeedom/';
 
     public static function getDataPath() {
         return self::DATA_PATH;

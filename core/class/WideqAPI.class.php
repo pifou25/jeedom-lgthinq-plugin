@@ -1,4 +1,5 @@
 <?php
+namespace com\jeedom\plugins\lgthinq;
 
 /*
  * this example use python wideq lib with Flask server and curl requests

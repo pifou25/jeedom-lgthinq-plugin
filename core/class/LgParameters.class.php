@@ -1,4 +1,5 @@
 <?php
+namespace com\jeedom\plugins\lgthinq;
 
 /**
  * compute LG json and transform into jeedom json parameters
@@ -15,7 +16,7 @@ class LgParameters {
      * jeedom (for Jeedom json config)
      */
     const DATA_PATH = '/var/www/html/plugins/lgthinq/data/';
-    const RESOURCES_PATH = self::DATA_PATH .'jeedom/';
+    const RESOURCES_PATH = self::DATA_PATH . 'jeedom/';
 
     public static function getDataPath() {
         return self::DATA_PATH;
@@ -299,9 +300,9 @@ class LgParameters {
 
     /**
      * add some new keys into array: duplicate keys with new keys values
-     * @param type $_config
-     * @param type $_mapper = ['existing key' => 'new key to create']
-     * @return type
+     * @param array $_config
+     * @param array $_mapper = ['existing key' => 'new key to create']
+     * @return array
      */
     public static function mapperArray($_config, $_mapper) {
 
@@ -394,9 +395,9 @@ class LgParameters {
 
     /**
      * copy $url file into $dest/$name. create $dest directory if it doesn't exists.
-     * @param type $url source to copy
-     * @param type $name
-     * @param type $dest : directory destination
+     * @param string $url source to copy
+     * @param string $name
+     * @param string $dest : directory destination
      * @return boolean or error message
      */
     public static function copyDataFromUrl($url, $name, $dest) {
@@ -414,7 +415,7 @@ class LgParameters {
     public static function zipConfig($dirs, $tmp_file = '/tmp/lgthinq.zip') {
         if (create_zip($dirs, $tmp_file)) {
             self::download($tmp_file);
-            return "Archive created! $nb files, $i added, $err errors to $filename ($status)";
+            return "Archive created!";
         } else {
             return "error preparing zip $tmp_file";
         }

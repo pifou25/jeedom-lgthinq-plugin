@@ -2,7 +2,7 @@ name: Semantic Release
 
 on:
   push:
-    branches: [ master, dev ]
+    branches: [ master, dev, test ]
   pull_request:
     branches: [ none ]
   # this is to manually trigger the worklow

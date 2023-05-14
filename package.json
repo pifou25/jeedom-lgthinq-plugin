@@ -39,6 +39,10 @@
       {
         "name": "dev",
         "prerelease": true
+      },
+      {
+        "name": "test",
+        "prerelease": true
       }
     ],
     "tagFormat": "${version}",
@@ -51,12 +55,12 @@
           "npmPublish": false
         }
       ],
-    [
-      "@semantic-release/changelog",
-      {
-        "changelogFile": "CHANGELOG.md"
-      }
-    ],
+      [
+        "@semantic-release/changelog",
+        {
+          "changelogFile": "CHANGELOG.md"
+        }
+      ],
       "@semantic-release/github",
       [
         "@google/semantic-release-replace-plugin",
@@ -86,7 +90,7 @@
         {
           "assets": [
             "plugin_info/info.json",
-			"CHANGELOG.md"
+            "CHANGELOG.md"
           ]
         }
       ]

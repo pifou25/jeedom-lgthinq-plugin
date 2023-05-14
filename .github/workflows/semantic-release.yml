@@ -35,6 +35,10 @@ jobs:
               {
                 name: 'dev',
                 prerelease: true
+              },
+              {
+                name: 'test',
+                prerelease: true
               }
             ]
           extra_plugins: |

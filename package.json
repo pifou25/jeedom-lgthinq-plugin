@@ -54,7 +54,7 @@
     [
       "@semantic-release/changelog",
       {
-        "changelogFile": "CHANGELOG.md"
+        "changelogFile": "docs/fr_FR/changelog_beta.md"
       }
     ],
       "@semantic-release/github",
@@ -86,7 +86,7 @@
         {
           "assets": [
             "plugin_info/info.json",
-			"CHANGELOG.md"
+			"docs/fr_FR/changelog_beta.md"
           ]
         }
       ]

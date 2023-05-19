@@ -35,12 +35,14 @@ jobs:
               {
                 name: 'dev',
                 prerelease: true
+              },
+              {
+                name: 'test',
+                prerelease: true
               }
             ]
-          extra_plugins: |
-            @semantic-release/git
-            @semantic-release/changelog
-            @google/semantic-release-replace-plugin
+          extends: |
+            jeedom-semrel-plugin-config
           dry_run: false
           working_directory: .
           tag_format: '${version}' # default is v{version}

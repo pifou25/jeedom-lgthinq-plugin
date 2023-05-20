@@ -1,3 +1,11 @@
+# [1.0.0-dev.4](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.0.0-dev.3...1.0.0-dev.4) (2023-05-20)
+
+
+### Bug Fixes
+
+* remove duplicate github plugin ([37f9596](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/37f9596a642ce484fae9ffd98e269552f94f8bcc))
+* remove duplicate github plugin ([35e2838](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/35e28385ec94d0967d9a6ecc4d265280ccb4f737))
+
 # [1.0.0-dev.3](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.0.0-dev.2...1.0.0-dev.3) (2023-05-20)
 
 

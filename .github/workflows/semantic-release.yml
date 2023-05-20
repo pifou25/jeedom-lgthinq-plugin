@@ -31,6 +31,7 @@ jobs:
           npx --package=@semantic-release/changelog \
               --package=@semantic-release/exec \
               --package=@semantic-release/git \
+              --package=jeedom-semrel-plugin-config \
               semantic-release --extends=jeedom-semrel-plugin-config --debug
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

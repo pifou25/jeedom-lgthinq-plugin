@@ -1,3 +1,10 @@
+# [1.0.0-dev.3](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.0.0-dev.2...1.0.0-dev.3) (2023-05-20)
+
+
+### Bug Fixes
+
+* readme ([59b903c](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/59b903c57567f031389ffcce0c22e56836afd806))
+
 # [1.0.0-dev.2](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.0.0-dev.1...1.0.0-dev.2) (2023-05-20)
 
 

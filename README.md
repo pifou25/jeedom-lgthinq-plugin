@@ -93,3 +93,4 @@ Ensuite, il suffira de copier ce plugin dans le répertoire /var/www/html/plugin
 [Plus d'informations sur le wiki](https://github.com/pifou25/jeedom-lgthinq-plugin/wiki)
 
 Ce projet applique les conventions `semantic-release`
+https://semantic-release.gitbook.io/semantic-release/

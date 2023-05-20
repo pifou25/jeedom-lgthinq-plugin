@@ -1,3 +1,10 @@
+# [1.0.0-dev.7](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.0.0-dev.6...1.0.0-dev.7) (2023-05-20)
+
+
+### Bug Fixes
+
+* fix the package version in yaml workflow ([e92107f](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/e92107fe999f3a7a65d37f037ca27f098cb3bea5))
+
 # [1.0.0-dev.6](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.0.0-dev.5...1.0.0-dev.6) (2023-05-20)
 
 

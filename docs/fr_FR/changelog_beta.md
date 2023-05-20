@@ -1,3 +1,13 @@
+# [1.0.0-dev.8](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.0.0-dev.7...1.0.0-dev.8) (2023-05-20)
+
+
+### Bug Fixes
+
+* :bug: caret for the semantic-release version ([60498cb](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/60498cbeb073661a8a9ced973f12f75af28203b0))
+* :bug: fix package for semantic-release ([4e4b1c4](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/4e4b1c4fa19645ff73f7a76c5948aa518d50e6f1))
+* :memo: add semantic-release badge on readme ([58714f0](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/58714f04469f3ec06eaf0c0a8041500b79d3320b))
+* the semantic release version number ([c57dda2](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/c57dda2cd62418a753cec69f50d18d2498e6fe2c))
+
 # [1.0.0-dev.7](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.0.0-dev.6...1.0.0-dev.7) (2023-05-20)
 
 

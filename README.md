@@ -94,4 +94,4 @@ Ensuite, il suffira de copier ce plugin dans le répertoire /var/www/html/plugin
 
 Ce projet applique les conventions `semantic-release`
 https://semantic-release.gitbook.io/semantic-release/
-Automatisation du packaging, création d'un tag, et du changelog.
+Automatisation du packaging (avec le pluginVersion), création d'un tag, et du changelog.

@@ -28,10 +28,10 @@ jobs:
 
       - name: semantic
         run: |
-          npx --package=@semantic-release/changelog \
-              --package=@semantic-release/exec \
-              --package=@semantic-release/git \
-              --package=jeedom-semrel-plugin-config \
+          npx --package=@semantic-release/changelog@6 \
+              --package=@semantic-release/exec@6 \
+              --package=@semantic-release/git@10 \
+              --package=jeedom-semrel-plugin-config@1 \
               semantic-release --extends=jeedom-semrel-plugin-config --debug
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

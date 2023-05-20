@@ -24,10 +24,8 @@ jobs:
         # https://github.com/marketplace/actions/setup-node-js-environment
       - uses: actions/setup-node@v3
         with:
-          cache: npm
           node-version: lts/*
 
-      - run: npm ci
       - run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

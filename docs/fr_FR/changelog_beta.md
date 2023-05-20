@@ -1,3 +1,13 @@
+# [1.0.0-dev.6](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.0.0-dev.5...1.0.0-dev.6) (2023-05-20)
+
+
+### Bug Fixes
+
+* add debug option ([c77d218](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/c77d2188fea3575449bfbbdc393738bc8dd1214c))
+* add new jeedom semel package ([d3cdecc](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/d3cdecc727f92f63ad3fce35a194ef3128d38c73))
+* args order for npx semantic-release ([b76bdeb](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/b76bdebfb5875cbe594329f3e45a828428fcd01e))
+* remove config file, using shareable ([253c503](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/253c5035f9af00e7df488a2e3414a7a4e25485a9))
+
 # [1.0.0-dev.5](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.0.0-dev.4...1.0.0-dev.5) (2023-05-20)
 
 

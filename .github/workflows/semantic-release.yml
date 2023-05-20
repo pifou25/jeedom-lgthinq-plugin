@@ -29,24 +29,6 @@ jobs:
         id: semantic 
         with:
           semantic_version: 19  # v20 is incompatible with Github Action as it required node18
-          branches: |
-            [
-              'master',
-              {
-                name: 'dev',
-                prerelease: true
-              },
-              {
-                name: 'test',
-                prerelease: true
-              }
-            ]
-          extends: |
-            jeedom-semrel-plugin-config
-          dry_run: false
-          working_directory: .
-          tag_format: '${version}' # default is v{version}
-
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

@@ -1,3 +1,27 @@
+# [1.0.0-dev.2](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.0.0-dev.1...1.0.0-dev.2) (2023-05-20)
+
+
+### Bug Fixes
+
+* add package changelog ([5ecf6ab](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/5ecf6abf3587e8201260d5034010db6a0f9bec44))
+* add package exec ([4465e3d](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/4465e3dc1630d410ddfce9a5da7ea8ee7c364382))
+* add package git ([9def97b](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/9def97b4345a9772bfbec5be88689783c414b640))
+* branche name for prerelease dev ([40de30b](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/40de30b908a2b6df55baf86e22f5e2fad3d8571c))
+* change google plugin by the exec ([a480928](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/a48092841d8ee6677e1d5efdbe5201a23409a035))
+* globally install changelog ([5358615](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/53586157a441aab41520f9c27ce8bc491f889eca))
+* link changelog package ([81d2721](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/81d2721fe81669ab96e2cd7738cf8dcbce890d5c))
+* remove cache and npm ci ([c5edeaf](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/c5edeaf3570c1ce4bacb97e6ba06d1f8033861db))
+* remove global install ([f4ad8ec](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/f4ad8ece10311198c4b86770e0cdd8195900cbb4))
+* remove npm plugin ([07d2b88](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/07d2b8859200b82f7a7a456d02a405baae3abdc4))
+* replace workflow action by npm command line ([5971f0c](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/5971f0cb1d6610d5daa530d3a8fbbb90e3f55d9b))
+* restore npm cache. node version 18 ([53790a3](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/53790a3caf1b013353e9cc1ad3d940e2e2200ed3))
+
+
+### Features
+
+* add config file .releaserc.json ([9553646](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/955364629d7ce72b9615e806523ace6f3bb30f6e))
+* add extended shareable configuration ([886192e](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/886192e5c80bb4f6bc1490f49fbd0af8ebf81f46))
+
 # 1.0.0-dev.1 (2023-05-17)
 
 

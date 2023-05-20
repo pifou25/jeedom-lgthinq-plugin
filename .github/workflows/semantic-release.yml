@@ -32,7 +32,8 @@ jobs:
               --package=@semantic-release/exec@6 \
               --package=@semantic-release/git@10 \
               --package=jeedom-semrel-plugin-config@1 \
-              semantic-release@^21 --extends=jeedom-semrel-plugin-config
+              --package=semantic-release@21 \
+              semantic-release --extends=jeedom-semrel-plugin-config
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

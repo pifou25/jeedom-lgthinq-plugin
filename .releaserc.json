@@ -31,25 +31,10 @@
     ],
     "@semantic-release/github",
     [
-      "@google/semantic-release-replace-plugin",
-      {
-        "replacements": [
-          {
-            "files": ["plugin_info/info.json"],
-            "from": "\"pluginVersion\": \".*\",",
-            "to": "\"pluginVersion\": \"${nextRelease.version}\",",
-            "results": [
-              {
-                "file": "plugin_info/info.json",
-                "hasChanged": true,
-                "numMatches": 1,
-                "numReplacements": 1
-              }
-            ],
-            "countMatches": true
-          }
-        ]
-      }
+        "@semantic-release/exec",
+        {
+            "prepare": "sed -i 's/\"pluginVersion\": \".*\"/\"pluginVersion\": \"${nextRelease.version}\"/' plugin_info/info.json"
+        }
     ],
     [
       "@semantic-release/git",

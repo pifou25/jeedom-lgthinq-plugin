@@ -1,3 +1,10 @@
+# [1.0.0-dev.9](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.0.0-dev.8...1.0.0-dev.9) (2023-05-21)
+
+
+### Features
+
+* :tada: duplicate workflow for beta branch ([06a797e](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/06a797ed55c2247fd4e89fe58121a2484e7c545e))
+
 # [1.0.0-dev.8](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.0.0-dev.7...1.0.0-dev.8) (2023-05-20)
 
 

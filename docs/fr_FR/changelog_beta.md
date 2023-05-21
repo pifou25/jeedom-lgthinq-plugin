@@ -1,6 +1,5 @@
 # [1.0.0-dev.10](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.0.0-dev.9...1.0.0-dev.10) (2023-05-21)
 
-
 ### Bug Fixes
 
 * :bug: trigger master pipeline on pull request ([8c4a2f0](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/8c4a2f09beade1aad2cac43804499467e1c258b9))

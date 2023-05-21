@@ -1,20 +1,7 @@
 <?php
+namespace com\jeedom\plugins\lgthinq;
 
-/* This file is part of Jeedom.
- *
- * Jeedom is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Jeedom is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
- */
+use \system;
 
 // include /plugins/lgthinq/core/LgLog.class.php
 
@@ -114,7 +101,7 @@ class WideqManager {
         if (!empty($state)) {
             $return['log'] = 'nb of processes=' . count($state);
             try {
-                $ping = lgthinq::getApi()->ping();
+                $ping = LgThinqApi::getApi()->ping();
                 $return = array_merge($return, $ping);
             } catch (\Exception $e) {
                 LgLog::error("ping (err {$e->getCode()}): {$e->getMessage()}");
@@ -135,7 +122,7 @@ class WideqManager {
         self::daemon_stop( isset($daemon_info['pid']) ? $daemon_info['pid'] : false);
         LgLog::debug("start server wideq: ___ " . json_encode($daemon_info));
         if ($daemon_info['launchable'] != 'ok') {
-            throw new Exception(__('Veuillez vérifier la configuration', __FILE__));
+            throw new \Exception(__('Veuillez vérifier la configuration', __FILE__));
         }
 
         $file = self::getWideqDir() . self::WIDEQ_SCRIPT;
@@ -146,7 +133,7 @@ class WideqManager {
             $cmd .= ' -v ';
         }
         // echo $! pour récupérer le pid process-id
-        $cmd .= ' >> ' . log::getPathToLog('lgthinq_srv') . ' 2>&1 & echo $!;';
+        $cmd .= ' >> ' . LgLog::getPathToLog('lgthinq_srv') . ' 2>&1 & echo $!;';
         $pid = exec(system::getCmdSudo() . " $cmd");
         LgLog::info("Lancement démon LgThinq : $cmd => pid= {$pid}");
 
@@ -170,7 +157,7 @@ class WideqManager {
             LgLog::error('Impossible de lancer le démon LgThinq, relancer le démon en debug et vérifiez la log', 'unableStartdaemon');
             return false;
         }
-        message::removeAll('lgthinq', 'unableStartdaemon');
+        \message::removeAll('lgthinq', 'unableStartdaemon');
         LgLog::info('Démon LgThinq démarré');
         return $pid;
     }
@@ -207,7 +194,7 @@ class WideqManager {
         $cmd = self::getPython()
             . " $file --ip $ip --key $key" . ($id ? " --id $id" : '');
         // echo $! pour récupérer le pid process-id
-        $cmd .= ' >> ' . log::getPathToLog('lgthinq_cron') . ' 2>&1 & echo $!;';
+        $cmd .= ' >> ' . LgLog::getPathToLog('lgthinq_cron') . ' 2>&1 & echo $!;';
         $pid = exec(system::getCmdSudo() . " $cmd");
         LgLog::info("Refresh every commands => pid= {$pid}");
     }

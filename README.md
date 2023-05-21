@@ -1,6 +1,8 @@
 # jeedom-lgthinq-plugin
 
 [![CodeFactor](https://www.codefactor.io/repository/github/pifou25/jeedom-lgthinq-plugin/badge)](https://www.codefactor.io/repository/github/pifou25/jeedom-lgthinq-plugin)
+[![semantic-release: angular](https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release)](https://github.com/semantic-release/semantic-release)
+
 
 ## Jeedom
 
@@ -91,3 +93,7 @@ Ensuite, il suffira de copier ce plugin dans le répertoire /var/www/html/plugin
 ***
 
 [Plus d'informations sur le wiki](https://github.com/pifou25/jeedom-lgthinq-plugin/wiki)
+
+Ce projet applique les conventions `semantic-release`
+https://semantic-release.gitbook.io/semantic-release/
+Automatisation du packaging (avec le pluginVersion), création d'un tag, et du changelog.

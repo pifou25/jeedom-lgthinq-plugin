@@ -1,0 +1,44 @@
+# this step for master only
+name: Semantic Release
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ none ]
+  # this is to manually trigger the worklow
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Reason'     
+        default: 'Manual launch'
+
+jobs:
+  # one single job
+  release:
+    name: release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+        # https://github.com/marketplace/actions/setup-node-js-environment
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: semantic
+        run: |
+          npx --package=@semantic-release/changelog@6 \
+              --package=@semantic-release/exec@6 \
+              --package=@semantic-release/git@10 \
+              --package=jeedom-semrel-plugin-config@1 \
+              --package=semantic-release@21 \
+              semantic-release --extends=jeedom-semrel-plugin-config
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Display Github summary
+        if: steps.semantic.outputs.new_release_published == 'true'
+        run: |
+          echo "New release : ${{ steps.semantic.outputs.new_release_version }}" >> $GITHUB_STEP_SUMMARY

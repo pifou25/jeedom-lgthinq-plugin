@@ -1,4 +1,4 @@
-# Plugin LGThinq
+# Plugin LGThinq - Beta Doc
 
 Ce plugin permet de relier vos équipements LG Smart-Thinq avec Jeedom. 
 Il n'y a pas de possibilité directe d'inclure les appareils directement
@@ -78,7 +78,5 @@ Pour l'instant, l'actualisation se fait uniquement via le _cron_ de Jeedom, vous
 
 # Liens Utiles
 
-\[[Aide](https://pifou25.github.io/jeedom-lgthinq-plugin/fr_FR/)\]
-\[[Dépôt Github](https://github.com/pifou25/jeedom-lgthinq-plugin)\]
-\[[Market](https://market.jeedom.com/index.php?v=d&p=market_display&id=4080)\]
-\[[ChangeLog](https://pifou25.github.io/jeedom-lgthinq-plugin/fr_FR/changelog)\]
+[Aide](https://pifou25.github.io/jeedom-lgthinq-plugin/fr_FR/)
+[Dépôt Github](https://github.com/pifou25/jeedom-lgthinq-plugin)

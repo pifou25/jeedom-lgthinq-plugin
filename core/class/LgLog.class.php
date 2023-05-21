@@ -1,4 +1,5 @@
 <?php
+namespace com\jeedom\plugins\lgthinq;
 
 /* This file is part of Plugin LgThinq for jeedom.
  *
@@ -8,7 +9,7 @@
  * this class extends jeedom core/class/log.class.php
  * and add convenient methods for this plugin
  */
-class LgLog extends log {
+class LgLog extends \log {
 
     public static function debug($_message, $_logicalId = '', $_loggerSuffix = '') {
         parent::add("lgthinq$_loggerSuffix", 'debug', $_message, $_logicalId);
@@ -28,7 +29,7 @@ class LgLog extends log {
 
 }
 
-class LgSystem extends system {
+class LgSystem extends \system {
     
     /**
      * if command is provided, use sudo sh with -c param surround it
@@ -36,7 +37,7 @@ class LgSystem extends system {
      * @return string the sudo'ed command
      */
     public static function getCmdSudo( $cmd = '') {
-            if (!jeedom::isCapable('sudo')) {
+            if (!\jeedom::isCapable('sudo')) {
                     return $cmd;
             }
             return empty($cmd) ? 'sudo ' : sprintf("sudo sh -c '%s'", addslashes($cmd));
@@ -44,16 +45,16 @@ class LgSystem extends system {
 
 }
 
-class LgTranslate extends translate {
+class LgTranslate extends \translate {
     /**
      * translate using sprintf and variable number of arguments
      */
     public static function tr($_content, $_name = __FILE__){
         if(func_num_args() > 2){
             $args = array_slice(func_get_args(), 2);
-            return translate::sentence( vsprintf($_content, $args), $_name);
+            return \translate::sentence( vsprintf($_content, $args), $_name);
         }else{
-            return translate::sentence($_content, $_name);
+            return \translate::sentence($_content, $_name);
         }
     }
 }

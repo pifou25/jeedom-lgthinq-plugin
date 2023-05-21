@@ -1,35 +1,26 @@
 <?php
 
-/* This file is part of Jeedom.
- *
- * Jeedom is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Jeedom is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
- */
-
 /* * ***************************Includes********************************* */
 require_once __DIR__ . '/../../../../core/php/core.inc.php';
 
-// include /plugins/lgthinq/core/LgLog.class.php
-include_file('core', 'LgLog', 'class', 'lgthinq');
+// simple autoloader with namespaced classes
+define('AUTOLOADER_PATTERN', '/com\\\\jeedom\\\\plugins\\\\(\w*)\\\\(\w*)/');
+define('AUTOLOADER_REPLACE', '/var/www/html/plugins/$1/core/class/$2.class.php');
+spl_autoload_register(function ($class) {
+    $file = preg_replace(AUTOLOADER_PATTERN, AUTOLOADER_REPLACE, $class );
+    if (file_exists($file)) {
+        require $file;
+    }else if($class != $file){
+        parent::add("lgthinq", 'warning', "$file was NOT found ! please check $class");
+    }
+});
 
-// include /plugins/lgthinq/core/WideqManager.class.php
-include_file('core', 'WideqManager', 'class', 'lgthinq');
-
-// include /plugins/lgthinq/core/WideqAPI.class.php
-include_file('core', 'WideqAPI', 'class', 'lgthinq');
-
-// require_once '/plugins/lgthinq/core/LgParameters.class.php';
-include_file('core', 'LgParameters', 'class', 'lgthinq');
+use com\jeedom\plugins\lgthinq\LgApiException;
+use com\jeedom\plugins\lgthinq\LgParameters;
+use com\jeedom\plugins\lgthinq\WideqManager;
+use com\jeedom\plugins\lgthinq\LgThinqApi;
+use com\jeedom\plugins\lgthinq\LgTranslate;
+use com\jeedom\plugins\lgthinq\LgLog;
 
 class lgthinq extends eqLogic {
     
@@ -41,55 +32,12 @@ class lgthinq extends eqLogic {
      * /!\ $_debug existe déjà dans EqLogic. 
      * ici on utilise $__debug pour éviter toute confusion.
      */
-    private static $_lgApi = null;
     private static $__debug = null;
 
     const DEFAULT_VALUE = 'Default';
 
-    /**
-     * Timestamp of last successfull daemon check.
-     * @var type long
-     */
-    private static $_lastCheckTime = null;
-    private static $_daemonState = null;
-
     /*     * ***********************Methode static*************************** */
 
-    /**
-     * generate WideqAPI with jeedom configuration
-     * refresh token if needed.
-     */
-    public static function getApi() {
-        if (self::$_lgApi == null) {
-            $port = config::byKey('PortServerLg', 'lgthinq', 5025);
-            $url = config::byKey('UrlServerLg', 'lgthinq', 'http://127.0.0.1');
-            $arr = ['port' => $port, 'url' => $url, 'debug' => self::isDebug()];
-            self::$_lgApi = new WideqAPI($arr);
-            // check auth
-            $ping = self::$_lgApi->ping();
-            if(isset($ping['auth']) && $ping['auth'] == false){
-                self::renewApi(self::$_lgApi);
-            }
-        }
-        return self::$_lgApi;
-    }
-
-    public static function renewApi($api = null){
-        if($api == null){
-            $api = self::getApi();
-        }
-        // renew LG gateway and auth
-        $country = config::byKey('LgCountry', 'lgthinq');
-        $lang = config::byKey('LgLanguage', 'lgthinq');
-        $api->gateway($country, $lang);
-        $auth = config::byKey('LgAuthUrl', 'lgthinq');
-        LgLog::debug("refresh LG token with $auth");
-        $ret = $api->token($auth);
-        if(isset($ret['auth']) && $ret['auth'] == false){
-            LgLog::error( __("Erreur de mise à jour tu token LG!", __FILE__));
-        }
-        return $api;
-    }
 
     /**
      * create the new object:
@@ -198,61 +146,15 @@ class lgthinq extends eqLogic {
     }
 
     public static function dependancy_info() {
-        $return = [];
-        $return['log'] = log::getPathToLog(__CLASS__ . '_update');
-        $return['progress_file'] = jeedom::getTmpFolder(__CLASS__) . '/dependency';
-        if (file_exists(jeedom::getTmpFolder(__CLASS__) . '/dependency')) {
-            $return['state'] = 'in_progress';
-        } else if (empty(WideqManager::getPython())) {
-            $return['state'] = 'nok';
-        } else {
-            $return['state'] = WideqManager::check_dependancy();
-            config::save('PythonLg', WideqManager::getPython());
-        }
-        return $return;
+        return LgThinqApi::dependancy_info();
     }
 
-    /**
-     * gestion du daemon LgThinq:
-     * on peut configurer
-     * PortServerLg = le port - 5025 par défaut
-     * UrlServerLg = l'url - http://127.0.0.1 par défaut
-     */
     public static function deamon_info() {
-        if(self::$_lastCheckTime !== null && time() - self::$_lastCheckTime < 10){
-            // don't check every second
-            LgLog::debug(__('infos Demon en cache depuis: ', __FILE__) . (time() - self::$_lastCheckTime));
-            return self::$_daemonState;
-        }
-        $return = WideqManager::daemon_info();
-        $return['pid'] = config::byKey('PidLg', 'lgthinq');
-        $return['port'] = config::byKey('PortServerLg', 'lgthinq', 5025);
-        // $return['url'] = config::byKey('UrlServerLg', 'lgthinq', 'http://127.0.0.1');
-        $return['key'] = jeedom::getApiKey();
-        $return['ip'] = 'http://' . config::byKey('internalAddr'); // jeedom internal IP
-        $return['launchable'] = empty($return['port']) ? 'nok' : 'ok';
-        // caching result if state is ok
-        if(isset($return['state']) && $return['state'] == 'ok'){
-            self::$_lastCheckTime = time();
-            self::$_daemonState = $return;
-        }
-        return $return;
+        return LgThinqApi::daemon_info();
     }
 
-    /**
-     * rechercher les param de config jeedom et lancer le serveur
-     */
     public static function deamon_start($_debug = false) {
-        $daemon_info = self::deamon_info();
-        $daemon_info['debug'] = $_debug || self::isDebug();
-        $result = WideqManager::daemon_start($daemon_info);
-
-        if ($result !== false) {
-            // sauver le PID du daemon
-            config::save('PidLg', $result, 'lgthinq');
-            LgLog::debug( __('Redémarrage du démon, id: ', __FILE__) . $result);
-        }
-        return $result;
+        return LgThinqApi::daemon_start($_debug || self::isDebug());
     }
 
     public static function deamon_stop() {
@@ -314,7 +216,7 @@ class lgthinq extends eqLogic {
             }
 
             // interroger l'API cloud LG pour rafraichir l'information:
-            $infos = lgthinq::getApi()->mon($this->getLogicalId());
+            $infos = LgThinqApi::getApi()->mon($this->getLogicalId());
             LgLog::debug("monitoring {$this->getName()}" . print_r($infos, true));
 
             $nb = 0;

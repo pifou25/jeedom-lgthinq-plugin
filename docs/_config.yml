@@ -1,1 +1,30 @@
-theme: jekyll-theme-dinky
+---
+languages: [fr_FR]
+baseurl: "/"
+sass:
+  sass_dir: css
+  style: compressed
+permalink: /404.html
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+  parse_block_html: true
+  syntax_highlighter: rouge
+highlighter: rouge
+gems:
+- jekyll-paginate
+- jekyll-seo-tag
+exclude:
+- vendor
+plugins:
+- jekyll-seo-tag
+title: "LGThinq plugin pour Jeedom"
+description: "documentation du plugin Jeedom LGThinq"
+author: "pifou25"
+image: https://pifou25.github.io/jeedom-lgthinq-plugin/lgthinq_icon.png
+social:
+  name: pifou25
+  links:
+    - https://pifou25.github.io/jeedom-lgthinq-plugin
+---

@@ -1,9 +1,10 @@
-# this step for master only
-name: Semantic Release
+# this workflow is for beta / dev branche only
+# using jeedom-semrel-plugin-config@beta
+name: Semantic Release Beta
 
 on:
   push:
-    branches: [ master ]
+    branches: [ beta, dev ]
   pull_request:
     branches: [ none ]
   # this is to manually trigger the worklow
@@ -11,12 +12,12 @@ on:
     inputs:
       logLevel:
         description: 'Reason'     
-        default: 'Manual launch'
+        default: 'Manual launch beta'
 
 jobs:
   # one single job
   release:
-    name: release
+    name: prerelease
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -32,7 +33,7 @@ jobs:
           npx --package=@semantic-release/changelog@6 \
               --package=@semantic-release/exec@6 \
               --package=@semantic-release/git@10 \
-              --package=jeedom-semrel-plugin-config@1 \
+              --package=jeedom-semrel-plugin-config@beta \
               --package=semantic-release@21 \
               semantic-release --extends=jeedom-semrel-plugin-config
         env:

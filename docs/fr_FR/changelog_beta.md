@@ -1,3 +1,15 @@
+# [1.0.0-dev.12](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.0.0-dev.11...1.0.0-dev.12) (2023-05-21)
+
+
+### Features
+
+* :art: look of doc like the Jeedom official layout ([a7bb2f5](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/a7bb2f5bd935adc46d468e89865168aa68c4031d))
+
+
+### Reverts
+
+* :zap: do not run pipeline on pull requests ([8afdc30](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/8afdc30d5a85765d5a62f0c9eca987591d9e3a9c))
+
 # [1.0.0-dev.11](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.0.0-dev.10...1.0.0-dev.11) (2023-05-21)
 
 

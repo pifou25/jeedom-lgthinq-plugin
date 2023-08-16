@@ -1,3 +1,10 @@
+# [1.0.0-dev.13](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.0.0-dev.12...1.0.0-dev.13) (2023-08-16)
+
+
+### Bug Fixes
+
+* is_file and the error log for autoloader ([a50bfc1](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/a50bfc18ba630e531e4261c1b35eeb02b342f6d8))
+
 # [1.0.0-dev.12](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.0.0-dev.11...1.0.0-dev.12) (2023-05-21)
 
 

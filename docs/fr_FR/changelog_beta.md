@@ -1,9 +1,53 @@
 # [1.0.0-dev.13](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.0.0-dev.12...1.0.0-dev.13) (2023-08-16)
 
-
 ### Bug Fixes
 
 * is_file and the error log for autoloader ([a50bfc1](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/a50bfc18ba630e531e4261c1b35eeb02b342f6d8))
+* :bug: caret for the semantic-release version ([60498cb](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/60498cbeb073661a8a9ced973f12f75af28203b0))
+* :bug: fix package for semantic-release ([4e4b1c4](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/4e4b1c4fa19645ff73f7a76c5948aa518d50e6f1))
+* :bug: trigger master pipeline on pull request ([8c4a2f0](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/8c4a2f09beade1aad2cac43804499467e1c258b9))
+* :memo: add semantic-release badge on readme ([58714f0](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/58714f04469f3ec06eaf0c0a8041500b79d3320b))
+* add debug option ([c77d218](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/c77d2188fea3575449bfbbdc393738bc8dd1214c))
+* add new jeedom semel package ([d3cdecc](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/d3cdecc727f92f63ad3fce35a194ef3128d38c73))
+* add package changelog ([5ecf6ab](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/5ecf6abf3587e8201260d5034010db6a0f9bec44))
+* add package exec ([4465e3d](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/4465e3dc1630d410ddfce9a5da7ea8ee7c364382))
+* add package git ([9def97b](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/9def97b4345a9772bfbec5be88689783c414b640))
+* args order for npx semantic-release ([b76bdeb](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/b76bdebfb5875cbe594329f3e45a828428fcd01e))
+* branche name for prerelease dev ([40de30b](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/40de30b908a2b6df55baf86e22f5e2fad3d8571c))
+* change google plugin by the exec ([a480928](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/a48092841d8ee6677e1d5efdbe5201a23409a035))
+* change pluginVersion ([8d92ece](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/8d92ecec1019b20202540c374ca1894bf2cb8e64))
+* extends configuration ([30ce507](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/30ce507fefe379f332ea71ef81b3a66bf4226ef5))
+* fix the package version in yaml workflow ([e92107f](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/e92107fe999f3a7a65d37f037ca27f098cb3bea5))
+* globally install changelog ([5358615](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/53586157a441aab41520f9c27ce8bc491f889eca))
+* info.json version value ([2385845](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/2385845e9ef108af1db551bedf534d18149091ff))
+* link changelog package ([81d2721](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/81d2721fe81669ab96e2cd7738cf8dcbce890d5c))
+* readme ([59b903c](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/59b903c57567f031389ffcce0c22e56836afd806))
+* remove cache and npm ci ([c5edeaf](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/c5edeaf3570c1ce4bacb97e6ba06d1f8033861db))
+* remove config file, using shareable ([253c503](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/253c5035f9af00e7df488a2e3414a7a4e25485a9))
+* remove duplicate github plugin ([37f9596](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/37f9596a642ce484fae9ffd98e269552f94f8bcc))
+* remove duplicate github plugin ([35e2838](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/35e28385ec94d0967d9a6ecc4d265280ccb4f737))
+* remove global install ([f4ad8ec](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/f4ad8ece10311198c4b86770e0cdd8195900cbb4))
+* remove npm plugin ([07d2b88](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/07d2b8859200b82f7a7a456d02a405baae3abdc4))
+* replace workflow action by npm command line ([5971f0c](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/5971f0cb1d6610d5daa530d3a8fbbb90e3f55d9b))
+* restore npm cache. node version 18 ([53790a3](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/53790a3caf1b013353e9cc1ad3d940e2e2200ed3))
+* revert the version number ([5d2e2af](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/5d2e2af1921ff2f8fd1243199d9cc98339ba70ac))
+* the semantic release version number ([c57dda2](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/c57dda2cd62418a753cec69f50d18d2498e6fe2c))
+* update .gitignore ([b55cd18](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/b55cd18603f56bfb19deb7919bf924a261f8fcf0))
+
+
+### Features
+
+* :art: look of doc like the Jeedom official layout ([4521d8a](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/4521d8ad58c8b4de225e79252ece88410ea1daf4))
+* :tada: duplicate workflow for beta branch ([06a797e](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/06a797ed55c2247fd4e89fe58121a2484e7c545e))
+* add config file .releaserc.json ([9553646](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/955364629d7ce72b9615e806523ace6f3bb30f6e))
+* add extended shareable configuration ([886192e](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/886192e5c80bb4f6bc1490f49fbd0af8ebf81f46))
+* add semantic release workflow ([4a25f6a](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/4a25f6a0a54c2662385382dcbe5952a8ed13226e))
+* add semantic-release workflow ([#16](https://github.com/pifou25/jeedom-lgthinq-plugin/issues/16)) ([2b654d9](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/2b654d9594e13a14ef1e9fbd145c2836f6578009))
+* Create CONTRIBUTING.md ([119b584](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/119b584c9f3733bc79211fca143831b8a2b21f63))
+
+### Reverts
+
+* :zap: do not run pipeline on pull requests ([8afdc30](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/8afdc30d5a85765d5a62f0c9eca987591d9e3a9c))
 
 # [1.0.0-dev.12](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.0.0-dev.11...1.0.0-dev.12) (2023-05-21)
 

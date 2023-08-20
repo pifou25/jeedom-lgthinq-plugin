@@ -1,6 +1,7 @@
 #!/bin/bash
 
 BASEDIR=$(dirname "$BASH_SOURCE")
+VENV_DIR="${BASEDIR}/venv"
 LOG_FILE=$(cd "${BASEDIR}/../../../log"; pwd)"/lgthinq_install"
 PROGRESS_FILE=/tmp/dependancy_networks_in_progress
 if [ ! -z $1 ]; then
@@ -16,17 +17,20 @@ function log(){
 touch ${PROGRESS_FILE}
 log "Start install dependancies"
 
-# check python version should be >=3.6
+# install venv - should be already done by jeedom-core
 echo 0 > ${PROGRESS_FILE}
-export PYTHON_VERSION=$(python3 -c 'import sys; version=sys.version_info[:3]; print("{0}{1}".format(*version))')
+apt-get install -y python3 python3-pip python3-venv
+
+# create the venv; DO NOT activate venv /!\
+python3 -m venv $VENV_DIR
+
+# check python version should be >=3.6
+echo 5 > ${PROGRESS_FILE}
+export PYTHON_VERSION=$($VENV_DIR/bin/python3 -c 'import sys; version=sys.version_info[:3]; print("{0}{1}".format(*version))')
 if [[ "$PYTHON_VERSION" -ge "36" ]]
 then
     log "Valid Python version $PYTHON_VERSION"
-		PYTHON_BASH=python3
-
-		# echo 20 > ${PROGRESS_FILE}
-		# log "install required dependancies"
-		# pip3 virtualenv >> ${LOG_FILE}
+		PYTHON_BASH=$VENV_DIR/bin/python3
 
 else
     log "Invalid Python version $PYTHON_VERSION (min 36 required)"
@@ -80,7 +84,7 @@ else
 
 fi
 
-# dans le rep du daemon python:
+# go into daemon dir:
 cd ${BASEDIR}
 # for jeedom to know the command for python3.7
 echo ${PYTHON_BASH} > python.cmd
@@ -91,11 +95,7 @@ ${PYTHON_BASH} -m pip install --upgrade pip >> ${LOG_FILE}
 
 echo 90 > ${PROGRESS_FILE}
 log "install python dependencies in ${BASEDIR}"
-# ${PYTHON_BASH} -m venv env >> ${LOG_FILE} 
-# source env/bin/activate
 ${PYTHON_BASH} -m pip install -r requirements.txt >> ${LOG_FILE}
-# sortie de l'env virtuel
-# deactivate
 
 echo 95 > ${PROGRESS_FILE}
 log "clone wideq lib from github in ${BASEDIR}"
@@ -106,8 +106,6 @@ git clone https://github.com/pifou25/wideq.git -b jeedom >> ${LOG_FILE}
 # mv wideq-jeedom wideq
 chown -R www-data:www-data wideq
 # rm wideq.zip
-
-# chmod +x check.sh
 
 echo 100 > ${PROGRESS_FILE}
 log "Everything is successfully installed!"

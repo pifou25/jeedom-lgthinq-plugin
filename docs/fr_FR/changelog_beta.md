@@ -1,3 +1,16 @@
+# [1.1.0-dev.1](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.0.0...1.1.0-dev.1) (2023-08-20)
+
+
+### Bug Fixes
+
+* is_file and the error log for autoloader ([a50bfc1](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/a50bfc18ba630e531e4261c1b35eeb02b342f6d8))
+
+
+### Features
+
+* :art: look of doc like the Jeedom official layout ([a7bb2f5](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/a7bb2f5bd935adc46d468e89865168aa68c4031d))
+* add dependabot for pip python packages ([0939714](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/09397141a86aab9661577607a5d4ba78f538ec9e))
+
 # [1.0.0-dev.13](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.0.0-dev.12...1.0.0-dev.13) (2023-08-16)
 
 ### Bug Fixes

@@ -56,17 +56,40 @@ class WideqManager {
      * @return string 'ok' or 'nok'
      */
     public static function check_dependancy(){
-        $exec =self::getPython() . ' -m pip list | grep -Ec "Flask|requests"';
-        $deps = exec($exec, $output, $result);
+
+		$depLogFile = __CLASS__ . '_dep';
+		$depProgressFile = \jeedom::getTmpFolder(__CLASS__) . '/dependancy';
+        $return = [
+            'log' => \log::getPathToLog($depLogFile),
+            'progress_file' => $depProgressFile
+
+        ];
+
+        if (!is_file(self::getResourcesDir() . 'python.cmd')){
+            LgLog::info('Lancer les dépendances.');
+            $return['state'] = 'nok';
+            return $return;
+        }
+
+		if (file_exists($depProgressFile)) {
+			LgLog::debug( sprintf(__("Dépendances en cours d'installation... (%s%%)", __FILE__), trim(file_get_contents($depProgressFile))));
+            $return['state'] = 'nok';
+            return $return;
+		}
+
+        $exec = system::getCmdSudo() . self::getPython() . ' -m pip list | grep -Ec "Flask|requests"';
+        $pip = self::getResourcesDir() . 'venv/bin/pip3 freeze --no-cache-dir -r ' . self::getResourcesDir() . "requirements.txt | sed '/freeze/,$ d'";
+        $deps = exec($pip, $output, $result);
         if ($deps < 4) {
-            LgLog::info(sprintf("missing pip dependancies ($deps)($exec)(%s)($result)", var_export($output, true)));
-            return 'nok';
+            LgLog::info(sprintf("missing pip dependancies ($deps)($pip)(%s)($result)", var_export($output, true)));
+            $return['state'] = 'nok';
         } else if(is_dir(self::getWideqDir())){
-            return 'ok';
+            $return['state'] = 'ok';
         }else{
             LgLog::info("missing wideq lib dependancy ($deps)");
-            return 'nok';
+            $return['state'] = 'nok';
         }
+        return $return;
     }
     
     /**

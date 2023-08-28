@@ -146,7 +146,7 @@ class lgthinq extends eqLogic {
     }
 
     public static function dependancy_info() {
-        return LgThinqApi::dependancy_info();
+        WideqManager::check_dependancy();
     }
 
     public static function deamon_info() {

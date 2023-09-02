@@ -1,0 +1,8 @@
+{
+    "pip3" : {
+      "Flask" : {"needVersion": "2.3.2", "remark": "light HTTP python server"},
+      "requests" : {"needVersion": "2.31.0", "remark": "require python 3.7"},
+      "requests-oauthlib" : {"needVersion": "1.0.0", "remark": "Submodule for Requests"},
+      "requests-toolbelt" : {"needVersion": "1.0.0", "remark":"Submodule for Requests"}
+    }
+  }

@@ -1,3 +1,10 @@
+# [1.1.0-dev.3](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.1.0-dev.2...1.1.0-dev.3) (2023-09-02)
+
+
+### Features
+
+* Update infos description and compatibility ([6427148](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/64271486dc8c2aa9ca94fc490994c9af38edb7ab))
+
 # [1.1.0-dev.2](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.1.0-dev.1...1.1.0-dev.2) (2023-09-02)
 
 

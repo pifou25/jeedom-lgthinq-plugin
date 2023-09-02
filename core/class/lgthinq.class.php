@@ -134,21 +134,6 @@ class lgthinq extends eqLogic {
         }
     }
 
-    /**
-     * gestion des dépendances du plugin
-     */
-    public static function dependancy_install() {
-        log::remove(__CLASS__ . '_update');
-        return [
-            'script' => WideqManager::getResourcesDir() . 'install_#stype#.sh '
-            . jeedom::getTmpFolder(__CLASS__) . '/dependency',
-            'log' => log::getPathToLog(__CLASS__ . '_update')];
-    }
-
-    public static function dependancy_info() {
-        WideqManager::check_dependancy();
-    }
-
     public static function deamon_info() {
         return LgThinqApi::daemon_info();
     }

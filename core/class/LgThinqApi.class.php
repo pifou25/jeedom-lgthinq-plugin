@@ -59,23 +59,7 @@ class LgThinqApi {
         }
         return $api;
     }
-
     
-    public static function dependancy_info() {
-        $return = [];
-        $return['log'] = LgLog::getPathToLog(__CLASS__ . '_update');
-        $return['progress_file'] = \jeedom::getTmpFolder(__CLASS__) . '/dependency';
-        if (file_exists(\jeedom::getTmpFolder(__CLASS__) . '/dependency')) {
-            $return['state'] = 'in_progress';
-        } else if (empty(WideqManager::getPython())) {
-            $return['state'] = 'nok';
-        } else {
-            $return['state'] = WideqManager::check_dependancy();
-            \config::save('PythonLg', WideqManager::getPython());
-        }
-        return $return;
-    }
-
     /**
      * gestion du daemon LgThinq:
      * on peut configurer

@@ -8,10 +8,10 @@ define('AUTOLOADER_PATTERN', '/com\\\\jeedom\\\\plugins\\\\(\w*)\\\\(\w*)/');
 define('AUTOLOADER_REPLACE', '/var/www/html/plugins/$1/core/class/$2.class.php');
 spl_autoload_register(function ($class) {
     $file = preg_replace(AUTOLOADER_PATTERN, AUTOLOADER_REPLACE, $class );
-    if (file_exists($file)) {
-        require $file;
+    if (is_file($file)) {
+        require_once $file;
     }else if($class != $file){
-        parent::add("lgthinq", 'warning', "$file was NOT found ! please check $class");
+        LgLog::error("$file was NOT found ! please check $class");
     }
 });
 

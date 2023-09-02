@@ -1,8 +1,21 @@
-# 1.0.0 (2023-05-21)
+# [1.1.0-dev.1](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.0.0...1.1.0-dev.1) (2023-08-20)
 
 
 ### Bug Fixes
 
+* is_file and the error log for autoloader ([a50bfc1](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/a50bfc18ba630e531e4261c1b35eeb02b342f6d8))
+
+
+### Features
+
+* :art: look of doc like the Jeedom official layout ([a7bb2f5](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/a7bb2f5bd935adc46d468e89865168aa68c4031d))
+* add dependabot for pip python packages ([0939714](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/09397141a86aab9661577607a5d4ba78f538ec9e))
+
+# [1.0.0-dev.13](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.0.0-dev.12...1.0.0-dev.13) (2023-08-16)
+
+### Bug Fixes
+
+* is_file and the error log for autoloader ([a50bfc1](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/a50bfc18ba630e531e4261c1b35eeb02b342f6d8))
 * :bug: caret for the semantic-release version ([60498cb](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/60498cbeb073661a8a9ced973f12f75af28203b0))
 * :bug: fix package for semantic-release ([4e4b1c4](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/4e4b1c4fa19645ff73f7a76c5948aa518d50e6f1))
 * :bug: trigger master pipeline on pull request ([8c4a2f0](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/8c4a2f09beade1aad2cac43804499467e1c258b9))
@@ -44,7 +57,6 @@
 * add semantic release workflow ([4a25f6a](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/4a25f6a0a54c2662385382dcbe5952a8ed13226e))
 * add semantic-release workflow ([#16](https://github.com/pifou25/jeedom-lgthinq-plugin/issues/16)) ([2b654d9](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/2b654d9594e13a14ef1e9fbd145c2836f6578009))
 * Create CONTRIBUTING.md ([119b584](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/119b584c9f3733bc79211fca143831b8a2b21f63))
-
 
 ### Reverts
 

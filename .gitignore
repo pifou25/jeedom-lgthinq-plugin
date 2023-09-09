@@ -1,6 +1,7 @@
 3rparty/wideq
 resources/daemon/*.json
 resources/wideq
+resources/venv
 data
 __pycache__
 #netbeans parameters

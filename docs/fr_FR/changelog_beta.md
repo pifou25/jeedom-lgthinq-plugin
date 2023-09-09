@@ -1,3 +1,20 @@
+# [1.1.0-dev.3](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.1.0-dev.2...1.1.0-dev.3) (2023-09-02)
+
+
+### Features
+
+* Update infos description and compatibility ([6427148](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/64271486dc8c2aa9ca94fc490994c9af38edb7ab))
+
+# [1.1.0-dev.2](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.1.0-dev.1...1.1.0-dev.2) (2023-09-02)
+
+
+### Features
+
+* add packages.json for automatic install ([c6b3b30](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/c6b3b3030495b59bedc6643cd857e52d80d9153a))
+* add python venv management for daemon ([5c3cf52](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/5c3cf527abda71a940309bf1406d9a01b5525203))
+* add venv manager for daemon ([644e45c](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/644e45cb83c0b482b61517627f9d764cb65e0a54))
+* venv user is www-data ([1ff5a43](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/1ff5a43b2dd13445512cc338a5cb3b6ec40ec849))
+
 # [1.1.0-dev.1](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.0.0...1.1.0-dev.1) (2023-08-20)
 
 

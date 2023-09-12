@@ -1,3 +1,10 @@
+## [1.1.1-dev.2](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.1.1-dev.1...1.1.1-dev.2) (2023-09-12)
+
+
+### Bug Fixes
+
+* trigger workflow for push_request on master ([018c43c](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/018c43cc24520893b65a3cd3c3b69a5d293d150c))
+
 ## [1.1.1-dev.1](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.1.0...1.1.1-dev.1) (2023-09-12)
 
 

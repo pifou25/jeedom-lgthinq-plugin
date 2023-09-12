@@ -1,3 +1,12 @@
+## [1.1.1](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.1.0...1.1.1) (2023-09-12)
+
+
+### Bug Fixes
+
+* Revert Flask to 2.5.x for Debian Buster ([6a6e4d8](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/6a6e4d8ebfb81b35282e4ab7b16b14e799df95c1))
+* trigger master workflow on push ([44046f3](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/44046f34a9bdd0af63d1c18ba9740f27819a12f4))
+* trigger workflow for push_request on master ([a74318b](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/a74318b3d0479006af6deafdc088e9bc56db260a))
+
 # [1.1.0](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.0.0...1.1.0) (2023-09-09)
 
 

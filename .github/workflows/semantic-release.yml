@@ -4,9 +4,6 @@ name: Semantic Release
 on:
   push:
     branches:
-      - none
-  pull_request:
-    branches:
       - master
   # this is to manually trigger the worklow
   workflow_dispatch:

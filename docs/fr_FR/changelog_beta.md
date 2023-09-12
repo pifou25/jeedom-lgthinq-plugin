@@ -1,3 +1,10 @@
+## [1.1.1-dev.1](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.1.0...1.1.1-dev.1) (2023-09-12)
+
+
+### Bug Fixes
+
+* Revert Flask to 2.5.x for Debian Buster ([9d94289](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/9d94289f81e7b6c1316c3dc4ee5525823fb6bdf8))
+
 # [1.1.0-dev.3](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.1.0-dev.2...1.1.0-dev.3) (2023-09-02)
 
 

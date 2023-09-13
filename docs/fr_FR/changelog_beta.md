@@ -1,3 +1,10 @@
+## [1.1.1-dev.5](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.1.1-dev.4...1.1.1-dev.5) (2023-09-13)
+
+
+### Bug Fixes
+
+* change depandabot options ([57fd677](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/57fd67798f4631030f605c7554feea1cf2045837))
+
 ## [1.1.1-dev.4](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.1.1-dev.3...1.1.1-dev.4) (2023-09-13)
 
 

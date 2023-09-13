@@ -1,3 +1,10 @@
+## [1.1.1-dev.4](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.1.1-dev.3...1.1.1-dev.4) (2023-09-13)
+
+
+### Bug Fixes
+
+* revert Flask to 2.2.5 ([9c0fcc6](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/9c0fcc6165ef0d17db82a5dc69ac988b29d565ab))
+
 ## [1.1.1-dev.3](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.1.1-dev.2...1.1.1-dev.3) (2023-09-12)
 
 

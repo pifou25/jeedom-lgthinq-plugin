@@ -5,7 +5,7 @@
   },
   "pip3": {
     "wheel": {},
-    "Flask": { "version": "2.3.2", "remark": "light HTTP python server" },
+    "Flask": { "version": "2.2.5", "remark": "light HTTP python server" },
     "requests": { "version": "2.31.0", "remark": "require python 3.7" },
     "requests-oauthlib": {
       "version": "1.0.0",

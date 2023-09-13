@@ -1,3 +1,14 @@
+## [1.1.2-dev.1](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.1.1...1.1.2-dev.1) (2023-09-13)
+
+
+### Bug Fixes
+
+* change depandabot options ([57fd677](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/57fd67798f4631030f605c7554feea1cf2045837))
+* revert Flask to 2.2.5 ([9c0fcc6](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/9c0fcc6165ef0d17db82a5dc69ac988b29d565ab))
+* Revert Flask to 2.5.x for Debian Buster ([9d94289](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/9d94289f81e7b6c1316c3dc4ee5525823fb6bdf8))
+* trigger master workflow on push ([2c602cf](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/2c602cfc812d5fe664e19a0b4603e5a9bd192af1))
+* trigger workflow for push_request on master ([018c43c](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/018c43cc24520893b65a3cd3c3b69a5d293d150c))
+
 ## [1.1.1-dev.5](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.1.1-dev.4...1.1.1-dev.5) (2023-09-13)
 
 

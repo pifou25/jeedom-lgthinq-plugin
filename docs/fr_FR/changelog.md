@@ -1,3 +1,11 @@
+## [1.1.3](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.1.2...1.1.3) (2023-11-11)
+
+
+### Bug Fixes
+
+* missing package export-data ([a7688cb](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/a7688cbed97583c0d4b4349111bf2c8aeee8e540))
+* run workflow on pull-requests on master ([1540816](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/154081626e48501a9d6d65ea172e690e546fdbac))
+
 ## [1.1.2](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.1.1...1.1.2) (2023-09-15)
 
 

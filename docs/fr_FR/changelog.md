@@ -1,3 +1,10 @@
+# [1.2.0-dev.3](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.2.0-dev.2...1.2.0-dev.3) (2023-12-02)
+
+
+### Features
+
+* add check-commit workflow for PR ([84bfc79](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/84bfc79aab51b051d46c61c4bd01c89ce42163fb))
+
 # [1.2.0-dev.2](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.2.0-dev.1...1.2.0-dev.2) (2023-12-02)
 
 

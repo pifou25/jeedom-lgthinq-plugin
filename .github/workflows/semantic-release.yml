@@ -1,11 +1,17 @@
-# this step for master only
+# this workflow runs Semantic-Release on current branch
+# - list new commits with conventional-commit messages
+# - update changelog.md (or changelog_beta.md)
+# - update version number into plugin_info/info.json
+# - generate a new tag with the new version
+# - publish a new Github package
+# - generate vars.env file with the version number for future workflow steps
 name: Semantic Release
 
 on:
   push:
-    branches: [ none ]
+    branches: [ master, beta, dev ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, beta, dev ]
   # this is to manually trigger the worklow
   workflow_dispatch:
     inputs:
@@ -13,32 +19,12 @@ on:
         description: 'Reason'     
         default: 'Manual launch'
 
+env:
+  # branch name must be 'beta' for beta branch
+  BRANCH_NAME: ${{ github.ref_name }}
+    
 jobs:
-  # one single job
+  # one single job, import from jeedom/workflows
   release:
-    name: release
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-        # https://github.com/marketplace/actions/setup-node-js-environment
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: semantic
-        run: |
-          npx --package=@semantic-release/changelog@6 \
-              --package=@semantic-release/exec@6 \
-              --package=@semantic-release/git@10 \
-              --package=jeedom-semrel-plugin-config@1 \
-              --package=semantic-release@21 \
-              semantic-release --extends=jeedom-semrel-plugin-config
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Display Github summary
-        if: steps.semantic.outputs.new_release_published == 'true'
-        run: |
-          echo "New release : ${{ steps.semantic.outputs.new_release_version }}" >> $GITHUB_STEP_SUMMARY
+    # https://github.com/jeedom/workflows/blob/main/.github/workflows/semantic-release.yml
+    uses: jeedom/workflows/.github/workflows/semantic-release.yml@main

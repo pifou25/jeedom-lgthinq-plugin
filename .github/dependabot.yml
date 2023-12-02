@@ -3,12 +3,16 @@ updates:
   # Maintain dependencies for GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
+    labels: github-actions
+    target-branch: dev
     schedule:
       interval: "daily"
       
   # Maintain python pip dependencies
   - package-ecosystem: "pip"
     directory: "/resources"
+    labels: pip-package
+    target-branch: dev
     schedule:
       interval: "daily"
   

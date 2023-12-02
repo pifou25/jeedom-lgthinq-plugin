@@ -1,3 +1,10 @@
+# [1.2.0-dev.2](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.2.0-dev.1...1.2.0-dev.2) (2023-12-02)
+
+
+### Bug Fixes
+
+* remove beta workflow file ([4ad26a4](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/4ad26a46254650a36478e298f1267fc33615cc2c))
+
 # [1.2.0-dev.1](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.1.3-dev.2...1.2.0-dev.1) (2023-12-02)
 
 

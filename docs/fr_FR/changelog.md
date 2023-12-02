@@ -1,3 +1,19 @@
+# [1.2.0](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.1.3...1.2.0) (2023-12-02)
+
+
+### Bug Fixes
+
+* remove beta workflow file ([d2d03bf](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/d2d03bf712fcf26d9e1106dece90d52344f29ed3))
+
+
+### Features
+
+* add check-commit workflow for PR ([d59fb32](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/d59fb32a85250961e2c6b42cfdb04d608adf4d11))
+* add python venv management for daemon ([d666c7f](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/d666c7f0a1dbebf81ed25f0cbba31cd996526a73))
+* add venv manager for daemon ([41d7f08](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/41d7f08d0fc04853c30dc973ef8cd902e2ccbfcb))
+* use jeedom/workflows ([6a9262c](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/6a9262c210103f084dac5310fea6dcf34059ea73))
+* venv user is www-data ([5b3ccb0](https://github.com/pifou25/jeedom-lgthinq-plugin/commit/5b3ccb0063353fa4d363224c6a1d084469bfa146))
+
 ## [1.1.3](https://github.com/pifou25/jeedom-lgthinq-plugin/compare/1.1.2...1.1.3) (2023-11-11)
 
 
